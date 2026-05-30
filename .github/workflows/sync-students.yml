@@ -1,0 +1,72 @@
+name: Sync para repos dos alunos
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        student:
+          - alexandre
+          - andre
+          - barbara
+          - diego
+          - flavia
+          - gabi-artz
+          - galbiatti
+          - henrique
+          - jeferson
+          - lauriane
+          - matheus
+          - raphael
+          - simone-carneiro
+          - thiago-kiss
+      fail-fast: false
+
+    steps:
+      - name: Checkout mastermind
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.SYNC_TOKEN }}
+
+      - name: Sync para mastermind-${{ matrix.student }}
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          STUDENT: ${{ matrix.student }}
+        run: |
+          REPO="gringoles777/mastermind-$STUDENT"
+
+          git config --global user.email "sync@mastermind.bot"
+          git config --global user.name "Mastermind Sync"
+
+          # Clonar repo do aluno
+          git clone https://x-access-token:$GH_TOKEN@github.com/$REPO.git student-repo
+          cd student-repo
+
+          # Adicionar mastermind como upstream
+          git remote add upstream https://x-access-token:$GH_TOKEN@github.com/gringoles777/mastermind.git
+          git fetch upstream
+
+          # Tentar merge automático
+          if git merge upstream/master --no-edit -m "sync: atualização do mastermind base"; then
+            git push origin master
+            echo "✅ $STUDENT sincronizado"
+          else
+            # Conflito — criar PR
+            git merge --abort
+            BRANCH="sync/mastermind-${{ github.run_number }}"
+            git checkout -b $BRANCH
+            git merge upstream/master --no-edit -m "sync: atualização do mastermind base"
+            git push origin $BRANCH
+            gh pr create \
+              --repo $REPO \
+              --title "Atualização do Mastermind" \
+              --body "Novidades do repositório base disponíveis. Revise e faça merge para atualizar." \
+              --base master \
+              --head $BRANCH
+            echo "⚠️ $STUDENT tem conflitos — PR criado"
+          fi
