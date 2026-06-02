@@ -1,0 +1,157 @@
+# ============================================================================
+#  Brand Archetypes — 12 arquétipos com direção visual
+#  Usado por: brand-translator (translate-to-brand → generate-design-system)
+#  Baseado nos 12 arquétipos de marca (Jung / Mark & Pearson), com tradução visual.
+# ============================================================================
+metadata:
+  schema: onboard-aliado.brand-archetypes
+  version: "1.0"
+  usage: >-
+    O brand-translator escolhe 1 arquétipo primário (peso ~60-70%) e 1 secundário
+    (~30-40%) a partir do posicionamento + ICP. A direção visual abaixo é PONTO DE
+    PARTIDA, sempre confirmada com o aliado — nunca imposta.
+
+archetypes:
+
+  sage:
+    name: "Sábio (Sage)"
+    promise: "Verdade, conhecimento, domínio. 'A verdade vai te libertar.'"
+    fits: ["educação", "consultoria", "saúde técnica", "pesquisa"]
+    voice: "Preciso, fundamentado, professoral sem ser arrogante"
+    visual:
+      mood: "Sóbrio, confiável, atemporal"
+      color_direction: "Azuis profundos, grafite, dourado discreto, branco"
+      typography_direction: "Serifada elegante para títulos + sans limpa no corpo"
+      avoid: "Cores neon, excesso de elementos, informalidade visual"
+
+  hero:
+    name: "Herói (Hero)"
+    promise: "Coragem, conquista, superação. 'Onde há vontade, há caminho.'"
+    fits: ["fitness", "alta performance", "infoproduto de transformação", "vendas"]
+    voice: "Energético, direto, desafiador, motivacional"
+    visual:
+      mood: "Forte, cinematográfico, alto contraste"
+      color_direction: "Preto + cor de acento vibrante (vermelho, dourado, laranja)"
+      typography_direction: "Sans condensada bold em caixa alta para impacto"
+      avoid: "Tons pastel, layouts tímidos, muito espaço vazio sem tensão"
+
+  caregiver:
+    name: "Cuidador (Caregiver)"
+    promise: "Cuidado, proteção, acolhimento. 'Você não está sozinho.'"
+    fits: ["saúde", "terapia", "bem-estar", "infância", "serviços de apoio"]
+    voice: "Caloroso, empático, tranquilizador"
+    visual:
+      mood: "Acolhedor, suave, humano"
+      color_direction: "Tons terrosos, verde-sálvia, bege quente, azul calmo"
+      typography_direction: "Sans humanista arredondada + serifada suave"
+      avoid: "Alto contraste agressivo, preto puro dominante, frieza"
+
+  creator:
+    name: "Criador (Creator)"
+    promise: "Imaginação, originalidade, autoexpressão. 'Se dá pra imaginar, dá pra criar.'"
+    fits: ["design", "arte", "creators", "produtos autorais", "moda"]
+    voice: "Expressivo, inspirador, estético"
+    visual:
+      mood: "Autoral, ousado, expressivo"
+      color_direction: "Paleta assinatura distinta — pode ousar em combinações"
+      typography_direction: "Display marcante + contraste tipográfico forte"
+      avoid: "Templates genéricos, paleta sem personalidade"
+
+  everyman:
+    name: "Cara Comum (Everyman)"
+    promise: "Pertencimento, autenticidade, simplicidade. 'Somos todos iguais.'"
+    fits: ["negócio local", "produtos do dia a dia", "comunidade", "serviços acessíveis"]
+    voice: "Próximo, honesto, sem pose, conversado"
+    visual:
+      mood: "Amigável, acessível, real"
+      color_direction: "Cores quentes e francas, nada luxuoso demais"
+      typography_direction: "Sans amigável e legível, sem firulas"
+      avoid: "Estética premium-elitista, jargão visual"
+
+  ruler:
+    name: "Soberano (Ruler)"
+    promise: "Controle, status, excelência. 'O poder não é tudo, é a única coisa.'"
+    fits: ["luxo", "alto ticket", "B2B premium", "consultoria de elite"]
+    voice: "Autoridade serena, exclusivo, exigente"
+    visual:
+      mood: "Premium, autoridade, refinado"
+      color_direction: "Preto + dourado/champanhe, ou navy + metálico"
+      typography_direction: "Serifada clássica de alta classe + sans refinada"
+      avoid: "Promoção barata, excesso de cores, informalidade"
+
+  magician:
+    name: "Mago (Magician)"
+    promise: "Transformação, visão, possibilidade. 'Faço sonhos virarem realidade.'"
+    fits: ["transformação pessoal", "tech disruptiva", "experiências", "coaching"]
+    voice: "Visionário, instigante, transformador"
+    visual:
+      mood: "Místico, sofisticado, surpreendente"
+      color_direction: "Roxos profundos, azul-noite, gradientes, toques luminosos"
+      typography_direction: "Display elegante + sans moderna"
+      avoid: "Banalidade, estética corporativa fria"
+
+  innocent:
+    name: "Inocente (Innocent)"
+    promise: "Simplicidade, otimismo, pureza. 'Tudo vai ficar bem.'"
+    fits: ["bem-estar", "infantil", "natural/orgânico", "produtos limpos"]
+    voice: "Leve, otimista, simples, honesto"
+    visual:
+      mood: "Limpo, claro, otimista"
+      color_direction: "Branco dominante, pastéis, azul-céu, verde fresco"
+      typography_direction: "Sans arredondada e leve"
+      avoid: "Preto dominante, complexidade, tom cínico"
+
+  explorer:
+    name: "Explorador (Explorer)"
+    promise: "Liberdade, descoberta, autenticidade. 'Não me prenda.'"
+    fits: ["viagem", "outdoor", "lifestyle", "produtos para aventura", "creators de nicho"]
+    voice: "Livre, curioso, autêntico, inquieto"
+    visual:
+      mood: "Aventureiro, orgânico, espaçoso"
+      color_direction: "Terrosos, verde-musgo, laranja-queimado, cru/kraft"
+      typography_direction: "Sans com caráter + toque manual/orgânico"
+      avoid: "Rigidez corporativa, paleta artificial"
+
+  rebel:
+    name: "Rebelde (Outlaw)"
+    promise: "Ruptura, revolução, quebrar regras. 'Regras foram feitas pra quebrar.'"
+    fits: ["marcas disruptivas", "nichos contraculturais", "produtos ousados"]
+    voice: "Provocador, direto, sem filtro, corajoso"
+    visual:
+      mood: "Ousado, cru, alto contraste"
+      color_direction: "Preto + neon ou vermelho-sangue, estética crua"
+      typography_direction: "Display agressivo, grotesca, quebra de grid"
+      avoid: "Suavidade, paleta convencional, polidez excessiva"
+
+  lover:
+    name: "Amante (Lover)"
+    promise: "Intimidade, prazer, conexão. 'Você é único pra mim.'"
+    fits: ["beleza", "moda", "gastronomia", "experiências sensoriais", "relacionamento"]
+    voice: "Sensorial, caloroso, sedutor, próximo"
+    visual:
+      mood: "Sensual, elegante, intimista"
+      color_direction: "Vinho, rosé, dourado quente, tons de pele"
+      typography_direction: "Serifada elegante + itálico para emoção"
+      avoid: "Frieza técnica, estética clínica"
+
+  jester:
+    name: "Bobo da Corte (Jester)"
+    promise: "Diversão, leveza, presença. 'Se não dá pra brincar, não quero.'"
+    fits: ["entretenimento", "marcas jovens", "produtos do cotidiano divertidos"]
+    voice: "Bem-humorado, espontâneo, leve, irreverente"
+    visual:
+      mood: "Divertido, colorido, dinâmico"
+      color_direction: "Cores vivas e contrastantes, alegre"
+      typography_direction: "Sans expressiva, divertida, com movimento"
+      avoid: "Seriedade corporativa, paleta sóbria demais"
+
+# Guia rápido: posicionamento → arquétipo provável
+mapping_hints:
+  - "Vende método/conhecimento com autoridade → sage (+ ruler ou hero)"
+  - "Vende transformação intensa e superação → hero (+ magician)"
+  - "Vende cuidado, alívio, segurança → caregiver (+ innocent)"
+  - "Vende status e exclusividade → ruler (+ lover)"
+  - "Vende reinvenção/possibilidade → magician (+ sage)"
+  - "Vende pertencimento e proximidade → everyman (+ caregiver)"
+  - "Vende ousadia/quebra de padrão → rebel (+ creator)"
+  - "Vende beleza/prazer/sensorial → lover (+ creator)"

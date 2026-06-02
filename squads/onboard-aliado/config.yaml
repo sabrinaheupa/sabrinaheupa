@@ -1,0 +1,175 @@
+pack:
+  name: onboard-aliado
+  version: "1.0.0"
+  short-title: Onboard Aliado
+  description: >-
+    Squad de onboarding de negócio para aliados (mentorandos). Entrevista o aliado
+    de forma conversacional, enriquece com pesquisa de mercado real (web) e preenche
+    os documentos fundamentais do negócio: perfil da empresa, DNA do fundador, ICP
+    profundo, posicionamento, produto e um design system portátil (YAML + CSS).
+    100% portátil — roda em qualquer repo com AIOX básico instalado, sem dependências
+    de outras squads ou apps. Em QUALQUER pergunta o aliado pode pedir ajuda e os
+    agentes ajudam a responder (modo conversacional).
+  icon: "🧭"
+  author: OMNI Brasil — Michael Arruda
+  slashPrefix: onboard-aliado
+  entry_agent: onboard-chief
+
+# ─────────────────────────────────────────────
+# PORTABILIDADE — premissas de execução
+# ─────────────────────────────────────────────
+portability:
+  self_contained: true
+  external_squad_dependencies: []        # NÃO depende de nenhuma outra squad
+  external_app_dependencies: []          # NÃO depende do design-starter (integração é opcional/detectada)
+  requires:
+    - "AIOX básico instalado (.claude/ presente)"
+    - "Acesso a web search para pesquisa de mercado (EXA/WebSearch). Degrada com elegância se ausente."
+  creates_folders_if_missing: true       # bootstrap cria workspace/businesses/{slug}/ se não existir
+  notes: >-
+    Para instalar no repo de um aliado, basta copiar duas pastas:
+    squads/onboard-aliado/ e .claude/skills/onboard-aliado/. Ver README.md.
+
+# ─────────────────────────────────────────────
+# PRINCÍPIO TRANSVERSAL — Ajuda Conversacional
+# ─────────────────────────────────────────────
+help_principle:
+  rule: >-
+    Em TODA pergunta, se o aliado demonstrar dúvida, pedir ajuda, perguntar de volta,
+    dizer "não sei", pedir exemplo ou pedir para a IA sugerir — o agente ativo entra
+    em MODO AJUDA: explica em linguagem simples, mostra o porquê, dá exemplos do tipo
+    de negócio dele e oferece um rascunho de resposta baseado na pesquisa de mercado.
+    Nunca envergonhar, nunca despejar texto. Protocolo canônico em
+    agents/onboard-chief.md → PROTOCOLO_DE_AJUDA.
+  applies_to: [onboard-chief, business-detector, brand-strategist, icp-extractor, brand-translator]
+
+# ─────────────────────────────────────────────
+# AGENTES
+# ─────────────────────────────────────────────
+agents:
+  - id: onboard-chief
+    file: agents/onboard-chief.md
+    role: Orquestrador — conduz as 6 fases, gerencia estado e ajuda conversacional
+    is_lead: true
+    tier: orchestrator
+  - id: business-detector
+    file: agents/business-detector.md
+    role: Classifica o tipo de negócio e adapta o roteiro de perguntas
+    tier: 1
+  - id: market-researcher
+    file: agents/market-researcher.md
+    role: Pesquisa de mercado na web — concorrentes, linguagem do cliente, objeções, preços
+    tier: 1
+  - id: brand-strategist
+    file: agents/brand-strategist.md
+    role: Fundação de marca — manifesto, missão, visão, valores, crenças, voz
+    tier: 1
+  - id: icp-extractor
+    file: agents/icp-extractor.md
+    role: Extração profunda do cliente ideal via perguntas indiretas
+    tier: 1
+  - id: brand-translator
+    file: agents/brand-translator.md
+    role: Traduz posicionamento + ICP em arquétipo de marca e design system portátil
+    tier: 1
+
+# ─────────────────────────────────────────────
+# TASKS — pipeline de 6 fases
+# ─────────────────────────────────────────────
+tasks:
+  - id: bootstrap-aliado
+    file: tasks/bootstrap-aliado.md
+    agent: onboard-chief
+    order: 0
+    required: true
+    description: Detecta ambiente, cria estrutura de pastas, captura nome/slug e inicia o estado
+  - id: detect-business-type
+    file: tasks/detect-business-type.md
+    agent: business-detector
+    order: 1
+    description: 3-4 perguntas rápidas → classifica o tipo → carrega roteiro adaptado
+  - id: elicit-company-profile
+    file: tasks/elicit-company-profile.md
+    agent: onboard-chief
+    order: 2
+    description: Essência, missão, visão, posicionamento e produto principal
+  - id: elicit-brand-foundation
+    file: tasks/elicit-brand-foundation.md
+    agent: brand-strategist
+    order: 3
+    description: Manifesto, missão, visão, propósito, essência, valores, crenças, voz e posicionamento
+  - id: research-market
+    file: tasks/research-market.md
+    agent: market-researcher
+    order: 4
+    description: Pesquisa de mercado real → market/research.yaml (com fontes e confiança)
+  - id: extract-icp-deep
+    file: tasks/extract-icp-deep.md
+    agent: icp-extractor
+    order: 5
+    description: ICP profundo via casos reais, melhor cliente, cliente que recusou
+  - id: translate-to-brand
+    file: tasks/translate-to-brand.md
+    agent: brand-translator
+    order: 6
+    description: Arquétipo de marca + direção visual a partir do posicionamento e ICP
+  - id: generate-design-system
+    file: tasks/generate-design-system.md
+    agent: brand-translator
+    order: 7
+    description: Escreve o design system portátil + brandbook.html rico (config + tokens.css + guidelines + página visual)
+  - id: integrate-design-starter
+    file: tasks/integrate-design-starter.md
+    agent: brand-translator
+    order: 8
+    required: false
+    description: OPCIONAL — se apps/aiox-design-starter/ existir, cria o variant e a brandbook page
+  - id: activate-context
+    file: tasks/activate-context.md
+    agent: onboard-chief
+    order: 9
+    required: true
+    description: Gera CLAUDE.md (regra anti-dado-morto) + INDEX.md — mantém o contexto vivo em sessões futuras
+
+# ─────────────────────────────────────────────
+# DADOS DE REFERÊNCIA
+# ─────────────────────────────────────────────
+data:
+  - id: business-types
+    file: data/business-types.yaml
+    description: Taxonomia de tipos de negócio + roteiro e exemplos adaptados por tipo
+  - id: brand-archetypes
+    file: data/brand-archetypes.yaml
+    description: 12 arquétipos de marca com direção visual (cor, tipografia, mood)
+  - id: question-bank
+    file: data/question-bank.yaml
+    description: Banco de perguntas com porquê, exemplos por tipo e dicas de ajuda
+
+# ─────────────────────────────────────────────
+# OUTPUTS — documentos fundamentais gerados
+# ─────────────────────────────────────────────
+outputs:
+  base_path: "workspace/businesses/{slug}/"
+  documents:
+    - "company/company-profile.yaml      # essência, missão, visão, posicionamento"
+    - "company/founder-dna.yaml          # história, filosofia e voz do fundador"
+    - "brand/brand-foundation.yaml       # manifesto, missão, visão, valores, crenças, voz"
+    - "company/icp.yaml                  # cliente ideal profundo"
+    - "products/{produto}.yaml           # produto/oferta principal"
+    - "market/research.yaml              # pesquisa de mercado (fontes + confiança)"
+    - "design-system/config.yaml         # tokens de cor, tipografia, componentes"
+    - "design-system/tokens.css          # variáveis CSS prontas para uso"
+    - "design-system/visual-guidelines.yaml  # arquétipo, logo, princípio visual"
+    - "design-system/brandbook.html      # página visual autocontida (abre no navegador)"
+    - "onboard/state.yaml                # progresso (permite pausar e retomar)"
+
+# ─────────────────────────────────────────────
+# DEPENDÊNCIAS
+# ─────────────────────────────────────────────
+dependencies:
+  squads: []
+  tools:
+    - name: web_search
+      description: EXA (mcp) ou WebSearch nativo — para a fase de pesquisa de mercado
+      required: false
+      degradation: "Sem web search, a pesquisa vira inferência marcada [SEM_FONTE] e o aliado confirma manualmente"
