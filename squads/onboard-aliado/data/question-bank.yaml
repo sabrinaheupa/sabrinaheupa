@@ -1,0 +1,230 @@
+# ============================================================================
+#  Question Bank — perguntas do onboarding com porquê, exemplos e ajuda
+#  Usado por: onboard-chief e tasks de elicitação.
+#  Cada pergunta tem:
+#    - q: o texto da pergunta (linguagem simples)
+#    - why: por que importa (impacto downstream) — usado no MODO AJUDA
+#    - help: como ajudar quem travou (reframe + caminho)
+#    - examples_by_type: exemplos por tipo de negócio (data/business-types.yaml)
+#    - target: onde a resposta é salva
+# ============================================================================
+metadata:
+  schema: onboard-aliado.question-bank
+  version: "1.0"
+  language: pt-BR
+  golden_rule: >-
+    Nenhuma pergunta é obrigatória responder "de primeira". Se o aliado travar,
+    o agente AJUDA (ver help) e pode até propor um rascunho a partir da pesquisa
+    de mercado e das respostas anteriores. Resposta vazia confirmada vira FILL_LATER,
+    nunca um dado inventado sem aviso.
+
+# ─────────────────────────────────────────────
+# COMO AJUDAR (resumo — protocolo completo no onboard-chief)
+# ─────────────────────────────────────────────
+help_quickref:
+  triggers:
+    - "não sei / não entendi / como assim / sei lá"
+    - "me ajuda / me explica / dá um exemplo / o que coloco aqui"
+    - "faz por mim / sugere / pode ser qualquer coisa"
+    - "qualquer pergunta de volta do aliado"
+  response_shape:
+    - "1) Reframe a pergunta em 1 frase simples"
+    - "2) Diz por que ela importa pro negócio dele (campo why)"
+    - "3) Mostra 2-3 exemplos do TIPO de negócio dele (examples_by_type)"
+    - "4) Oferece rascunho: 'quer que eu sugira a partir do que já me contou + pesquisa?'"
+    - "5) Apresenta o rascunho como proposta editável, nunca como verdade fechada"
+
+# ─────────────────────────────────────────────
+# FASE 2 — PERFIL DA EMPRESA
+# ─────────────────────────────────────────────
+company_profile:
+
+  - id: trade_name
+    q: "Qual o nome do seu negócio (como as pessoas o conhecem)?"
+    why: "É a âncora de tudo — aparece na marca, no design system e em todo material."
+    help: "Pode ser o nome fantasia, sua marca pessoal ou o nome do produto principal. Se ainda não tem, descreve em poucas palavras o que faz e a gente nomeia depois."
+    examples_by_type:
+      infoproduto_educacao: ["Escola de Terapias Integrativas", "Método [Seu Nome]"]
+      servico_consultoria: ["Agência Pulso", "[Seu Nome] Consultoria de Tráfego"]
+      saude_terapia_bemestar: ["Clínica Respiro", "Espaço Equilíbrio"]
+    target: "company/company-profile.yaml → company_essence.trade_name"
+
+  - id: one_liner
+    q: "Em UMA frase: o que você faz e pra quem?"
+    why: "É o seu pitch. Orienta copy, posicionamento e o tom do design. Se isso estiver claro, todo o resto flui."
+    help: "Fórmula que ajuda: 'Eu ajudo [quem] a [resultado] através de [como]'. Não precisa ser perfeito agora — a gente lapida com a pesquisa de mercado."
+    examples_by_type:
+      infoproduto_educacao: ["Ajudo profissionais insatisfeitos a virarem terapeutas com renda e propósito através de uma formação certificada"]
+      servico_consultoria: ["Ajudo pequenas empresas a ter um fluxo previsível de clientes com tráfego pago gerenciado"]
+      saude_terapia_bemestar: ["Ajudo adultos com ansiedade crônica a recuperar o sono e a paz através de um programa de 8 semanas"]
+    target: "company/company-profile.yaml → company_essence.one_liner"
+
+  - id: origin_story
+    q: "Por que você criou esse negócio? Tem uma história ou virada que te trouxe aqui?"
+    why: "A origem é o que conecta emocionalmente e diferencia. Vira base do founder-dna e da autoridade da marca."
+    help: "Pensa: o que você viveu que te fez acreditar nisso? Um problema seu, de alguém próximo, uma frustração com o mercado? Pode contar solto que eu organizo."
+    examples_by_type:
+      infoproduto_educacao: ["Eu mesmo era infeliz na carreira, descobri o método, mudei de vida e quis ensinar"]
+      saude_terapia_bemestar: ["Vi minha mãe sofrer sem atendimento digno e decidi criar o cuidado que faltou"]
+    target: "company/founder-dna.yaml → origin_story"
+
+  - id: mission
+    q: "Qual a missão do negócio — a transformação que você quer causar no mundo?"
+    why: "A missão guia decisões e dá alma à marca. Sem ela, a comunicação fica genérica."
+    help: "Não precisa ser grandioso. É o 'pra quê' do negócio. Completa: 'Existo para...'. Posso sugerir uma a partir do seu one-liner e da sua história."
+    examples_by_type:
+      infoproduto_educacao: ["Formar terapeutas que mudam vidas com método e ética"]
+      servico_consultoria: ["Fazer pequenos negócios crescerem com marketing previsível"]
+    target: "company/company-profile.yaml → vision.mission"
+
+  - id: vision
+    q: "Onde você quer que esse negócio chegue nos próximos 3-5 anos?"
+    why: "A visão define a ambição e o tamanho da aposta. Influencia posicionamento (nichado vs amplo) e nível da marca."
+    help: "Pensa grande mas concreto: faturamento, número de clientes/alunos, presença, impacto. Se não tem número, descreve o cenário ideal."
+    examples_by_type:
+      infoproduto_educacao: ["Ser a maior formação do nicho no Brasil, com 5 mil terapeutas formados"]
+    target: "company/company-profile.yaml → vision.statement"
+
+  - id: positioning
+    q: "Por que alguém escolheria você e não um concorrente? Qual seu diferencial real?"
+    why: "Posicionamento é o que te torna a única opção lógica para o cliente certo. É o 0,8% que decide vendas."
+    help: "Não vale 'qualidade' ou 'preço justo' (todo mundo diz). Pensa: método próprio, especialização, resultado comprovado, experiência única, garantia. A pesquisa de mercado vai te mostrar o que os concorrentes NÃO oferecem."
+    examples_by_type:
+      infoproduto_educacao: ["Único com certificação internacional + comunidade vitalícia + atendimento real do fundador"]
+      servico_consultoria: ["Especialista só no seu nicho, com metodologia documentada e metas contratuais"]
+    target: "company/company-profile.yaml → positioning.unique_angle"
+
+# ─────────────────────────────────────────────
+# PRODUTO / OFERTA PRINCIPAL
+# ─────────────────────────────────────────────
+product:
+
+  - id: main_offer
+    q: "Qual seu produto ou oferta principal — o carro-chefe?"
+    why: "É o que sustenta o negócio. Toda a comunicação e o design orbitam essa oferta."
+    help: "Se tem vários, qual traz mais receita ou é o mais estratégico? Descreve o que é, o formato e o que entrega."
+    examples_by_type:
+      infoproduto_educacao: ["Formação de 6 meses, online + 2 encontros presenciais, com certificação"]
+      saude_terapia_bemestar: ["Pacote de 8 sessões de acompanhamento individual"]
+    target: "products/{produto}.yaml → offer.description"
+
+  - id: price
+    q: "Quanto custa (ou pretende custar)? Pode ser faixa."
+    why: "Preço define o nível da marca (acessível vs premium) e o tom do design system."
+    help: "Se não definiu, a pesquisa de mercado traz a faixa praticada por concorrentes. Posso te dar um intervalo de referência."
+    examples_by_type:
+      infoproduto_educacao: ["R$ 3.000 a R$ 12.000 a formação"]
+      servico_consultoria: ["R$ 2.000 a R$ 8.000/mês de retainer"]
+    target: "products/{produto}.yaml → offer.price"
+
+  - id: transformation
+    q: "Qual a transformação que o cliente vive? Do estado A (antes) ao estado B (depois)?"
+    why: "Gente não compra produto, compra a virada de A→B. É o coração da copy e da promessa."
+    help: "Completa: 'Antes o cliente está [dor/situação ruim], depois ele está [conquista/situação boa]'. Pensa no seu melhor caso real."
+    examples_by_type:
+      infoproduto_educacao: ["Antes: preso num trabalho sem sentido. Depois: atendendo com propósito e nova renda"]
+      saude_terapia_bemestar: ["Antes: exausto, sem dormir, irritado. Depois: descansado, presente, em paz"]
+    target: "products/{produto}.yaml → offer.transformation"
+
+# ─────────────────────────────────────────────
+# FASE 3 — FUNDAÇÃO DE MARCA (conduzida pelo brand-strategist)
+# ─────────────────────────────────────────────
+brand_foundation:
+
+  - id: enemy
+    q: "O que te irrita no seu mercado? Contra o que ou quem você se posiciona?"
+    why: "Toda marca forte tem um 'inimigo'. É o que dá tensão ao manifesto e clareza ao posicionamento."
+    help: "Pode ser uma prática ruim do setor, uma crença comum que você acha errada, um tipo de concorrente. Ex: 'odeio promessa de resultado rápido que não se sustenta'."
+    examples_by_type:
+      infoproduto_educacao: ["Cursos que vendem fórmula mágica e não entregam método de verdade"]
+      saude_terapia_bemestar: ["Tratamento que trata sintoma e ignora a causa"]
+    target: "brand/brand-foundation.yaml → positioning.enemy"
+
+  - id: manifesto
+    q: "Se você pudesse gritar UMA mensagem pro seu mercado ouvir, qual seria?"
+    why: "O manifesto é a alma da marca — o que ela defende. Vira a seção de abertura do brandbook e a espinha da copy."
+    help: "Não precisa ser pronto. Junte sua história + seu inimigo + sua promessa. Eu monto um rascunho de manifesto e você ajusta o tom. Pensa em 'eu acredito que...' / 'chega de...'."
+    examples_by_type:
+      infoproduto_educacao: ["Acreditamos que mudar de carreira não é luxo de poucos — é direito de quem decide. Chega de viver no piloto automático."]
+    target: "brand/brand-foundation.yaml → manifesto.text"
+
+  - id: purpose
+    q: "Tirando o dinheiro: por que esse negócio precisa existir no mundo?"
+    why: "O propósito é a causa maior. Conecta emocionalmente e sustenta a marca além da venda."
+    help: "Completa: 'Esse negócio existe para...'. Pensa no impacto que você quer deixar, não no produto."
+    examples_by_type:
+      saude_terapia_bemestar: ["Para que ninguém precise sofrer em silêncio por falta de cuidado de verdade"]
+    target: "brand/brand-foundation.yaml → core.purpose"
+
+  - id: essence
+    q: "Em 1 a 3 palavras, qual é a essência da sua marca?"
+    why: "A essência é o destilado da marca — guia design, voz e decisões. Ex OMNI: 'Heritage Meets Precision'."
+    help: "Pensa no sentimento central. Pode ser um par de palavras em tensão (ex: 'rigor + acolhimento', 'tradição + ousadia'). Eu sugiro a partir de tudo que você já contou."
+    examples_by_type:
+      infoproduto_educacao: ["Método com alma", "Autoridade que liberta"]
+    target: "brand/brand-foundation.yaml → core.essence"
+
+  - id: values
+    q: "Quais 4 a 6 valores guiam como você trabalha e atende? (e por quê cada um)"
+    why: "Valores reais filtram decisões e atraem o cliente certo. Viram seção do brandbook e régua de cultura."
+    help: "Teste de ouro: se ninguém sério consegue DISCORDAR, não é valor — é clichê ('qualidade', 'respeito'). Bom valor tem um princípio acionável. Eu te ajudo a transformar clichê em valor de verdade."
+    examples_by_type:
+      saude_terapia_bemestar: ["Verdade antes de conforto: dizemos o que o paciente precisa ouvir, não o que ele quer"]
+      servico_consultoria: ["Resultado acima de atividade: medimos entrega, não horas trabalhadas"]
+    target: "brand/brand-foundation.yaml → values"
+
+  - id: beliefs
+    q: "Quais 3 crenças/princípios você defende com convicção no seu trabalho?"
+    why: "As crenças são os pilares do discurso. Sustentam o manifesto e dão consistência ao conteúdo."
+    help: "Pensa nas frases que você repete pros clientes, no que você defende mesmo sob discordância. Ex: 'transformação leva tempo', 'dado vale mais que opinião'."
+    examples_by_type:
+      infoproduto_educacao: ["Não existe transformação sem prática deliberada"]
+    target: "brand/brand-foundation.yaml → beliefs"
+
+  - id: voice
+    q: "Como sua marca fala? (ex: direta, calorosa, técnica, provocadora) E tem palavra que você NUNCA usaria?"
+    why: "A voz dá consistência a toda comunicação. Sem ela, cada texto sai com um tom diferente."
+    help: "Pensa em como VOCÊ fala com cliente. Me dá 2-3 adjetivos do tom + frases que são a sua cara + palavras que te dão alergia. Eu destilo isso da sua forma de falar."
+    examples_by_type:
+      infoproduto_educacao: ["Tom: direto e acolhedor. Frase-assinatura: 'sem atalho, mas com método'. Evita: 'fórmula mágica', 'fácil'."]
+    target: "brand/brand-foundation.yaml → voice"
+
+# ─────────────────────────────────────────────
+# FASE 5 — ICP (perguntas indiretas, conduzidas pelo icp-extractor)
+# ─────────────────────────────────────────────
+icp:
+
+  - id: best_client
+    q: "Me conta sobre seu MELHOR cliente até hoje — quem é, como chegou, por que deu tão certo?"
+    why: "O melhor cliente revela o ICP real (não o idealizado). Padrões dele = quem buscar."
+    help: "Se ainda não teve clientes, pensa em alguém que SERIA perfeito: quem você adoraria atender e teria resultado garantido."
+    examples_by_type:
+      infoproduto_educacao: ["Médica de 38 anos, estável mas infeliz, já fazia terapia, decidiu rápido"]
+    target: "company/icp.yaml → archetypes.archetype_1"
+
+  - id: fired_client
+    q: "E um cliente que NÃO deu certo, que você não atenderia de novo? O que tinha de errado?"
+    why: "Os anti-clientes definem os red flags e afiam o ICP por exclusão. Evita atrair quem dá prejuízo."
+    help: "Pensa em quem te deu dor de cabeça, não valorizou, não teve resultado ou era expectativa errada. Isso protege seu negócio."
+    examples_by_type:
+      servico_consultoria: ["Cliente que queria resultado em 1 semana e não confiava no processo"]
+    target: "company/icp.yaml → flags.red_flags"
+
+  - id: central_pain
+    q: "Qual a dor nº 1 que leva o cliente a te procurar? E o que ele REALMENTE quer por trás disso?"
+    why: "A dor declarada vs a dor real é onde mora a copy que converte. Separa sintoma de causa."
+    help: "O que ele DIZ ('quero X') costuma esconder o que ele SENTE ('tenho medo de Y'). A pesquisa de mercado traz a linguagem exata que ele usa."
+    examples_by_type:
+      saude_terapia_bemestar: ["Diz: 'não consigo dormir'. Quer de verdade: 'parar de sentir que estou perdendo a vida'"]
+    target: "company/icp.yaml → psychographics.central_pain"
+
+  - id: objections
+    q: "Quais as maiores objeções/medos antes de comprar de você?"
+    why: "Cada objeção é um obstáculo de venda. Mapeá-las = antecipar respostas na copy e na oferta."
+    help: "Pensa: o que faz a pessoa hesitar? Preço, medo de não funcionar, falta de tempo, desconfiança, 'será que é pra mim'. A pesquisa traz objeções comuns do nicho."
+    examples_by_type:
+      infoproduto_educacao: ["'Será que consigo viver disso?', 'é caro', 'não tenho tempo'"]
+    target: "company/icp.yaml → motivations.paralysis_triggers"
+
+# Marcador para campos não respondidos
+fill_marker: "FILL_LATER"

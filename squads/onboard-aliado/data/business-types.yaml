@@ -1,0 +1,132 @@
+# ============================================================================
+#  Business Types — taxonomia + roteiro adaptado por tipo de negócio
+#  Usado por: business-detector (classificação) e onboard-chief (exemplos/ajuda)
+# ============================================================================
+metadata:
+  schema: onboard-aliado.business-types
+  version: "1.0"
+  purpose: >-
+    Classificar o negócio do aliado em um dos tipos abaixo para adaptar perguntas
+    e dar exemplos relevantes. A classificação não é gaiola: um negócio pode ser
+    híbrido (ex: infoproduto + serviço). Nesse caso usar o tipo primário + notas.
+
+# Sinais de detecção: o business-detector usa estes sinais para classificar
+# a partir das respostas iniciais do aliado.
+types:
+
+  infoproduto_educacao:
+    label: "Infoproduto / Educação"
+    description: "Cursos, mentorias, formações, comunidades pagas. Vende transformação via conhecimento."
+    signals:
+      - "menciona curso, mentoria, formação, aula, turma, alunos, comunidade"
+      - "entrega é majoritariamente digital e/ou ao vivo (lives, encontros)"
+      - "ticket varia de baixo (ebook) a alto (mentoria/formação)"
+    typical_offers: ["curso online", "mentoria em grupo", "mentoria individual", "formação certificada", "comunidade"]
+    icp_focus: "transformação desejada + estágio de consciência + objeção de 'será que funciona pra mim'"
+    pricing_logic: "valor percebido da transformação, não horas de conteúdo"
+    examples_for_help:
+      mission: "Formar terapeutas capazes de mudar vidas com método validado"
+      transformation: "De insatisfeito na carreira → atuando com propósito e renda nova"
+      main_offer: "Formação de 6 meses com certificação e suporte em comunidade"
+
+  servico_consultoria:
+    label: "Serviço / Consultoria / Agência"
+    description: "Presta serviço especializado para empresas ou pessoas. Vende resultado feito-por-você."
+    signals:
+      - "menciona cliente, projeto, contrato, retainer, entrega, prazo"
+      - "faz pelo cliente (done-for-you): tráfego, design, jurídico, contábil, dev"
+      - "ticket médio-alto, poucos clientes por vez"
+    typical_offers: ["projeto fechado", "retainer mensal", "diagnóstico/consultoria", "implementação"]
+    icp_focus: "dor de negócio concreta + custo de não resolver + quem decide a compra"
+    pricing_logic: "valor do resultado entregue e risco assumido"
+    examples_for_help:
+      mission: "Fazer pequenas empresas venderem mais com tráfego pago previsível"
+      transformation: "De marketing no escuro → pipeline de leads medido e crescente"
+      main_offer: "Gestão de tráfego mensal com relatório e metas de ROAS"
+
+  saude_terapia_bemestar:
+    label: "Saúde / Terapia / Bem-estar"
+    description: "Atendimento clínico, terapêutico ou de bem-estar. Vende cuidado e resultado pessoal."
+    signals:
+      - "menciona paciente, sessão, atendimento, consulta, tratamento, clínica"
+      - "atua em saúde física, mental, terapias, nutrição, estética, fitness"
+      - "relação de confiança e recorrência importam muito"
+    typical_offers: ["sessão avulsa", "pacote de sessões", "acompanhamento mensal", "programa de X semanas"]
+    icp_focus: "sintoma declarado vs causa real + medo + o que já tentou e não funcionou"
+    pricing_logic: "transformação de vida + escassez de agenda + autoridade"
+    examples_for_help:
+      mission: "Devolver qualidade de vida a quem sofre de ansiedade crônica"
+      transformation: "De noites sem dormir e exausto → sono regulado e presença na vida"
+      main_offer: "Programa de 8 semanas de acompanhamento individual"
+
+  ecommerce_produto_fisico:
+    label: "E-commerce / Produto Físico"
+    description: "Vende produtos físicos online ou em loja. Vende o produto e a experiência."
+    signals:
+      - "menciona produto, estoque, frete, SKU, loja, marketplace, catálogo"
+      - "vende item tangível: roupa, cosmético, alimento, acessório, equipamento"
+      - "margem e logística importam; recompra é métrica-chave"
+    typical_offers: ["produto unitário", "kit/combo", "assinatura recorrente", "linha de produtos"]
+    icp_focus: "ocasião de uso + identidade que o produto expressa + gatilho de compra"
+    pricing_logic: "margem + posicionamento (premium vs acessível) + percepção de marca"
+    examples_for_help:
+      mission: "Levar skincare natural e honesto para a rotina de quem se cuida"
+      transformation: "De pele irritada por químicos → pele saudável com fórmula limpa"
+      main_offer: "Kit de cuidado facial em 3 passos com assinatura mensal"
+
+  saas_tech_produto_digital:
+    label: "SaaS / Tech / Produto Digital"
+    description: "Software ou produto digital recorrente. Vende eficiência ou capacidade nova."
+    signals:
+      - "menciona app, plataforma, software, assinatura, usuário, feature, MRR"
+      - "produto escalável, onboarding e retenção são centrais"
+      - "ICP costuma ser segmentado por papel/empresa (B2B) ou caso de uso (B2C)"
+    typical_offers: ["plano mensal/anual", "freemium → pago", "tiers por uso", "licença enterprise"]
+    icp_focus: "job-to-be-done + ferramenta atual que substitui + custo do problema"
+    pricing_logic: "valor gerado por usuário/conta + alternativa atual + disposição a pagar"
+    examples_for_help:
+      mission: "Dar a pequenas clínicas uma agenda que elimina faltas de pacientes"
+      transformation: "De agenda no caderno e no-shows → agenda cheia e confirmada"
+      main_offer: "Plano mensal por profissional com lembretes automáticos"
+
+  negocio_local:
+    label: "Negócio Local / Presencial"
+    description: "Atende uma região física: restaurante, salão, academia, loja, oficina."
+    signals:
+      - "menciona bairro, cidade, ponto, presencial, agenda, balcão, unidade"
+      - "depende de fluxo local, reputação e recorrência da vizinhança"
+    typical_offers: ["serviço presencial", "plano/mensalidade", "produto no ponto", "evento local"]
+    icp_focus: "raio geográfico + ocasião + alternativa local + motivo de fidelidade"
+    pricing_logic: "concorrência local + conveniência + experiência no ponto"
+    examples_for_help:
+      mission: "Ser a academia onde o bairro se sente em casa pra treinar"
+      transformation: "De sedentário e sem disposição → rotina de treino que sustenta"
+      main_offer: "Plano mensal com avaliação física e acompanhamento"
+
+  criador_audiencia:
+    label: "Criador / Audiência / Mídia"
+    description: "Monetiza audiência e conteúdo: creator, influenciador, newsletter, podcast."
+    signals:
+      - "menciona seguidores, audiência, conteúdo, marca pessoal, inscritos, engajamento"
+      - "receita vem de publi, produtos próprios, assinatura, afiliação"
+    typical_offers: ["produto próprio", "assinatura/membros", "publi/parceria", "afiliação"]
+    icp_focus: "identidade da audiência + transformação que seguem você buscando + nível de relação"
+    pricing_logic: "tamanho e engajamento da audiência + autoridade no nicho"
+    examples_for_help:
+      mission: "Ensinar gente comum a investir sem medo e sem jargão"
+      transformation: "De paralisado por não entender → investindo com clareza todo mês"
+      main_offer: "Comunidade de membros com aulas e acompanhamento mensal"
+
+# Tipo padrão se a detecção ficar ambígua após as perguntas iniciais
+fallback_type: infoproduto_educacao
+
+# Como o detector deve se comportar
+detection_protocol:
+  steps:
+    - "Fazer no MÁXIMO 4 perguntas rápidas (ver tasks/detect-business-type.md)"
+    - "Pontuar os sinais de cada tipo; escolher o de maior aderência"
+    - "Se 2 tipos empatarem → marcar como híbrido (primário + secundário) e seguir com o primário"
+    - "Confirmar com o aliado em 1 frase: 'Entendi que seu negócio é {tipo} — confere?'"
+  never:
+    - "Nunca forçar um tipo sem confirmação do aliado"
+    - "Nunca fazer mais de 4 perguntas só para classificar"
