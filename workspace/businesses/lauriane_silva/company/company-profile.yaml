@@ -1,0 +1,35 @@
+metadata:
+  schema: onboard-aliado.company-profile
+  slug: lauriane_silva
+  business_type: "infoproduto_educacao"
+  secondary_type: "servico_consultoria"
+  status: IN_PROGRESS
+  updated_at: "2026-06-03"
+
+company_essence:
+  trade_name: "Dra. Lauriane Silva"
+  one_liner: >-
+    Transformo a identidade de empresários para que construam negócios mais
+    lucrativos, uma liderança mais forte e uma vida com mais liberdade,
+    legado e prosperidade.
+
+vision:
+  mission: >-
+    Reprogramar a mentalidade e a identidade de empresários e líderes para
+    destravar crescimento financeiro, emocional e estratégico — transformando
+    não só o indivíduo, mas todo o seu ecossistema (equipe, cultura, resultados).
+  statement: >-
+    Faturar R$700k/mês, atender 12 empresas/mês e impactar mais de 5.000
+    colaboradores por ano. Ser reconhecida em todo o Sul do Brasil e
+    nacionalmente, com liberdade de entrega presencial e online.
+
+positioning:
+  unique_angle: >-
+    Único método autoral (GMS — Gestão e Mentalidade de Sucesso) que
+    transforma identidade, não apenas resultados superficiais. Não é
+    coaching, não é terapia, não é palestra: é reprogramação profunda,
+    estruturada e orientada a resultado. A transformação acontece no
+    ecossistema inteiro — do empresário à equipe, da liderança à cultura.
+  market_level: "ultra-premium"
+  delivery: "presencial e online"
+  geographic_target: "Sul do Brasil + nacional"

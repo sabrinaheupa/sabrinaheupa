@@ -1,0 +1,38 @@
+metadata:
+  schema: onboard-aliado.product
+  slug: lauriane_silva
+  status: IN_PROGRESS
+  updated_at: "2026-06-03"
+
+offer:
+  name: "Mente que Performa"
+  slug: "mente-que-performa"
+  target: "Empresas que faturam acima de R$300k/mês de lucro"
+  description: >-
+    Jornada in company de desenvolvimento humano e organizacional com o Método GMS.
+    Transforma o colaborador sistemicamente — na vida pessoal e profissional.
+    Inclui diagnóstico comportamental, mapeamento de clima organizacional,
+    dois programas: Alta Performance de Diretoria (C-level e diretores) e
+    Formação de Líderes (gestores e equipes). Entrega conformidade NR-1
+    documentada + transformação real de mentalidade + melhora mensurável
+    de clima e performance.
+  method: "Método GMS (Gestão e Mentalidade de Sucesso) — autoral e exclusivo"
+  format: "Presencial ou online — não são treinamentos genéricos, são processos de reprogramação aplicados ao contexto organizacional"
+  sessions: 9
+  price: "R$116.000,00 mínimo"
+  payment: "Parcelado em 12x"
+  qualification: "Empresas com faturamento acima de R$300k/mês de lucro"
+  nr1_compliance: true
+  transformation: >-
+    ANTES: Equipe desmotivada, lideranças presas no operacional, cultura
+    disfuncional, sabotagem velada, alto turnover, performance abaixo do potencial.
+    DEPOIS: Colaboradores com alta performance e gratidão, liderança forte,
+    cultura transformada, turnover reduzido, resultados financeiros crescentes
+    e conformidade NR-1 documentada.
+  programs:
+    - name: "Alta Performance de Diretoria"
+      target: "C-level e diretores"
+      focus: "Mentalidade de liderança, tomada de decisão e padrões que travam o crescimento no topo"
+    - name: "Formação de Líderes"
+      target: "Gestores e líderes de equipe"
+      focus: "Cultura, comunicação e performance coletiva"
