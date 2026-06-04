@@ -19,13 +19,10 @@ if (fs.existsSync(envPath)) require("dotenv").config({ path: envPath, override: 
 const express = require("express");
 const { gerarRoteiro, DURACAO } = require("./lib/script-generator");
 const { sintetizar, listVoices } = require("./lib/tts");
-
-const VOZES = listVoices(); // [{id, rotulo}]
-const VOZ_IDS = VOZES.map((v) => v.id);
+const { getStatus, upsertEnv, saveUserVoice, validarChave, TONS } = require("./lib/setup-status");
 
 const PORT = parseInt(process.env.PORT || "7791", 10);
 const BIND = "127.0.0.1";
-const ACCESS_PASSWORD = process.env.HIPNOSE_PASSWORD || "omni777";
 const JOBS_DIR = path.join(__dirname, "data", "jobs");
 fs.mkdirSync(JOBS_DIR, { recursive: true });
 
@@ -77,11 +74,20 @@ async function processar(job) {
 }
 
 app.post("/api/generate", (req, res) => {
-  const { tema, duracao, senha, voz } = req.body || {};
-  if (senha !== ACCESS_PASSWORD) return res.status(401).json({ erro: "Senha incorreta." });
+  const { tema, duracao, voz } = req.body || {};
   if (!tema || !tema.trim()) return res.status(400).json({ erro: "Informe um tema." });
+  const st = getStatus();
+  if (!st.ready) {
+    const faltam = [];
+    if (!st.ffmpeg) faltam.push("ffmpeg (rode o instalador de novo)");
+    if (!st.mistral) faltam.push("chave da Mistral");
+    if (!st.roteiro.ok) faltam.push("chave de roteiro (Google/OpenRouter/Anthropic)");
+    if (!st.voice.ok) faltam.push("gravar sua voz (" + st.voice.faltando.join(", ") + ")");
+    return res.status(412).json({ erro: "Configuração incompleta: falta " + faltam.join(", ") + ".", setup: true });
+  }
   const dur = DURACAO[duracao] ? duracao : "media";
-  const vozId = VOZ_IDS.includes(voz) ? voz : VOZ_IDS[0];
+  const vozIds = listVoices().map((v) => v.id);
+  const vozId = vozIds.includes(voz) ? voz : vozIds[0];
 
   const job = {
     id: crypto.randomBytes(6).toString("hex"),
@@ -116,13 +122,58 @@ app.get("/roteiro/:id.txt", (req, res) => {
   res.type("text/plain; charset=utf-8").sendFile(f);
 });
 
-app.post("/api/login", (req, res) => {
-  const { senha } = req.body || {};
-  if (senha === ACCESS_PASSWORD) return res.json({ ok: true });
-  return res.status(401).json({ ok: false, erro: "Senha incorreta." });
+app.get("/api/voices", (_req, res) => res.json({ vozes: listVoices() }));
+
+// ── Onboarding: diagnóstico do ambiente e gravação das chaves ────────────────
+app.get("/api/setup/status", (_req, res) => {
+  try { res.json(getStatus()); }
+  catch (e) { res.status(500).json({ erro: e.message }); }
 });
 
-app.get("/api/voices", (_req, res) => res.json({ vozes: VOZES }));
+app.post("/api/setup/save", async (req, res) => {
+  const b = req.body || {};
+  const candidatas = {};
+  // Aceita só as chaves conhecidas; ignora o resto.
+  for (const k of ["MISTRAL_API_KEY", "GOOGLE_AI_STUDIO_API_KEY", "OPENROUTER_API_KEY", "ANTHROPIC_API_KEY"]) {
+    if (typeof b[k] === "string" && b[k].trim()) candidatas[k] = b[k].trim();
+  }
+  if (Object.keys(candidatas).length === 0) {
+    return res.status(400).json({ erro: "Nenhuma chave informada." });
+  }
+  // Testa cada chave de verdade antes de gravar. Só grava as válidas.
+  const validas = {};
+  const invalidas = []; // chave inválida (rejeitada pela API)
+  const semRede = [];   // não deu pra testar (offline)
+  for (const [k, v] of Object.entries(candidatas)) {
+    const r = await validarChave(k, v);
+    if (r.ok) validas[k] = v;
+    else if (r.motivo === "rede") semRede.push(k);
+    else invalidas.push(k);
+  }
+  try {
+    if (Object.keys(validas).length) upsertEnv(validas);
+  } catch (e) {
+    return res.status(500).json({ erro: "Não foi possível salvar: " + e.message });
+  }
+  if (invalidas.length || semRede.length) {
+    return res.status(422).json({ erro: "Algumas chaves não passaram no teste.", invalidas, semRede, status: getStatus() });
+  }
+  res.json({ ok: true, status: getStatus() });
+});
+
+// Recebe uma amostra de voz (corpo binário) para um tom. ?tom=hipnose&nome=Fulano
+app.post("/api/setup/voice", express.raw({ type: "*/*", limit: "40mb" }), (req, res) => {
+  const tom = String(req.query.tom || "");
+  const nome = req.query.nome ? String(req.query.nome) : "";
+  if (!TONS.includes(tom)) return res.status(400).json({ erro: "Tom inválido." });
+  if (!req.body || !req.body.length) return res.status(400).json({ erro: "Áudio vazio." });
+  try {
+    const voice = saveUserVoice(req.body, tom, nome);
+    res.json({ ok: true, voice, status: getStatus() });
+  } catch (e) {
+    res.status(500).json({ erro: e.message });
+  }
+});
 
 app.get("/api/health", (_req, res) => res.json({ ok: true, port: PORT }));
 
