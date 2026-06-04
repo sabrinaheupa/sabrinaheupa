@@ -1,0 +1,111 @@
+metadata:
+  schema: onboard-aliado.visual-guidelines
+  slug: lauriane_silva
+  version: "1.0"
+  status: ACTIVE
+  updated_at: "2026-06-04"
+
+design_principle: >-
+  A transformação que liberta — cada elemento visual deve transmitir
+  profundidade e autoridade sem distância, acolhimento sem leveza excessiva.
+
+archetype:
+  primary: "Mago"
+  secondary: "Governante"
+  expression: >-
+    Mago: a marca é catalisadora de transformação — não descreve o caminho,
+    ela muda quem caminha. Visualmente: contrastes fortes (vinho escuro x
+    champagne), tipografia dramática, espaço que convida à reflexão.
+    Governante: autoridade que não precisa gritar — premium pelo que retira,
+    não pelo que adiciona. Espaço em branco generoso, paleta contida,
+    hierarquia clara.
+
+mood: "Profundo · Transformador · Premium · Acolhedor"
+
+motion_profile: "bold"
+motion_rationale: >-
+  Arquétipo Mago pede animações com presença: rápidas, com overshoot sutil,
+  que transmitem transformação e força. Não suaves demais (seria Amante/Criador)
+  nem agressivas (seria Herói/Rebelde). Bold = confiança.
+
+color_rationale:
+  red_wine: >-
+    Burgundy/vinho — autoridade, profundidade, premium sem frieza.
+    Cor associada a rituais de alto significado, celebração e transformação.
+    Diferencia da frieza do azul corporativo dominante no mercado de mentoria.
+  champagne: >-
+    Dourado suave / champagne — prestígio discreto, conquista, merecimento.
+    Complementa o vinho sem competir. Evoca o que o cliente busca:
+    liberdade, leveza, prosperidade.
+  off_white_warm: >-
+    Nunca branco puro — a temperatura quente do fundo reflete a natureza
+    acolhedora da marca. Branco puro seria frio, clínico.
+
+logo:
+  main_brand:
+    name: "Dra. Lauriane Silva"
+    tagline_current: "Mentoria & Reprogramação Mental"
+    tagline_previous: "Mentoria & Hipnoterapia"
+    status: "EXISTE — atualização de tagline necessária"
+    style: "Wordmark tipográfico — serif Didone de alto contraste com inicial script caligráfica (F.)"
+    elements:
+      - "Wordmark horizontal: LAURIANE F. SILVA + MENTORIA & REPROGRAMAÇÃO MENTAL"
+      - "Wordmark vertical: LAURIANE / F. SILVA"
+      - "Monograma L.F.S (símbolo compacto — uso em favicon, selos)"
+      - "Selo circular"
+    files_location: "/Users/laurianefsilva/Desktop/ Lauriane /Marca Pessoal - e inself /Mentoria e Hipnoterapia/"
+    update_action: >-
+      Encaminhar ao designer original (Apollo Ferrari) para atualizar
+      tagline e avaliar uso de 'Dra.' no nome. Arquivos .ai disponíveis.
+  sub_brand_gms:
+    name: "GMS — Gestão e Mentalidade de Sucesso"
+    status: "PENDENTE — criar"
+    brief: >-
+      Logotipo tipográfico minimalista. 'GMS' em Cormorant Garamond bold
+      (ou fonte do logo principal). 'Gestão e Mentalidade de Sucesso' em
+      small caps espaçado abaixo. Versões: Red Wine e White. Hierarquia
+      visual: sub-marca de Dra. Lauriane Silva.
+    usage: "Mentoria coletiva in company apenas. Não usar no lugar da marca pessoal."
+
+usage_rules:
+  - "Zona de respiro mínima: equivalente à altura da letra maiúscula em todo os lados"
+  - "Nunca distorcer proporções — nem horizontal, nem vertical"
+  - "Usar apenas nas versões oficiais: Red Wine (#5C1A27), Champagne (#C8BFA8), Black, White"
+  - "Tagline obrigatória em contextos institucionais e de vendas"
+  - "GMS nunca substitui a marca principal — aparece como sub-marca"
+  - "Monograma L.F.S apenas para uso de tamanho reduzido (favicon, perfil, selos)"
+
+do:
+  - "Fundo vinho profundo (#5C1A27) para máxima autoridade — hero, CTA final"
+  - "Champagne (#C8BFA8) como acento em elementos de destaque e selos de garantia"
+  - "Espaço em branco generoso — a marca respira como o cliente quer respirar"
+  - "Tipografia serif Didone nos headlines — autoridade clássica e profunda"
+  - "Imagens com presença e profundidade: olhar direto, ambiente premium, luz natural quente"
+  - "Copy que desafia antes de acolher — honesta, direta, com profundidade emocional"
+  - "Contraste forte entre fundo escuro e texto claro nas seções âncora"
+
+dont:
+  - "Nunca fundo branco puro (#FFFFFF) — temperatura fria, oposta à marca"
+  - "Não usar tipografia sem serifa nos headlines — perde autoridade e elegância"
+  - "Evitar cores saturadas, vibrantes ou neon — não é a energia da marca"
+  - "Não usar imagens com poses corporativas genéricas ou encenação exagerada"
+  - "Nunca linguagem de 'fórmula' ou 'passo a passo simples' — simplifica o método"
+  - "Não combinar Red Jam (#B5544A) com o Red Wine — paleta confusa"
+  - "Evitar excesso de elementos — o premium está no que se retira"
+
+imagery:
+  direction: >-
+    Empresários e líderes em momentos de clareza, não de esforço.
+    Presença total. Espaços premium e íntimos — escritórios clean,
+    ambientes naturais com qualidade. Luz natural quente, sem flash.
+    Sem excesso: o poder está no olhar e na postura, não nos props.
+  avoid:
+    - "Banco de imagens genérico — rostos sem identidade, aperto de mão forçado"
+    - "Poses de 'sucesso' exageradas (punho no ar, sorriso de vendedor)"
+    - "Ambientes barulhentos visualmente — backgrounds lotados"
+    - "Filtros saturados ou temperatura fria/azulada"
+  preferred:
+    - "Ambientes com textura natural: madeira, pedra, linho"
+    - "Plano médio ou detalhe — não grande angular genérica"
+    - "Momentos de reflexão ou conexão genuína"
+    - "Paleta de tons quentes e neutros que harmonize com o Red Wine"

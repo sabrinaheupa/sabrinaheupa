@@ -11,14 +11,24 @@ business_type_notes: >-
   Treinamento estrutura e aplica o método. Atende indivíduos (Mentoria GMS)
   e empresas (Mente que Performa / jornada in company).
 has_design_starter: false
-current_phase: 3
+current_phase: done
 phases_done:
   - bootstrap
   - detect
   - company_profile
+  - brand_foundation
+  - market_research
+  - icp
+  - design_system
+  - activate_context
 completeness:
   company_profile: 85
-  icp: 0
-  design_system: 0
-fill_later: []
-updated_at: "2026-06-03"
+  brand_foundation: 100
+  market_research: 100
+  icp: 90
+  design_system: 95
+fill_later:
+  - "icp.demographics.age"
+  - "design_system.logo_gms — criar sub-marca GMS com designer"
+  - "design_system.logo_tagline — atualizar 'Hipnoterapia' → 'Reprogramação Mental' nos arquivos .ai"
+updated_at: "2026-06-04"

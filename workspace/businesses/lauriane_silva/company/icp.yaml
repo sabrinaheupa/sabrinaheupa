@@ -1,0 +1,112 @@
+metadata:
+  schema: onboard-aliado.icp
+  slug: lauriane_silva
+  business_type: "infoproduto_educacao / mentoria_alto_ticket"
+  status: VALIDADO
+  updated_at: "2026-06-04"
+  validation: "Aprovado pela fundadora em sessão de onboarding"
+
+core_icp:
+  one_sentence_definition: >-
+    Empresário de empresa consolidada (50+ colaboradores) com bons resultados
+    financeiros e liderança admirada externamente — mas preso no operacional,
+    sobrecarregado e incapaz de desfrutar do que construiu por não se sentir merecedor.
+  icp_name: "O Empresidiário"
+  icp_name_rationale: >-
+    Palavra presente no manifesto da marca ("virei um empresidiário") e validada
+    pela pesquisa de mercado como linguagem REAL do cliente (fonte: Exame/Joel Jota).
+    Captura com precisão o estado de quem construiu tudo mas está preso.
+  client_type: "Empresário / fundador de empresa de médio a grande porte"
+  average_ticket: "R$44.000 (Mentoria GMS Individual)"
+
+demographics:
+  age: "FILL_LATER"
+  geography: "Sul do Brasil + nacional"
+  profession: "Empresário / fundador"
+  company_size: "50+ colaboradores"
+  financial_profile: >-
+    Resultados financeiros consolidados — o problema NÃO é falta de dinheiro.
+    A dor é emocional e existencial, não financeira.
+
+psychographics:
+  central_pain:
+    what_they_say: >-
+      "Estou sobrecarregado, preso no operacional, não consigo delegar,
+      a empresa não anda sem mim."
+    what_they_feel: >-
+      Solidão do cargo, peso das decisões e responsabilidades, culpa por
+      desfrutar do que construiu, sensação de não-merecimento.
+    what_they_really_want: >-
+      Se sentir livre e leve, sem culpa. Estar vivo de novo.
+      Permissão para existir além do trabalho e desfrutar o que construiu.
+    what_they_fear: >-
+      Que ninguém entenda o que realmente sentem. Que não mereçam ser felizes.
+      Que parar de trabalhar signifique perder o controle de tudo.
+  lifestyle:
+    - "Líder admirado externamente, vazio internamente"
+    - "Trabalha demais, colhe pouco emocionalmente"
+    - "Sente solidão no topo — as decisões pesam só nele"
+    - "Vai bem nos números mas mal na vida"
+    - "Constrói para os outros mas não consegue desfrutar para si"
+
+archetypes:
+  archetype_1:
+    name: "O Líder Solitário"
+    core_issue: >-
+      Crença de não-merecimento: construiu muito mas não se permite desfrutar.
+      Sente que precisa continuar sofrendo para justificar o sucesso.
+    medo_supremo: >-
+      Ser o único responsável por tudo — e que se parar, tudo desmorona.
+    desejo_oculto: >-
+      Permissão para existir além do trabalho. Leveza. Ser visto e entendido
+      por alguém que já esteve onde ele está.
+    frase_conexao: >-
+      "Construí tudo isso mas não consigo me sentir livre pra desfrutar."
+
+best_client_story:
+  summary: >-
+    Empresário com empresa de 50 colaboradores, líder admirado, bons resultados
+    financeiros. Não conseguia sair do operacional. Sobrecarregado e infeliz.
+    Queria se sentir vivo de novo, sem culpa. Não se sentia merecedor de desfrutar
+    o que havia construído. Deu certo pelo Método GMS + disposição total de viver
+    o processo — "disse sim e decidiu viver o extraordinário."
+  pattern: >-
+    Empresa consolidada + resultado financeiro bom + infelicidade interna +
+    crença de não-merecimento + disposição total para o processo = cliente ideal.
+
+fired_client_story:
+  summary: >-
+    Cliente que não seguia as recomendações, não ouvia a mentora,
+    não fazia o que era indicado. Resultados muito abaixo da média.
+  pattern: >-
+    Resistência ao processo + falta de maturidade para seguir orientações =
+    cliente a evitar, independente do perfil externo.
+
+flags:
+  green_flags:
+    - "Empresa consolidada com equipe (não está no início)"
+    - "Tem resultados financeiros mas está infeliz — dor real e clara"
+    - "Admira Lauriane antes de comprar (já existe identificação)"
+    - "Diz sim para o processo — disposição total e sem reservas"
+    - "Chegou ao ponto de ruptura: 'não dá mais pra esperar'"
+    - "Consegue enxergar o custo financeiro de continuar como está"
+  red_flags:
+    - "Não segue recomendações — resistência ao processo"
+    - "Não ouve o mentor — ego que bloqueia a transformação"
+    - "Ainda acha que aguenta mais um tempo — não chegou ao limite"
+    - "Compra pela urgência do momento sem comprometimento real com a mudança"
+    - "Quer resultado sem viver o processo"
+
+motivations:
+  action_triggers:
+    - "A dor se torna maior que o valor do investimento"
+    - "Enxerga quanto está perdendo financeiramente por continuar preso"
+    - "Chega ao ponto de ruptura — 'não dá mais, preciso fazer isso agora'"
+    - "Percebe que o custo de ficar parado é maior que o custo de mudar"
+  paralysis_triggers:
+    - "'Vai funcionar pra mim especificamente?' — medo de ser o caso que não dá certo"
+    - "'Ela não sabe como eu me sinto' — quer ser visto e entendido antes de confiar"
+    - "'Ainda não é o momento / não está tão ruim assim' — minimiza a dor"
+    - "'Consigo aguentar mais um tempo' — tolerância ao sofrimento"
+    - "Preço percebido como alto antes de calcular o custo de não agir"
+    - "'Vale o investimento?' — ROI não conectado ao valor emocional ainda"

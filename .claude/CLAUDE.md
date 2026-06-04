@@ -354,3 +354,25 @@ npm run trace -- workflow-name
 
 ---
 *Synkra AIOX Claude Code Configuration v2.0*
+
+<!-- BEGIN onboard-aliado:contexto-do-negocio -->
+## Contexto do Negócio (gerado pelo onboard-aliado)
+
+Este repositório tem o contexto do negócio **Dra. Lauriane Silva** salvo em
+`workspace/businesses/lauriane_silva/`. **REGRA OBRIGATÓRIA para qualquer sessão:**
+
+1. **Antes de construir QUALQUER coisa personalizada** (copy, landing page, anúncio,
+   e-mail, post, design, proposta, roteiro, etc.), **leia primeiro** estes arquivos:
+   - `workspace/businesses/lauriane_silva/company/company-profile.yaml` — quem é, missão, posicionamento
+   - `workspace/businesses/lauriane_silva/company/founder-dna.yaml` — história e voz do fundador
+   - `workspace/businesses/lauriane_silva/brand/brand-foundation.yaml` — manifesto, valores, crenças, voz, posicionamento
+   - `workspace/businesses/lauriane_silva/company/icp.yaml` — cliente ideal (dor, desejo, objeções)
+   - `workspace/businesses/lauriane_silva/products/` — ofertas e produtos
+   - `workspace/businesses/lauriane_silva/market/research.yaml` — concorrentes, preços, voz do cliente
+   - `workspace/businesses/lauriane_silva/design-system/` — cores, tipografia, identidade visual
+2. **NUNCA pergunte ao usuário** algo que já esteja nesses arquivos. Use o que está salvo.
+3. Se um campo estiver como `FILL_LATER`, aí sim pergunte — e **salve a resposta** no
+   arquivo correspondente, para não perguntar de novo no futuro.
+4. Todo material criado deve respeitar o **design system** e a **voz** definidos acima.
+5. Mapa rápido dos arquivos: veja `workspace/businesses/lauriane_silva/INDEX.md`.
+<!-- END onboard-aliado:contexto-do-negocio -->

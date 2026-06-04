@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapeamento de Perfil Comportamental — Mastermind Aliança Ouro</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--teal:#00B4A6;--teal-d:#008a80;--navy:#1a2744;--navy-l:#2d3f6a;--orange:#FF6B35;--gray-l:#F5F7FA;--gray-m:#e2e8f0;--txt:#1a2744;--txt-g:#64748b;--white:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--gray-l);color:var(--txt);min-height:100vh}
+.screen{display:none}.screen.active{display:block}
+
+/* ── WELCOME ── */
+.welcome{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-l) 55%,var(--teal-d) 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+.wcard{background:#fff;border-radius:24px;padding:2.5rem 2rem;max-width:680px;width:100%;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,.3)}
+.wlogo{width:72px;height:72px;background:linear-gradient(135deg,var(--teal),var(--teal-d));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:2rem}
+.wtitle{font-size:1.9rem;font-weight:900;color:var(--navy);line-height:1.2;margin-bottom:.4rem}
+.wsub{font-size:1rem;color:var(--teal-d);font-weight:700;margin-bottom:1.25rem}
+.wdesc{color:var(--txt-g);line-height:1.7;font-size:.93rem;margin-bottom:1.5rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-bottom:1.5rem}
+.badge{padding:.35rem .85rem;border-radius:100px;font-size:.75rem;font-weight:700;border:2px solid var(--gray-m);background:var(--gray-l);color:var(--navy)}
+.badge.t{background:rgba(0,180,166,.12);color:var(--teal-d);border-color:var(--teal)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.5rem}
+.stat{background:var(--gray-l);border-radius:12px;padding:.9rem .5rem}
+.stat .n{font-size:2rem;font-weight:900;color:var(--teal)}
+.stat .l{font-size:.72rem;color:var(--txt-g);font-weight:600}
+.name-in{width:100%;padding:.9rem 1.1rem;border:2px solid var(--gray-m);border-radius:12px;font-size:1rem;margin-bottom:1.25rem;outline:none;transition:border-color .2s}
+.name-in:focus{border-color:var(--teal)}
+.btn-pri{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;padding:.9rem 2rem;border-radius:100px;font-size:1.05rem;font-weight:700;cursor:pointer;width:100%;transition:transform .2s,box-shadow .2s}
+.btn-pri:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,180,166,.4)}
+
+/* ── HEADER ── */
+.tbar{background:linear-gradient(135deg,var(--navy),var(--navy-l));color:#fff;padding:1.1rem 1.5rem;position:sticky;top:0;z-index:100}
+.tbar-inner{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:1.25rem}
+.prog-info{flex:1}
+.prog-label{font-size:.78rem;opacity:.65;margin-bottom:.3rem}
+.sec-name{font-size:1rem;font-weight:700}
+.prog-track{background:rgba(255,255,255,.2);border-radius:100px;height:5px;margin-top:.4rem}
+.prog-fill{background:var(--teal);height:100%;border-radius:100px;transition:width .4s ease}
+.sec-tag{background:var(--teal);color:#fff;padding:.45rem .9rem;border-radius:100px;font-size:.8rem;font-weight:700;white-space:nowrap}
+
+/* ── QUESTION CONTAINERS ── */
+.qwrap{max-width:820px;margin:0 auto;padding:1.75rem 1.25rem}
+.sec-head{background:#fff;border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;border-left:4px solid var(--teal);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.sec-head h2{font-size:1.25rem;font-weight:800;color:var(--navy);margin-bottom:.35rem}
+.sec-head p{color:var(--txt-g);line-height:1.6;font-size:.88rem}
+
+/* DISC */
+.dgroup{background:#fff;border-radius:14px;padding:1.25rem 1.25rem 1rem;margin-bottom:.9rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.dgroup-hdr{display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem}
+.gnr{background:var(--navy);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.73rem;font-weight:700;flex-shrink:0}
+.ginst{font-size:.8rem;color:var(--txt-g)}
+.drow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:.75rem;padding:.6rem .8rem;background:var(--gray-l);border-radius:9px;margin-bottom:.4rem;border:2px solid transparent;transition:all .15s}
+.drow.most{background:rgba(0,180,166,.1);border-color:var(--teal)}
+.drow.least{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.3)}
+.dword{font-size:.93rem;font-weight:600;color:var(--navy)}
+.dbtns{display:flex;gap:1rem}
+.dbl{display:flex;align-items:center;gap:.35rem;cursor:pointer;font-size:.75rem;color:var(--txt-g);font-weight:600;white-space:nowrap}
+.dbl input{accent-color:var(--teal);width:14px;height:14px}
+
+/* Likert */
+.lq{background:#fff;border-radius:14px;padding:1.25rem;margin-bottom:.9rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.lq-txt{display:flex;align-items:flex-start;gap:.6rem;font-size:.95rem;font-weight:600;color:var(--navy);margin-bottom:1rem;line-height:1.5}
+.qnum{background:var(--teal);color:#fff;min-width:24px;height:24px;border-radius:50%;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.lscale{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem}
+.lopt{position:relative}
+.lopt input{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer}
+.lbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.65rem .2rem;border-radius:9px;border:2px solid var(--gray-m);cursor:pointer;transition:all .15s;min-height:64px;text-align:center}
+.ln{font-size:1.15rem;font-weight:800;color:var(--txt-g)}
+.lt{font-size:.6rem;color:var(--txt-g);margin-top:.2rem;line-height:1.2}
+.lopt input:checked+.lbtn{border-color:var(--teal);background:rgba(0,180,166,.1)}
+.lopt input:checked+.lbtn .ln{color:var(--teal-d)}
+
+/* Binary */
+.bq{background:#fff;border-radius:14px;padding:1.25rem;margin-bottom:.9rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.bopts{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.9rem}
+.bopt{position:relative}
+.bopt input{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer}
+.bbtn{display:block;padding:.85rem .75rem;border-radius:11px;border:2px solid var(--gray-m);cursor:pointer;transition:all .15s;text-align:center;font-size:.88rem;color:var(--navy);line-height:1.4}
+.bopt input:checked+.bbtn{border-color:var(--teal);background:rgba(0,180,166,.1);font-weight:700;color:var(--teal-d)}
+
+/* Choice 4 options */
+.cq{background:#fff;border-radius:14px;padding:1.25rem;margin-bottom:.9rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.copts{display:flex;flex-direction:column;gap:.5rem;margin-top:.9rem}
+.copt{position:relative}
+.copt input{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer}
+.cbtn{display:flex;align-items:center;gap:.85rem;padding:.8rem 1rem;border-radius:11px;border:2px solid var(--gray-m);cursor:pointer;transition:all .15s}
+.cbar{width:6px;height:36px;border-radius:3px;flex-shrink:0}
+.cd{background:var(--orange)}.ci{background:#f59e0b}.cs{background:var(--teal)}.cc{background:#6366f1}
+.cbtn-txt{font-size:.88rem;color:var(--navy);line-height:1.4}
+.copt input:checked+.cbtn{border-color:var(--teal);background:rgba(0,180,166,.07)}
+
+/* Nav */
+.navbtns{display:flex;justify-content:space-between;align-items:center;margin-top:1.75rem;gap:1rem}
+.btn-sec{background:#fff;color:var(--navy);border:2px solid var(--gray-m);padding:.8rem 1.75rem;border-radius:100px;font-size:.95rem;font-weight:600;cursor:pointer;transition:border-color .2s}
+.btn-sec:hover{border-color:var(--navy)}
+.btn-nxt{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;padding:.8rem 2.25rem;border-radius:100px;font-size:.95rem;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn-nxt:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,180,166,.4)}
+.btn-nxt:disabled{opacity:.45;transform:none;cursor:not-allowed}
+
+/* ── RESULTS ── */
+.rhdr{background:linear-gradient(135deg,var(--navy),var(--navy-l) 60%,var(--teal-d) 100%);color:#fff;padding:2.5rem 1.5rem;text-align:center}
+.rhdr h1{font-size:1.85rem;font-weight:900;margin-bottom:.4rem}
+.rname{font-size:1.1rem;opacity:.85;margin-bottom:.2rem}
+.rdate{font-size:.82rem;opacity:.55}
+.rcontent{max-width:900px;margin:0 auto;padding:1.75rem 1.25rem}
+.rcard{background:#fff;border-radius:20px;padding:1.75rem;margin-bottom:1.25rem;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.rcard-hdr{display:flex;align-items:center;gap:.85rem;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:2px solid var(--gray-l)}
+.ricon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.ic1{background:rgba(0,180,166,.15)} .ic2{background:rgba(26,39,68,.1)} .ic3{background:rgba(255,107,53,.15)} .ic4{background:rgba(99,102,241,.15)} .ic5{background:rgba(16,185,129,.15)} .ic6{background:rgba(245,158,11,.15)}
+.rtitle{font-size:1.2rem;font-weight:800;color:var(--navy)}
+.rsub{font-size:.8rem;color:var(--txt-g);margin-top:.2rem}
+.chart-wrap{position:relative;height:270px;margin:1rem 0}
+.chart-wrap-lg{position:relative;height:330px;margin:1rem 0}
+
+/* DISC display */
+.dprofile{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin:1.25rem 0}
+.df{text-align:center;padding:1.1rem .5rem;border-radius:14px}
+.df-d{background:linear-gradient(135deg,#fee2e2,#fca5a5)}
+.df-i{background:linear-gradient(135deg,#fef3c7,#fcd34d)}
+.df-s{background:linear-gradient(135deg,#d1fae5,#6ee7b7)}
+.df-c{background:linear-gradient(135deg,#e0e7ff,#a5b4fc)}
+.df-letter{font-size:2.2rem;font-weight:900;line-height:1}
+.df-name{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:.25rem 0}
+.df-score{font-size:1.6rem;font-weight:800}
+.df-bar{height:5px;background:rgba(0,0,0,.1);border-radius:3px;margin-top:.6rem;overflow:hidden}
+.df-fill{height:100%;border-radius:3px;background:rgba(0,0,0,.25)}
+.profile-tag{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.25rem;border-radius:100px;font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,var(--navy),var(--navy-l));color:#fff;margin-bottom:1.25rem}
+.atxt{color:var(--txt-g);line-height:1.8;font-size:.92rem}
+.atxt strong{color:var(--navy)}
+
+/* Jung */
+.jgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin:1.25rem 0}
+.jdim{text-align:center}
+.jdlbl{font-size:.75rem;color:var(--txt-g);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
+.jbar{background:var(--gray-m);border-radius:100px;height:9px;margin-bottom:.4rem;overflow:hidden}
+.jfill{background:linear-gradient(90deg,var(--teal),var(--teal-d));height:100%;border-radius:100px;transition:width 1s ease}
+.jvals{display:flex;justify-content:space-between;font-size:.78rem;font-weight:700}
+.jtype{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;padding:.4rem 1.25rem;border-radius:100px;font-size:1.4rem;font-weight:900;letter-spacing:.1em;display:inline-block;margin-bottom:.9rem}
+
+/* Values */
+.vbars{display:flex;flex-direction:column;gap:.65rem;margin:1rem 0}
+.vrow{display:grid;grid-template-columns:110px 1fr 44px;align-items:center;gap:.85rem}
+.vname{font-size:.82rem;font-weight:700;color:var(--navy)}
+.vtrack{background:var(--gray-m);border-radius:100px;height:9px;overflow:hidden}
+.vfill{height:100%;border-radius:100px;transition:width 1.2s ease}
+.vscore{font-size:.85rem;font-weight:700;color:var(--txt-g);text-align:right}
+
+/* Beliefs */
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin:1.25rem 0}
+.bcard{border-radius:14px;padding:1.25rem;text-align:center}
+.bid{background:linear-gradient(135deg,#e0e7ff,#c7d2fe)}
+.bcap{background:linear-gradient(135deg,#d1fae5,#a7f3d0)}
+.babu{background:linear-gradient(135deg,#fef3c7,#fde68a)}
+.btitle{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.85rem;color:var(--navy)}
+.bcirc{width:74px;height:74px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto .6rem;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.bsnum{font-size:1.35rem;font-weight:900;color:var(--navy);line-height:1}
+.bspct{font-size:.65rem;color:var(--txt-g);margin-top:.1rem}
+.blevel{font-size:.82rem;font-weight:700;color:var(--navy)}
+
+/* Leadership */
+.lgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:.9rem;margin:1.25rem 0}
+.lstyle{border-radius:14px;padding:1.1rem;display:flex;align-items:center;gap:.85rem}
+.ls-e{background:linear-gradient(135deg,#fee2e2,#fca5a5)}
+.ls-m{background:linear-gradient(135deg,#fef3c7,#fcd34d)}
+.ls-o{background:linear-gradient(135deg,#d1fae5,#6ee7b7)}
+.ls-s{background:linear-gradient(135deg,#e0e7ff,#a5b4fc)}
+.lpct{font-size:1.85rem;font-weight:900;color:var(--navy);flex-shrink:0;min-width:60px}
+.lname{font-weight:700;font-size:.95rem;color:var(--navy)}
+.ldesc{font-size:.77rem;color:var(--txt-g);margin-top:.2rem;line-height:1.4}
+
+/* Recs */
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.25rem 0}
+.ritem{display:flex;gap:.65rem;align-items:flex-start;background:var(--gray-l);border-radius:12px;padding:1rem}
+.remi{font-size:1.3rem;flex-shrink:0}
+.rttl{font-weight:700;color:var(--navy);font-size:.85rem;margin-bottom:.2rem}
+.rtxt{font-size:.82rem;color:var(--txt-g);line-height:1.5}
+
+/* Print / share */
+.print-sec{text-align:center;padding:1.75rem 0 3rem}
+.btn-prt{background:var(--navy);color:#fff;border:none;padding:.8rem 2.5rem;border-radius:100px;font-size:.9rem;font-weight:700;cursor:pointer;margin:.3rem;transition:background .2s}
+.btn-prt:hover{background:var(--navy-l)}
+
+/* Highlight boxes */
+.hbox{background:linear-gradient(135deg,rgba(0,180,166,.08),rgba(0,138,128,.04));border:1px solid rgba(0,180,166,.25);border-radius:12px;padding:1rem 1.1rem;margin-top:1rem}
+.hbox strong{color:var(--teal-d)}
+
+@media(max-width:600px){
+.dprofile,.jgrid,.bgrid,.lgrid,.rgrid{grid-template-columns:1fr 1fr}
+.bgrid,.jgrid{grid-template-columns:1fr}
+.bopts{grid-template-columns:1fr}
+.vrow{grid-template-columns:80px 1fr 36px}
+.stats{grid-template-columns:repeat(3,1fr)}
+}
+@media print{
+.tbar,.print-sec{display:none}
+.rcard{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     WELCOME SCREEN
+═══════════════════════════════════════════ -->
+<div id="s-welcome" class="screen active welcome">
+<div class="wcard">
+  <div class="wlogo">🧠</div>
+  <div class="wtitle">Mapeamento de Perfil Comportamental</div>
+  <div class="wsub">Mastermind Aliança Ouro</div>
+  <p class="wdesc">Descubra seu perfil comportamental completo com as principais metodologias científicas do desenvolvimento humano — DISC, Tipos Psicológicos de Jung, Teoria de Valores e muito mais. Criado especialmente para empresários e líderes que desejam se conhecer profundamente.</p>
+  <div class="badges">
+    <span class="badge t">DISC (Marston)</span>
+    <span class="badge t">Tipos Psicológicos (Jung)</span>
+    <span class="badge t">Valores (Spranger)</span>
+    <span class="badge t">Estilo de Liderança</span>
+    <span class="badge">Crenças de Identidade</span>
+    <span class="badge">Crenças de Capacidade</span>
+    <span class="badge">Merecimento &amp; Abundância</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">74</div><div class="l">Perguntas</div></div>
+    <div class="stat"><div class="n">~20</div><div class="l">Minutos</div></div>
+    <div class="stat"><div class="n">7</div><div class="l">Dimensões</div></div>
+  </div>
+  <input id="pname" type="text" class="name-in" placeholder="Digite seu nome completo" />
+  <button class="btn-pri" onclick="startTest()">Iniciar Assessment →</button>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TEST SCREEN
+═══════════════════════════════════════════ -->
+<div id="s-test" class="screen">
+  <div class="tbar">
+    <div class="tbar-inner">
+      <div class="prog-info">
+        <div class="prog-label" id="prog-label">Seção 1 de 7</div>
+        <div class="sec-name" id="sec-name">Perfil DISC</div>
+        <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:14%"></div></div>
+      </div>
+      <div class="sec-tag" id="sec-tag">DISC</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: DISC -->
+  <div id="sec1" class="qwrap">
+    <div class="sec-head">
+      <h2>📊 Perfil DISC — Teoria de William M. Marston</h2>
+      <p>Para cada grupo de 4 palavras, selecione qual palavra <strong>MAIS</strong> descreve você e qual <strong>MENOS</strong> descreve você. Responda intuitivamente, baseado em quem você naturalmente é — não em quem gostaria de ser.</p>
+    </div>
+    <div id="disc-qs"></div>
+    <div class="navbtns">
+      <div></div>
+      <button class="btn-nxt" onclick="goNext()">Próxima Seção →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 2: JUNG -->
+  <div id="sec2" class="qwrap" style="display:none">
+    <div class="sec-head">
+      <h2>🔮 Tipos Psicológicos — Carl Gustav Jung</h2>
+      <p>Escolha a alternativa que melhor descreve como você naturalmente funciona — não o ideal, mas o real. Cada questão revela uma dimensão da sua personalidade.</p>
+    </div>
+    <div id="jung-qs"></div>
+    <div class="navbtns">
+      <button class="btn-sec" onclick="goBack()">← Voltar</button>
+      <button class="btn-nxt" onclick="goNext()">Próxima Seção →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 3: VALORES -->
+  <div id="sec3" class="qwrap" style="display:none">
+    <div class="sec-head">
+      <h2>💎 Teoria de Valores — Eduard Spranger</h2>
+      <p>Avalie o quanto cada afirmação reflete seus valores genuínos. Use a escala de 1 (Discordo totalmente) a 5 (Concordo totalmente).</p>
+    </div>
+    <div id="valores-qs"></div>
+    <div class="navbtns">
+      <button class="btn-sec" onclick="goBack()">← Voltar</button>
+      <button class="btn-nxt" onclick="goNext()">Próxima Seção →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4: LIDERANÇA -->
+  <div id="sec4" class="qwrap" style="display:none">
+    <div class="sec-head">
+      <h2>👑 Estilo de Liderança</h2>
+      <p>Em cada situação, escolha a resposta que melhor descreve como você age na prática. Não existe resposta certa ou errada — escolha o que é mais natural para você.</p>
+    </div>
+    <div id="lider-qs"></div>
+    <div class="navbtns">
+      <button class="btn-sec" onclick="goBack()">← Voltar</button>
+      <button class="btn-nxt" onclick="goNext()">Próxima Seção →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 5: IDENTIDADE -->
+  <div id="sec5" class="qwrap" style="display:none">
+    <div class="sec-head">
+      <h2>🪞 Crenças de Identidade</h2>
+      <p>Essas perguntas revelam como você se enxerga como líder e empresário(a). Responda com honestidade — quanto mais genuíno(a), mais útil será o resultado.</p>
+    </div>
+    <div id="ident-qs"></div>
+    <div class="navbtns">
+      <button class="btn-sec" onclick="goBack()">← Voltar</button>
+      <button class="btn-nxt" onclick="goNext()">Próxima Seção →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 6: CAPACIDADE -->
+  <div id="sec6" class="qwrap" style="display:none">
+    <div class="sec-head">
+      <h2>⚡ Crenças de Capacidade</h2>
+      <p>Estas perguntas exploram o quanto você acredita nas suas habilidades para crescer e superar desafios no negócio.</p>
+    </div>
+    <div id="capac-qs"></div>
+    <div class="navbtns">
+      <button class="btn-sec" onclick="goBack()">← Voltar</button>
+      <button class="btn-nxt" onclick="goNext()">Próxima Seção →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 7: ABUNDÂNCIA -->
+  <div id="sec7" class="qwrap" style="display:none">
+    <div class="sec-head">
+      <h2>💰 Merecimento de Abundância &amp; Prosperidade</h2>
+      <p>Esta seção explora suas crenças mais profundas sobre dinheiro, prosperidade e seu merecimento de viver em abundância. Responda com total honestidade — esses dados são apenas para você.</p>
+    </div>
+    <div id="abund-qs"></div>
+    <div class="navbtns">
+      <button class="btn-sec" onclick="goBack()">← Voltar</button>
+      <button class="btn-nxt" onclick="showResults()">Ver Resultados →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     RESULTS SCREEN
+═══════════════════════════════════════════ -->
+<div id="s-results" class="screen">
+  <div class="rhdr">
+    <h1>Seu Mapeamento Comportamental</h1>
+    <div class="rname" id="r-name"></div>
+    <div class="rdate" id="r-date"></div>
+  </div>
+  <div class="rcontent">
+
+    <!-- DISC -->
+    <div class="rcard">
+      <div class="rcard-hdr">
+        <div class="ricon ic1">📊</div>
+        <div><div class="rtitle">Perfil DISC</div><div class="rsub">Baseado na teoria de William M. Marston (1928)</div></div>
+      </div>
+      <div id="r-disc-profile"></div>
+      <div id="r-disc-text" class="atxt"></div>
+    </div>
+
+    <!-- JUNG -->
+    <div class="rcard">
+      <div class="rcard-hdr">
+        <div class="ricon ic2">🔮</div>
+        <div><div class="rtitle">Tipos Psicológicos</div><div class="rsub">Baseado na teoria de Carl Gustav Jung</div></div>
+      </div>
+      <div id="r-jung-display"></div>
+      <div id="r-jung-text" class="atxt"></div>
+    </div>
+
+    <!-- VALORES -->
+    <div class="rcard">
+      <div class="rcard-hdr">
+        <div class="ricon ic3">💎</div>
+        <div><div class="rtitle">Hierarquia de Valores</div><div class="rsub">Baseado na teoria de Eduard Spranger</div></div>
+      </div>
+      <div id="r-valores-display"></div>
+      <div id="r-valores-text" class="atxt"></div>
+    </div>
+
+    <!-- LIDERANÇA -->
+    <div class="rcard">
+      <div class="rcard-hdr">
+        <div class="ricon ic4">👑</div>
+        <div><div class="rtitle">Estilo de Liderança</div><div class="rsub">Distribuição dos seus estilos de liderar</div></div>
+      </div>
+      <div id="r-lider-display"></div>
+      <div id="r-lider-text" class="atxt"></div>
+    </div>
+
+    <!-- CRENÇAS -->
+    <div class="rcard">
+      <div class="rcard-hdr">
+        <div class="ricon ic5">🧬</div>
+        <div><div class="rtitle">Mapa de Crenças</div><div class="rsub">Identidade · Capacidade · Merecimento de Abundância</div></div>
+      </div>
+      <div id="r-beliefs-display"></div>
+      <div id="r-beliefs-text" class="atxt"></div>
+    </div>
+
+    <!-- RADAR COMPETÊNCIAS -->
+    <div class="rcard">
+      <div class="rcard-hdr">
+        <div class="ricon ic6">🎯</div>
+        <div><div class="rtitle">Competências Comportamentais</div><div class="rsub">16 subfatores derivados do seu perfil DISC</div></div>
+      </div>
+      <div class="chart-wrap-lg"><canvas id="radar-chart"></canvas></div>
+    </div>
+
+    <!-- RECOMENDAÇÕES -->
+    <div class="rcard">
+      <div class="rcard-hdr">
+        <div class="ricon ic1">🚀</div>
+        <div><div class="rtitle">Recomendações de Desenvolvimento</div><div class="rsub">Ações práticas baseadas no seu perfil</div></div>
+      </div>
+      <div id="r-recs" class="rgrid"></div>
+    </div>
+
+    <div class="print-sec">
+      <button class="btn-prt" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+      <button class="btn-prt" onclick="restartTest()">↺ Refazer Assessment</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+const DISC_GROUPS = [
+  {words:[{t:'Dominante',f:'D'},{t:'Inspirador',f:'I'},{t:'Estável',f:'S'},{t:'Analítico',f:'C'}]},
+  {words:[{t:'Ousado',f:'D'},{t:'Entusiasmado',f:'I'},{t:'Leal',f:'S'},{t:'Preciso',f:'C'}]},
+  {words:[{t:'Decidido',f:'D'},{t:'Comunicativo',f:'I'},{t:'Paciente',f:'S'},{t:'Organizado',f:'C'}]},
+  {words:[{t:'Competitivo',f:'D'},{t:'Otimista',f:'I'},{t:'Harmonioso',f:'S'},{t:'Detalhista',f:'C'}]},
+  {words:[{t:'Direto',f:'D'},{t:'Persuasivo',f:'I'},{t:'Receptivo',f:'S'},{t:'Cauteloso',f:'C'}]},
+  {words:[{t:'Agressivo',f:'D'},{t:'Extrovertido',f:'I'},{t:'Tolerante',f:'S'},{t:'Perfeccionista',f:'C'}]},
+  {words:[{t:'Autoconfiante',f:'D'},{t:'Animado',f:'I'},{t:'Consistente',f:'S'},{t:'Meticuloso',f:'C'}]},
+  {words:[{t:'Rápido',f:'D'},{t:'Expressivo',f:'I'},{t:'Estável',f:'S'},{t:'Rigoroso',f:'C'}]},
+  {words:[{t:'Comandante',f:'D'},{t:'Sociável',f:'I'},{t:'Cooperativo',f:'S'},{t:'Sistemático',f:'C'}]},
+  {words:[{t:'Independente',f:'D'},{t:'Motivador',f:'I'},{t:'Apoiador',f:'S'},{t:'Lógico',f:'C'}]},
+  {words:[{t:'Pioneiro',f:'D'},{t:'Popular',f:'I'},{t:'Tranquilo',f:'S'},{t:'Consciente',f:'C'}]},
+  {words:[{t:'Exigente',f:'D'},{t:'Influente',f:'I'},{t:'Confiável',f:'S'},{t:'Cuidadoso',f:'C'}]},
+  {words:[{t:'Resoluto',f:'D'},{t:'Energético',f:'I'},{t:'Pacífico',f:'S'},{t:'Objetivo',f:'C'}]},
+  {words:[{t:'Determinado',f:'D'},{t:'Criativo',f:'I'},{t:'Cordial',f:'S'},{t:'Estratégico',f:'C'}]},
+  {words:[{t:'Corajoso',f:'D'},{t:'Dinâmico',f:'I'},{t:'Gentil',f:'S'},{t:'Precavido',f:'C'}]},
+  {words:[{t:'Ambicioso',f:'D'},{t:'Espontâneo',f:'I'},{t:'Modesto',f:'S'},{t:'Disciplinado',f:'C'}]},
+];
+
+const JUNG_QS = [
+  {q:'Em eventos com muitas pessoas, você geralmente…',a:[{t:'Se energiza com a interação e conhece pessoas novas',d:'E'},{t:'Fica cansado(a) e precisa de tempo sozinho(a) depois',d:'I'}]},
+  {q:'Quando precisa resolver um problema complexo, você prefere…',a:[{t:'Discutir com outras pessoas e pensar em voz alta',d:'E'},{t:'Refletir sozinho(a) antes de compartilhar suas ideias',d:'I'}]},
+  {q:'Em situações novas e desconhecidas, você tende a…',a:[{t:'Agir primeiro e aprender com a experiência',d:'E'},{t:'Observar e analisar bastante antes de entrar em ação',d:'I'}]},
+  {q:'Você se sente mais motivado(a) por…',a:[{t:'Interação com pessoas e pelo mundo externo',d:'E'},{t:'Reflexões internas e ideias que desenvolve sozinho(a)',d:'I'}]},
+  {q:'Para resolver problemas, você confia mais em…',a:[{t:'Sua intuição e visão do todo, mesmo sem todos os dados',d:'N'},{t:'Fatos concretos, dados verificáveis e experiências passadas',d:'S'}]},
+  {q:'Ao planejar o futuro do seu negócio, você…',a:[{t:'Pensa em grandes visões e possibilidades inovadoras',d:'N'},{t:'Foca em passos práticos e realistas no curto prazo',d:'S'}]},
+  {q:'Você aprende melhor…',a:[{t:'Entendendo conceitos abstratos e frameworks gerais',d:'N'},{t:'Vendo exemplos práticos e aplicações concretas imediatas',d:'S'}]},
+  {q:'Ao tomar decisões difíceis, você prioriza…',a:[{t:'A lógica e análise objetiva dos fatos',d:'T'},{t:'O impacto nas pessoas e a harmonia do grupo',d:'F'}]},
+  {q:'Em conflitos, você geralmente…',a:[{t:'Busca a solução mais racional e justa, mesmo que desconfortável',d:'T'},{t:'Considera os sentimentos de todos e preserva o relacionamento',d:'F'}]},
+  {q:'Para você, o mais importante em uma decisão é…',a:[{t:'Que seja logicamente correta e baseada em dados',d:'T'},{t:'Que seja boa para as pessoas e alinhada com seus valores',d:'F'}]},
+];
+
+const VALORES_QS = [
+  {q:'Valorizo ocupar posições onde posso liderar e influenciar decisões importantes.',cat:'P'},
+  {q:'Crescimento profissional, reconhecimento e status são motivadores relevantes para mim.',cat:'P'},
+  {q:'Avalio constantemente o custo-benefício das minhas decisões e investimentos de tempo.',cat:'E'},
+  {q:'Resultados financeiros e retorno sobre investimento guiam minha estratégia de negócio.',cat:'E'},
+  {q:'Tenho grande prazer em aprender e ampliar meu conhecimento continuamente.',cat:'T'},
+  {q:'Busco entender profundamente o "porquê" das coisas antes de agir.',cat:'T'},
+  {q:'Qualidade de vida e bem-estar são tão importantes para mim quanto conquistas materiais.',cat:'A'},
+  {q:'Aprecio a beleza, experiências subjetivas e a dimensão estética e artística da vida.',cat:'A'},
+  {q:'Sinto verdadeira satisfação quando contribuo para o crescimento e bem-estar de outras pessoas.',cat:'S'},
+  {q:'Fazer parte de algo maior do que eu mesmo(a) é uma motivação genuína na minha vida.',cat:'S'},
+  {q:'Vivo guiado(a) por princípios e valores profundos que nunca abro mão.',cat:'R'},
+  {q:'Uma estrutura filosófica, espiritual ou de crenças orienta minhas escolhas de vida.',cat:'R'},
+];
+
+const LIDER_QS = [
+  {q:'Sua equipe precisa entregar um projeto urgente. Você…',opts:[
+    {t:'Define prazo firme, acompanha diariamente e exige resultado',s:'E'},
+    {t:'Reúne a equipe, conta a visão do projeto e motiva todos',s:'M'},
+    {t:'Conversa individualmente com cada pessoa para entender como pode ajudar',s:'O'},
+    {t:'Cria um plano detalhado com etapas e critérios de qualidade claros',s:'S'},
+  ]},
+  {q:'Um colaborador comete um erro grave. Você…',opts:[
+    {t:'Aponta o problema diretamente e exige solução imediata',s:'E'},
+    {t:'Explora o que aconteceu de forma aberta, focando no aprendizado',s:'M'},
+    {t:'Conversa com empatia para entender o contexto antes de julgar',s:'O'},
+    {t:'Analisa as causas do erro sistematicamente para prevenir recorrência',s:'S'},
+  ]},
+  {q:'Ao apresentar seu negócio para investidores, você…',opts:[
+    {t:'Vai direto aos números, ROI e retorno esperado',s:'E'},
+    {t:'Conta uma história inspiradora sobre o impacto do projeto',s:'M'},
+    {t:'Enfatiza a solidez da equipe e a confiabilidade da execução',s:'O'},
+    {t:'Apresenta dados detalhados, pesquisas e análise de riscos',s:'S'},
+  ]},
+  {q:'Para crescer sua equipe, você prefere…',opts:[
+    {t:'Contratar pessoas proativas e resultadistas como você',s:'E'},
+    {t:'Encontrar pessoas com energia e que abracem a cultura',s:'M'},
+    {t:'Buscar pessoas de confiança que se adaptem bem ao ambiente',s:'O'},
+    {t:'Selecionar com base em critérios técnicos e processos estruturados',s:'S'},
+  ]},
+  {q:'Em reuniões de equipe, você tende a…',opts:[
+    {t:'Ir direto às decisões e ações sem muita conversa',s:'E'},
+    {t:'Criar um ambiente animado e encorajar todos a participar',s:'M'},
+    {t:'Garantir que todos se sintam ouvidos antes de avançar',s:'O'},
+    {t:'Seguir uma pauta detalhada e registrar tudo sistematicamente',s:'S'},
+  ]},
+  {q:'Quando seu negócio enfrenta uma crise, você…',opts:[
+    {t:'Assume o controle total e toma decisões rapidamente',s:'E'},
+    {t:'Comunica com transparência e mantém o moral da equipe alto',s:'M'},
+    {t:'Oferece apoio emocional à equipe antes de focar nas soluções',s:'O'},
+    {t:'Analisa todos os dados antes de qualquer ação concreta',s:'S'},
+  ]},
+  {q:'Sua maior fortaleza como líder é…',opts:[
+    {t:'Capacidade de decidir rápido e fazer acontecer',s:'E'},
+    {t:'Inspirar e motivar as pessoas ao seu redor',s:'M'},
+    {t:'Criar um ambiente de confiança e harmonia',s:'O'},
+    {t:'Pensar estrategicamente com atenção aos detalhes',s:'S'},
+  ]},
+  {q:'Para comunicar mudanças importantes, você prefere…',opts:[
+    {t:'"Isso vai mudar. Veja o que fazer." — direto ao ponto',s:'E'},
+    {t:'Vender a visão positiva da mudança com entusiasmo',s:'M'},
+    {t:'Explicar como afeta cada um e ouvir as preocupações',s:'O'},
+    {t:'Documentar com plano detalhado, cronograma e justificativas',s:'S'},
+  ]},
+  {q:'Seu estilo de dar feedback é…',opts:[
+    {t:'Direto e imediato, sem rodeios ou amenizadores',s:'E'},
+    {t:'Positivo e encorajador, sempre focado no potencial',s:'M'},
+    {t:'Gentil e empático, considerando os sentimentos do colaborador',s:'O'},
+    {t:'Estruturado com exemplos específicos e critérios claros',s:'S'},
+  ]},
+  {q:'Para você, o sucesso de um time se mede por…',opts:[
+    {t:'Resultados concretos e metas atingidas',s:'E'},
+    {t:'Entusiasmo, criatividade e engajamento da equipe',s:'M'},
+    {t:'Coesão, confiança e estabilidade do time',s:'O'},
+    {t:'Qualidade, precisão e conformidade com padrões',s:'S'},
+  ]},
+];
+
+const IDENT_QS = [
+  {q:'Tenho clareza sobre quem sou como líder e empreendedor(a).',r:false},
+  {q:'Acredito que minha personalidade é compatível com o sucesso nos negócios.',r:false},
+  {q:'Sinto-me confortável assumindo posições de liderança e visibilidade.',r:false},
+  {q:'Reconheço-me como alguém capaz de inspirar e influenciar outras pessoas.',r:false},
+  {q:'Às vezes tenho dificuldade em me ver como um(a) empresário(a) de verdadeiro sucesso.',r:true},
+  {q:'Minha identidade é maior do que os desafios e fracassos que enfrento.',r:false},
+  {q:'Quando falho, ainda me vejo como uma pessoa competente e valiosa.',r:false},
+  {q:'Sinto que tenho o perfil certo para alcançar grandes resultados empresariais.',r:false},
+];
+
+const CAPAC_QS = [
+  {q:'Acredito que tenho as habilidades necessárias para escalar meu negócio.',r:false},
+  {q:'Quando encontro um obstáculo, confio genuinamente na minha capacidade de superá-lo.',r:false},
+  {q:'Frequentemente sinto que "ainda não estou pronto(a)" para dar os próximos passos.',r:true},
+  {q:'Consigo aprender e me adaptar rapidamente a novas situações e desafios.',r:false},
+  {q:'Tenho confiança para tomar decisões importantes mesmo com informações incompletas.',r:false},
+  {q:'Às vezes duvido se sou bom(a) o suficiente para o nível que quero atingir.',r:true},
+  {q:'Acredito que minha experiência e conhecimento têm muito valor no mercado.',r:false},
+  {q:'Sinto que tenho o que é preciso para competir com os melhores do meu setor.',r:false},
+];
+
+const ABUND_QS = [
+  {q:'Mereço receber muito dinheiro pelo meu trabalho e expertise.',r:false},
+  {q:'Sinto-me confortável em cobrar preços altos pelos meus produtos ou serviços.',r:false},
+  {q:'Acredito que a riqueza financeira significativa está disponível para mim.',r:false},
+  {q:'Tenho desconforto interno quando imagino ganhar muito mais do que ganho hoje.',r:true},
+  {q:'Acredito que é possível ter grande riqueza e pleno bem-estar emocional ao mesmo tempo.',r:false},
+  {q:'No fundo, sinto que "não sou do tipo" que fica rico(a).',r:true},
+  {q:'Invisto em mim mesmo(a) sem culpa, pois confio que me gero retorno.',r:false},
+  {q:'Tenho clareza de que prosperidade material não contradiz meus valores pessoais.',r:false},
+  {q:'Às vezes me saboto inconscientemente quando estou prestes a alcançar um novo patamar financeiro.',r:true},
+  {q:'Acredito profundamente que mereço viver em abundância em todas as áreas da minha vida.',r:false},
+];
+
+const LIKERT_LABELS = ['Discordo\ntotalmente','Discordo\nparcialmente','Neutro','Concordo\nparcialmente','Concordo\ntotalmente'];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let state = {
+  name:'',
+  section:1,
+  disc:{}, // {g0:{most:'D',least:'I'}, ...}
+  jung:{},  // {q0:'E', ...}
+  valores:{}, // {q0:3, ...}
+  lider:{},   // {q0:'E', ...}
+  ident:{},   // {q0:3, ...}
+  capac:{},   // {q0:3, ...}
+  abund:{},   // {q0:3, ...}
+};
+
+// ═══════════════════════════════════════════════
+// RENDER QUESTIONS
+// ═══════════════════════════════════════════════
+function renderDISC(){
+  const c=document.getElementById('disc-qs');c.innerHTML='';
+  DISC_GROUPS.forEach((g,gi)=>{
+    const d=document.createElement('div');d.className='dgroup';
+    d.innerHTML=`<div class="dgroup-hdr"><div class="gnr">${gi+1}</div><div class="ginst">Selecione a palavra que <strong>MAIS</strong> e <strong>MENOS</strong> descreve você</div></div><div class="dwords" id="dg${gi}"></div>`;
+    c.appendChild(d);
+    const dw=d.querySelector(`#dg${gi}`);
+    g.words.forEach((w,wi)=>{
+      const r=document.createElement('div');r.className='drow';r.id=`dr${gi}_${wi}`;
+      r.innerHTML=`<span class="dword">${w.t}</span><div class="dbtns"><label class="dbl"><input type="radio" name="dm${gi}" value="${wi}" onchange="discPick(${gi},${wi},'most')"><span>Mais</span></label><label class="dbl"><input type="radio" name="dl${gi}" value="${wi}" onchange="discPick(${gi},${wi},'least')"><span>Menos</span></label></div>`;
+      dw.appendChild(r);
+    });
+  });
+}
+
+function discPick(gi,wi,type){
+  if(!state.disc[gi])state.disc[gi]={};
+  const prev=state.disc[gi][type];
+  if(prev!==undefined){const old=document.getElementById(`dr${gi}_${prev}`);if(old){old.classList.remove(type==='most'?'most':'least');}}
+  state.disc[gi][type]=wi;
+  const el=document.getElementById(`dr${gi}_${wi}`);if(el){el.classList.add(type==='most'?'most':'least');}
+  // prevent same word for both
+  if(type==='most'&&state.disc[gi].least===wi){state.disc[gi].least=undefined;document.querySelectorAll(`input[name="dl${gi}"]`).forEach(r=>r.checked=false);document.getElementById(`dr${gi}_${wi}`).classList.remove('least');}
+  if(type==='least'&&state.disc[gi].most===wi){state.disc[gi].most=undefined;document.querySelectorAll(`input[name="dm${gi}"]`).forEach(r=>r.checked=false);document.getElementById(`dr${gi}_${wi}`).classList.remove('most');}
+}
+
+function renderJung(){
+  const c=document.getElementById('jung-qs');c.innerHTML='';
+  JUNG_QS.forEach((q,qi)=>{
+    const d=document.createElement('div');d.className='bq';
+    d.innerHTML=`<div class="lq-txt"><div class="qnum">${qi+1}</div><div>${q.q}</div></div><div class="bopts">${q.a.map((a,ai)=>`<label class="bopt"><input type="radio" name="jung${qi}" value="${a.d}" onchange="state.jung[${qi}]='${a.d}'"><div class="bbtn">${a.t}</div></label>`).join('')}</div>`;
+    c.appendChild(d);
+  });
+}
+
+function renderLikert(qsArr,stateKey,containerId){
+  const c=document.getElementById(containerId);c.innerHTML='';
+  qsArr.forEach((q,qi)=>{
+    const d=document.createElement('div');d.className='lq';
+    const buttons=LIKERT_LABELS.map((lbl,li)=>`<label class="lopt"><input type="radio" name="${stateKey}${qi}" value="${li+1}" onchange="state.${stateKey}[${qi}]=${li+1}"><div class="lbtn"><span class="ln">${li+1}</span><span class="lt">${lbl}</span></div></label>`).join('');
+    d.innerHTML=`<div class="lq-txt"><div class="qnum">${qi+1}</div><div>${q.q}</div></div><div class="lscale">${buttons}</div>`;
+    c.appendChild(d);
+  });
+}
+
+function renderLider(){
+  const c=document.getElementById('lider-qs');c.innerHTML='';
+  const colors={E:'cd',M:'ci',O:'cs',S:'cc'};
+  LIDER_QS.forEach((q,qi)=>{
+    const d=document.createElement('div');d.className='cq';
+    const opts=q.opts.map((o,oi)=>`<label class="copt"><input type="radio" name="lider${qi}" value="${o.s}" onchange="state.lider[${qi}]='${o.s}'"><div class="cbtn"><div class="cbar ${colors[o.s]}"></div><div class="cbtn-txt">${o.t}</div></div></label>`).join('');
+    d.innerHTML=`<div class="lq-txt"><div class="qnum">${qi+1}</div><div>${q.q}</div></div><div class="copts">${opts}</div>`;
+    c.appendChild(d);
+  });
+}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+const SEC_INFO=[
+  {label:'Seção 1 de 7',name:'Perfil DISC',tag:'DISC'},
+  {label:'Seção 2 de 7',name:'Tipos Psicológicos',tag:'Jung'},
+  {label:'Seção 3 de 7',name:'Teoria de Valores',tag:'Valores'},
+  {label:'Seção 4 de 7',name:'Estilo de Liderança',tag:'Liderança'},
+  {label:'Seção 5 de 7',name:'Crenças de Identidade',tag:'Identidade'},
+  {label:'Seção 6 de 7',name:'Crenças de Capacidade',tag:'Capacidade'},
+  {label:'Seção 7 de 7',name:'Merecimento de Abundância',tag:'Abundância'},
+];
+
+function startTest(){
+  const n=document.getElementById('pname').value.trim();
+  if(!n){alert('Por favor, informe seu nome para começar.');return;}
+  state.name=n;
+  document.getElementById('s-welcome').classList.remove('active');
+  document.getElementById('s-test').classList.add('active');
+  renderDISC();renderJung();
+  renderLikert(VALORES_QS,'valores','valores-qs');
+  renderLider();
+  renderLikert(IDENT_QS,'ident','ident-qs');
+  renderLikert(CAPAC_QS,'capac','capac-qs');
+  renderLikert(ABUND_QS,'abund','abund-qs');
+  setSection(1);
+}
+
+function setSection(n){
+  state.section=n;
+  for(let i=1;i<=7;i++){
+    const s=document.getElementById(`sec${i}`);
+    if(s)s.style.display=i===n?'block':'none';
+  }
+  const info=SEC_INFO[n-1];
+  document.getElementById('prog-label').textContent=info.label;
+  document.getElementById('sec-name').textContent=info.name;
+  document.getElementById('sec-tag').textContent=info.tag;
+  document.getElementById('prog-fill').style.width=`${(n/7)*100}%`;
+  window.scrollTo(0,0);
+}
+
+function goNext(){setSection(state.section+1);}
+function goBack(){setSection(state.section-1);}
+
+// ═══════════════════════════════════════════════
+// SCORING
+// ═══════════════════════════════════════════════
+function calcDISC(){
+  let D=0,I=0,S=0,C=0;
+  DISC_GROUPS.forEach((g,gi)=>{
+    const sel=state.disc[gi]||{};
+    g.words.forEach((w,wi)=>{
+      const v=w.f==='D'?'D':w.f==='I'?'I':w.f==='S'?'S':'C';
+      let pts=0;
+      if(sel.most===wi)pts=1;
+      else if(sel.least===wi)pts=-1;
+      if(v==='D')D+=pts;else if(v==='I')I+=pts;else if(v==='S')S+=pts;else C+=pts;
+    });
+  });
+  // normalize -16..16 → 0..100
+  const norm=x=>Math.round(((x+16)/32)*100);
+  return {D:norm(D),I:norm(I),S:norm(S),C:norm(C)};
+}
+
+function calcJung(){
+  let E=0,I2=0,N=0,S=0,T=0,F=0;
+  JUNG_QS.forEach((q,qi)=>{
+    const v=state.jung[qi];
+    if(!v)return;
+    if(v==='E')E++;else if(v==='I')I2++;
+    else if(v==='N')N++;else if(v==='S')S++;
+    else if(v==='T')T++;else if(v==='F')F++;
+  });
+  const ePct=Math.round((E/(E+I2||1))*100);
+  const nPct=Math.round((N/(N+S||1))*100);
+  const tPct=Math.round((T/(T+F||1))*100);
+  return {E:ePct,I:100-ePct,N:nPct,S:100-nPct,T:tPct,F:100-tPct,type:(ePct>=50?'E':'I')+(nPct>=50?'N':'S')+(tPct>=50?'T':'F')};
+}
+
+function calcValores(){
+  const sums={P:0,E:0,T:0,A:0,S:0,R:0};
+  const cnts={P:0,E:0,T:0,A:0,S:0,R:0};
+  VALORES_QS.forEach((q,qi)=>{
+    const v=state.valores[qi]||0;
+    sums[q.cat]+=v;cnts[q.cat]++;
+  });
+  const res={};
+  Object.keys(sums).forEach(k=>{res[k]=cnts[k]?Math.round((sums[k]/(cnts[k]*5))*100):0;});
+  return res;
+}
+
+function calcLider(){
+  const cnt={E:0,M:0,O:0,S:0};
+  LIDER_QS.forEach((q,qi)=>{const v=state.lider[qi];if(v&&cnt[v]!==undefined)cnt[v]++;});
+  const tot=Object.values(cnt).reduce((a,b)=>a+b,0)||1;
+  return {E:Math.round((cnt.E/tot)*100),M:Math.round((cnt.M/tot)*100),O:Math.round((cnt.O/tot)*100),S:Math.round((cnt.S/tot)*100)};
+}
+
+function calcBeliefs(qsArr,stateKey){
+  let sum=0,cnt=0;
+  qsArr.forEach((q,qi)=>{
+    let v=state[stateKey][qi];
+    if(v===undefined)return;
+    if(q.r)v=6-v; // reverse score
+    sum+=v;cnt++;
+  });
+  return cnt?Math.round((sum/(cnt*5))*100):50;
+}
+
+function getDiscProfile(d){
+  const sorted=Object.entries(d).sort((a,b)=>b[1]-a[1]);
+  const top=sorted[0][0],sec=sorted[1][0];
+  return top+sec;
+}
+
+// ═══════════════════════════════════════════════
+// ANALYSIS TEXTS
+// ═══════════════════════════════════════════════
+const DISC_ANALYSIS={
+  DI:`Você possui um perfil <strong>DI — Diretor Influente</strong>: combina orientação a resultados com capacidade de influenciar pessoas. Toma decisões rápidas, é persuasivo(a) e lidera pelo exemplo e pela energia. Seu maior desafio é equilibrar a velocidade de execução com a escuta ativa da equipe. Como empresário(a), você é naturalmente arrojado(a) — aproveite isso para abrir portas, mas construa processos que sustentam o crescimento.`,
+  ID:`Você possui um perfil <strong>ID — Influente Dominante</strong>: é um(a) comunicador(a) nato(a) com forte orientação a resultados. Cria conexões rapidamente e sabe mobilizar pessoas para uma causa. Tende a agir com impulso criativo. Seu desenvolvimento está em aprender a finalizar o que começa e em criar estruturas que preservem o momentum.`,
+  DC:`Você possui um perfil <strong>DC — Diretor Analítico</strong>: combina velocidade de execução com exigência por qualidade. Você entrega resultados e não tolera erros — uma combinação poderosa para negócios que exigem precisão e performance. O desafio é suavizar o estilo de liderança para não gerar tensão na equipe.`,
+  CD:`Perfil <strong>CD — Analítico Dominante</strong>: você é preciso(a), estratégico(a) e determinado(a). Pensa antes de agir e, quando decide, executa com convicção. É um(a) líder confiável que entrega com qualidade. O crescimento está em aprender a delegar confiando no time, mesmo quando o padrão deles não é o seu.`,
+  DS:`Perfil <strong>DS — Diretor Estável</strong>: executa com força e também cuida da equipe. Combina resultado com fidelidade — você entrega E mantém as pessoas. Um perfil raro e valorizado em tempos de incerteza.`,
+  SD:`Perfil <strong>SD — Estável Dominante</strong>: é leal, consistente e determinado(a). Constrói negócios sólidos com base em confiança e entrega constante. Mais conservador(a) na tomada de riscos, mas extremamente confiável.`,
+  IS:`Perfil <strong>IS — Influente Estável</strong>: você é um(a) líder humanista — inspira, cuida e cria ambientes onde as pessoas florescem. Ideal para negócios baseados em relacionamento e comunidade. O desafio é aprender a ter conversas difíceis quando necessário.`,
+  SI:`Perfil <strong>SI — Estável Influente</strong>: combina harmonia com comunicação afetuosa. É o(a) líder que todos querem no time — presente, empático(a) e motivador(a). Desenvolva sua capacidade de impor limites sem culpa.`,
+  IC:`Perfil <strong>IC — Influente Analítico</strong>: pensa com profundidade e comunica com clareza. Tem o dom de transformar análises complexas em mensagens que as pessoas entendem e abraçam.`,
+  CI:`Perfil <strong>CI — Analítico Influente</strong>: é detalhista e comunicativo(a) — uma combinação rara. Você convence com dados e cativa com a forma como os apresenta.`,
+  SC:`Perfil <strong>SC — Estável Analítico</strong>: metódico(a), confiável e preciso(a). Constrói processos sólidos e equipes de alta confiança. O crescimento está em acelerar as decisões e abraçar mais riscos calculados.`,
+  CS:`Perfil <strong>CS — Analítico Estável</strong>: combina precisão com paciência — um perfil excelente para construir sistemas duradouros. Tende a agir com cuidado e entregar com qualidade consistente.`,
+};
+
+const JUNG_DESC={
+  E:'Você é predominantemente <strong>Extrovertido(a)</strong> — sua energia se renova no contato com pessoas e com o mundo externo. Pensa melhor em voz alta e age com naturalidade em situações de exposição.',
+  I:'Você é predominantemente <strong>Introvertido(a)</strong> — sua energia vem da reflexão interna. Você processa profundamente antes de agir e tem insight excepcional quando tem espaço para pensar.',
+  N:'Você é predominantemente <strong>Intuitivo(a)</strong> — capta padrões, possibilidades e visões de futuro com facilidade. É um(a) pensador(a) estratégico(a) e inovador(a) por natureza.',
+  S:'Você é predominantemente <strong>Sensorial</strong> — fundamentado(a) em fatos concretos e na experiência prática. Toma decisões com os pés no chão e aprecia o que é tangível e verificável.',
+  T:'Você é predominantemente <strong>Racional</strong> — toma decisões pela lógica e análise objetiva. É direto(a), justo(a) e focado(a) em eficiência e resultados mensuráveis.',
+  F:'Você é predominantemente orientado(a) por <strong>Sentimento</strong> — prioriza o impacto nas pessoas e nos valores. Cria ambientes de alta confiança e tem empatia como superpoder.',
+};
+
+const VALORES_INFO={
+  P:{name:'Poder (Político)',color:'#ef4444',desc:'Liderança, influência e reconhecimento'},
+  E:{name:'Utilidade (Econômico)',color:'#f97316',desc:'Resultados, ROI e pragmatismo'},
+  T:{name:'Conhecimento (Teórico)',color:'#8b5cf6',desc:'Aprendizado, verdade e crescimento intelectual'},
+  A:{name:'Harmonia (Estético)',color:'#06b6d4',desc:'Qualidade de vida, beleza e experiências subjetivas'},
+  S:{name:'Altruísmo (Social)',color:'#10b981',desc:'Contribuição, empatia e causa coletiva'},
+  R:{name:'Princípios (Religioso)',color:'#f59e0b',desc:'Tradição, espiritualidade e valores profundos'},
+};
+
+function getBeliefLevel(score){
+  if(score>=80)return{level:'Muito Forte 🌟',color:'#10b981'};
+  if(score>=65)return{level:'Forte ✅',color:'#22c55e'};
+  if(score>=50)return{level:'Moderado 🔄',color:'#f59e0b'};
+  if(score>=35)return{level:'Em Desenvolvimento ⚠️',color:'#f97316'};
+  return{level:'Atenção Necessária 🔴',color:'#ef4444'};
+}
+
+// ═══════════════════════════════════════════════
+// RENDER RESULTS
+// ═══════════════════════════════════════════════
+function showResults(){
+  document.getElementById('s-test').classList.remove('active');
+  document.getElementById('s-results').classList.add('active');
+  window.scrollTo(0,0);
+
+  document.getElementById('r-name').textContent=state.name;
+  document.getElementById('r-date').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+
+  const disc=calcDISC();
+  const jung=calcJung();
+  const vals=calcValores();
+  const lider=calcLider();
+  const ident=calcBeliefs(IDENT_QS,'ident');
+  const capac=calcBeliefs(CAPAC_QS,'capac');
+  const abund=calcBeliefs(ABUND_QS,'abund');
+
+  renderDiscResult(disc);
+  renderJungResult(jung);
+  renderValoresResult(vals);
+  renderLiderResult(lider);
+  renderBeliefsResult(ident,capac,abund);
+  renderRadarChart(disc,ident,capac,abund);
+  renderRecs(disc,jung,vals,ident,capac,abund);
+}
+
+function renderDiscResult(d){
+  const profile=getDiscProfile(d);
+  const colors={D:'#ef4444',I:'#f59e0b',S:'#10b981',C:'#6366f1'};
+  const names={D:'Dominância',I:'Influência',S:'Estabilidade',C:'Conformidade'};
+  const el=document.getElementById('r-disc-profile');
+  el.innerHTML=`<div class="profile-tag">Perfil ${profile}</div>
+  <div class="dprofile">
+    ${['D','I','S','C'].map(f=>`<div class="df df-${f.toLowerCase()}">
+      <div class="df-letter">${f}</div>
+      <div class="df-name">${names[f]}</div>
+      <div class="df-score">${d[f]}</div>
+      <div class="df-bar"><div class="df-fill" style="width:${d[f]}%"></div></div>
+    </div>`).join('')}
+  </div>`;
+  const txt=DISC_ANALYSIS[profile]||DISC_ANALYSIS[profile[0]+profile[1]]||`Perfil <strong>${profile}</strong>: você tem uma combinação única de ${profile[0]} e ${profile[1]} que equilibra força de execução com relacionamento interpessoal.`;
+  document.getElementById('r-disc-text').innerHTML=`<p>${txt}</p>`;
+}
+
+function renderJungResult(j){
+  const el=document.getElementById('r-jung-display');
+  el.innerHTML=`<div style="margin-bottom:.9rem"><span class="jtype">${j.type}</span></div>
+  <div class="jgrid">
+    <div class="jdim"><div class="jdlbl">Atitude</div><div class="jbar"><div class="jfill" style="width:${j.E}%"></div></div><div class="jvals"><span>Extroversão ${j.E}%</span><span>Introversão ${j.I}%</span></div></div>
+    <div class="jdim"><div class="jdlbl">Percepção</div><div class="jbar"><div class="jfill" style="width:${j.N}%"></div></div><div class="jvals"><span>Intuição ${j.N}%</span><span>Sensação ${j.S}%</span></div></div>
+    <div class="jdim"><div class="jdlbl">Julgamento</div><div class="jbar"><div class="jfill" style="width:${j.T}%"></div></div><div class="jvals"><span>Pensamento ${j.T}%</span><span>Sentimento ${j.F}%</span></div></div>
+  </div>`;
+  const ei=j.E>=50?'E':'I',ns=j.N>=50?'N':'S',tf=j.T>=50?'T':'F';
+  document.getElementById('r-jung-text').innerHTML=`<p>${JUNG_DESC[ei]}</p><br><p>${JUNG_DESC[ns]}</p><br><p>${JUNG_DESC[tf]}</p>`;
+}
+
+function renderValoresResult(v){
+  const sorted=Object.entries(v).sort((a,b)=>b[1]-a[1]);
+  const el=document.getElementById('r-valores-display');
+  el.innerHTML=`<div class="vbars">${sorted.map(([k,val])=>`<div class="vrow"><div class="vname">${VALORES_INFO[k].name.split(' ')[0]}</div><div class="vtrack"><div class="vfill" style="width:${val}%;background:${VALORES_INFO[k].color}"></div></div><div class="vscore">${val}</div></div>`).join('')}</div>`;
+  const top3=sorted.slice(0,3).map(([k])=>VALORES_INFO[k].name);
+  const bot=sorted.slice(-1)[0];
+  document.getElementById('r-valores-text').innerHTML=`<p>Seus valores mais significativos são: <strong>${top3.join(', ')}</strong>. Esses valores direcionam suas decisões mais profundas e definem o que realmente te move. Você vai se sentir mais realizado(a) em ambientes e projetos que estejam alinhados com eles.</p><div class="hbox">💡 O valor com menor peso em seu perfil é <strong>${VALORES_INFO[bot[0]].name}</strong> — isso não significa que você o ignora, mas que provavelmente não é o que te motiva no dia a dia.</div>`;
+}
+
+function renderLiderResult(l){
+  const styles=[
+    {k:'E',name:'Executivo',pct:l.E,cls:'ls-e',desc:'Rápido, firme e orientado a resultados. Decide com velocidade e cobra entrega.'},
+    {k:'M',name:'Motivador',pct:l.M,cls:'ls-m',desc:'Inspira, envolve e energiza a equipe pelo diálogo e entusiasmo.'},
+    {k:'O',name:'Metódico',pct:l.O,cls:'ls-o',desc:'Paciente, empático e orientado ao consenso e à confiança da equipe.'},
+    {k:'S',name:'Sistemático',pct:l.S,cls:'ls-s',desc:'Analítico, preciso e estruturado — atribui especificações claras às atividades.'},
+  ].sort((a,b)=>b.pct-a.pct);
+  const el=document.getElementById('r-lider-display');
+  el.innerHTML=`<div class="lgrid">${styles.map(s=>`<div class="lstyle ${s.cls}"><div class="lpct">${s.pct}%</div><div><div class="lname">${s.name}</div><div class="ldesc">${s.desc}</div></div></div>`).join('')}</div>`;
+  const primary=styles[0];
+  document.getElementById('r-lider-text').innerHTML=`<p>Seu estilo <strong>predominante</strong> é o <strong>Líder ${primary.name}</strong> (${primary.pct}%). ${primary.desc}</p><div class="hbox">💡 Líderes eficazes adaptam seu estilo conforme o colaborador e o contexto. Estude o perfil DISC de cada membro da sua equipe para saber quando usar cada abordagem.</div>`;
+}
+
+function renderBeliefsResult(ident,capac,abund){
+  const li=getBeliefLevel(ident),lc=getBeliefLevel(capac),la=getBeliefLevel(abund);
+  const el=document.getElementById('r-beliefs-display');
+  el.innerHTML=`<div class="bgrid">
+    <div class="bcard bid"><div class="btitle">Identidade</div><div class="bcirc"><div class="bsnum">${ident}</div><div class="bspct">/ 100</div></div><div class="blevel" style="color:${li.color}">${li.level}</div></div>
+    <div class="bcard bcap"><div class="btitle">Capacidade</div><div class="bcirc"><div class="bsnum">${capac}</div><div class="bspct">/ 100</div></div><div class="blevel" style="color:${lc.color}">${lc.level}</div></div>
+    <div class="bcard babu"><div class="btitle">Abundância</div><div class="bcirc"><div class="bsnum">${abund}</div><div class="bspct">/ 100</div></div><div class="blevel" style="color:${la.color}">${la.level}</div></div>
+  </div>`;
+  let txt='';
+  if(ident<50)txt+=`<p>⚠️ Suas <strong>crenças de identidade</strong> indicam que você ainda está construindo uma autoimagem sólida como líder e empresário(a). Trabalhar o autoconhecimento e a narrativa interna é prioridade.</p>`;
+  else if(ident<70)txt+=`<p>🔄 Suas <strong>crenças de identidade</strong> estão em desenvolvimento. Você já se vê como líder, mas há espaço para consolidar uma autoimagem mais inabalável — especialmente sob pressão.</p>`;
+  else txt+=`<p>✅ Suas <strong>crenças de identidade</strong> são sólidas. Você tem clareza de quem é e do seu papel como líder. Isso é um ativo enorme no empreendedorismo.</p>`;
+  if(capac<50)txt+=`<p>⚠️ Suas <strong>crenças de capacidade</strong> revelam dúvidas sobre seu poder de execução. A síndrome do impostor pode estar limitando seu crescimento. Invista em mentoria e na comprovação real das suas vitórias.</p>`;
+  else if(capac<70)txt+=`<p>🔄 Suas <strong>crenças de capacidade</strong> são razoáveis, mas há momentos de dúvida. Documente suas conquistas e revise-as regularmente para fortalecer a confiança.</p>`;
+  else txt+=`<p>✅ Suas <strong>crenças de capacidade</strong> são robustas. Você confia na sua habilidade de aprender e superar desafios — uma das qualidades mais importantes de um(a) empresário(a) de sucesso.</p>`;
+  if(abund<50)txt+=`<p>⚠️ Suas <strong>crenças de merecimento</strong> indicam bloqueios significativos em relação à prosperidade. Trabalhar a reprogramação da mentalidade financeira é urgente e transformador.</p>`;
+  else if(abund<70)txt+=`<p>🔄 Você tem uma relação razoável com a abundância, mas há crenças limitantes que merecem atenção — especialmente em relação a cobrar o que seu trabalho vale.</p>`;
+  else txt+=`<p>✅ Você tem uma mentalidade de abundância bem desenvolvida. Acredita no seu merecimento e não tem grandes conflitos internos com a prosperidade. Continue expandindo esse teto.</p>`;
+  document.getElementById('r-beliefs-text').innerHTML=txt;
+}
+
+function renderRadarChart(disc,ident,capac,abund){
+  const ctx=document.getElementById('radar-chart').getContext('2d');
+  // 16 competencies derived from DISC + beliefs
+  const competencies=['Ousadia','Comando','Objetividade','Assertividade','Persuasão','Extroversão','Entusiasmo','Sociabilidade','Empatia','Paciência','Persistência','Planejamento','Organização','Detalhismo','Autoconfiança','Merecimento'];
+  const scores=[
+    Math.min(100,disc.D*0.9+10),    // Ousadia → D
+    disc.D,                          // Comando → D
+    Math.min(100,(disc.D+disc.C)/2),// Objetividade → DC
+    Math.min(100,(disc.D+disc.C)/2),// Assertividade → DC
+    Math.min(100,(disc.I+disc.D)/2),// Persuasão → ID
+    disc.I,                          // Extroversão → I
+    Math.min(100,disc.I*0.9+8),     // Entusiasmo → I
+    Math.min(100,(disc.I+disc.S)/2),// Sociabilidade → IS
+    Math.min(100,(disc.S+disc.I)/2),// Empatia → SI
+    disc.S,                          // Paciência → S
+    Math.min(100,(disc.S+disc.C)/2),// Persistência → SC
+    Math.min(100,disc.C*0.8+disc.S*0.2),// Planejamento → C
+    Math.min(100,(disc.C+disc.S)/2),// Organização → CS
+    Math.min(100,disc.C*0.9+5),     // Detalhismo → C
+    ident,                           // Autoconfiança → Identidade
+    abund,                           // Merecimento → Abundância
+  ];
+  new Chart(ctx,{
+    type:'radar',
+    data:{
+      labels:competencies,
+      datasets:[{label:'Seu Perfil',data:scores,backgroundColor:'rgba(0,180,166,.2)',borderColor:'rgba(0,180,166,.9)',borderWidth:2,pointBackgroundColor:'rgba(0,180,166,1)',pointRadius:4}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:20,font:{size:9}},pointLabels:{font:{size:10}}}},plugins:{legend:{display:false}}}
+  });
+}
+
+function renderRecs(disc,jung,vals,ident,capac,abund){
+  const recs=[];
+  const profile=getDiscProfile(disc);
+  if(disc.D>=70)recs.push({e:'⚡',t:'Pratique a escuta ativa',d:'Seu alto D pode fazer você agir antes de ouvir. Reserve 2 min no início de cada reunião para perguntar: "O que a equipe está vendo que eu ainda não vi?"'});
+  if(disc.I>=70)recs.push({e:'📋',t:'Crie sistemas de acompanhamento',d:'Seu talento para motivar é raro. Complemente-o com um ritual semanal de revisão de métricas para garantir que a energia se converta em resultado.'});
+  if(disc.S<=35)recs.push({e:'🧘',t:'Invista em momentos de pausa',d:'Seu ritmo acelerado é um ativo, mas pode esgotar a equipe. Crie rituais de celebração de conquistas — por menores que pareçam.'});
+  if(disc.C<=30)recs.push({e:'📊',t:'Documente suas decisões',d:'Registrar o raciocínio por trás das suas decisões cria previsibilidade para a equipe e facilita a delegação.'});
+  if(ident<60)recs.push({e:'🪞',t:'Trabalhe sua autonarrativa',d:'Liste 10 vitórias concretas dos últimos 12 meses. Leia diariamente até internalizar que você é a prova do que acredita.'});
+  if(capac<60)recs.push({e:'🏆',t:'Documente seus resultados',d:'Crie um "banco de conquistas" com evidências das suas vitórias. A síndrome do impostor se dissolve com fatos concretos.'});
+  if(abund<60)recs.push({e:'💰',t:'Reprograme sua relação com dinheiro',d:'Escreva a crença que você tem sobre dinheiro. Pergunte: "Isso é fato ou opinião herdada?" Substitua por uma crença que te sirva melhor.'});
+  if(vals.P>=70)recs.push({e:'👑',t:'Use seu poder com propósito',d:'Seu alto valor Poder te move — use essa ambição para criar impacto além de você. Líderes que transformam vidas multiplicam seu legado.'});
+  if(vals.S<=30)recs.push({e:'🤝',t:'Fortaleça conexões genuínas',d:'Negócios são feitos por pessoas. Reserve tempo semanal para conversas sem agenda — apenas para fortalecer relacionamentos.'});
+  if(jung.N>=70)recs.push({e:'🔬',t:'Valide suas intuições com dados',d:'Sua visão intuitiva é poderosa. Habitue-se a apresentar 1-2 dados concretos por grande decisão — isso aumenta a confiança da equipe.'});
+  // ensure at least 6 recs
+  const defaults=[
+    {e:'📚',t:'Invista em aprendizado contínuo',d:'Dedique 30 minutos diários a leitura ou podcast sobre negócios, psicologia ou liderança. O composto anual é transformador.'},
+    {e:'🗓️',t:'Planejamento semanal intencional',d:'Todo domingo, defina as 3 prioridades da semana. Isso alinha suas ações com os objetivos maiores do negócio.'},
+    {e:'🌱',t:'Mentoria e accountability',d:'Tenha pelo menos uma relação de mentoria ativa. Ser desafiado(a) por alguém mais experiente acelera o crescimento exponencialmente.'},
+    {e:'💬',t:'Peça feedback estruturado',d:'Trimestralmente, peça à sua equipe feedback anônimo sobre seu estilo de liderança. Use as respostas como dado — não como julgamento.'},
+  ];
+  for(const d of defaults){if(recs.length>=6)break;recs.push(d);}
+  document.getElementById('r-recs').innerHTML=recs.slice(0,8).map(r=>`<div class="ritem"><div class="remi">${r.e}</div><div><div class="rttl">${r.t}</div><div class="rtxt">${r.d}</div></div></div>`).join('');
+}
+
+function restartTest(){
+  state={name:'',section:1,disc:{},jung:{},valores:{},lider:{},ident:{},capac:{},abund:{}};
+  document.getElementById('s-results').classList.remove('active');
+  document.getElementById('s-welcome').classList.add('active');
+  document.getElementById('pname').value='';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

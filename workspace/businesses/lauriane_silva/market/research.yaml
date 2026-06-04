@@ -1,0 +1,339 @@
+metadata:
+  schema: onboard-aliado.market-research
+  slug: lauriane_silva
+  business_type: "infoproduto_educacao / mentoria_alto_ticket"
+  mode: "FULL"
+  generated_at: "2026-06-04"
+  notes: >-
+    Pesquisa realizada via WebSearch + WebFetch. Nicho: mentoria empresarial de
+    alto ticket com foco em mentalidade/identidade para empresários/líderes no Brasil.
+
+competitors:
+  - name: "FirstClass (Flávio Augusto + Joel Jota + Caio Carneiro)"
+    offer: >-
+      Mentoria coletiva ultra-premium para empresários com lucro operacional
+      mínimo de R$4M/ano. 15 encontros anuais (3 presenciais + 12 online),
+      processo seletivo rigoroso.
+    price_range: "R$250.000/ano"
+    positioning: >-
+      Acesso a nomes famosos (Wise Up, alta performance, vendas diretas).
+      Modelo de grupo exclusivo com curadoria de membros.
+    differentials:
+      - "Marca pessoal dos 3 fundadores (audiência nacional)"
+      - "Curadoria de membros (só quem passa no processo entra)"
+      - "Formato coletivo — rede de relacionamento entre membros"
+    weaknesses:
+      - "Modelo coletivo — nenhuma profundidade individual"
+      - "Foco em resultados de negócio (escala, vendas) — não trabalha identidade"
+      - "Barreira de entrada altíssima (faturamento mínimo R$4M/ano)"
+      - "Sem garantia de resultado"
+    source: "https://investnews.com.br/negocios/mentoria-com-empresarios-famosos-custa-ate-r-250-mil-e-tem-processo-seletivo/"
+    confidence: "ALTA"
+
+  - name: "G4 Educação (G4 Scale / G4 Gestão)"
+    offer: >-
+      Ecossistema de educação empresarial: programas presenciais 4 dias,
+      mentoria contínua (G4 Scale), cursos online. Alvo: faturamento > R$10M.
+    price_range: "R$44.900 (cursos específicos) a não divulgado (G4 Scale)"
+    positioning: >-
+      Brand forte no mercado empresarial brasileiro. Foco em gestão, estratégia
+      e execução com mentores/C-levels como Tallis Gomes.
+    differentials:
+      - "Ecossistema completo (cursos + eventos + mentoria + comunidade)"
+      - "Nomes reconhecidos no mundo empresarial"
+      - "Forte conteúdo de gestão e estratégia de negócio"
+    weaknesses:
+      - "Modelo predominantemente coletivo e escalável"
+      - "Não trabalha mentalidade/identidade — foco em habilidades de gestão"
+      - "Sem personalização profunda"
+      - "Sem garantia de resultado"
+    source: "https://g4educacao.com/"
+    confidence: "ALTA"
+
+  - name: "Joel Jota (FrstDay / Influência Business)"
+    offer: >-
+      Imersão de 1 dia presencial (FrstDay) e mentoria de alta performance
+      individual/grupo para empreendedores e líderes. Foco em alta performance,
+      autoridade e vendas.
+    price_range: "R$25.000 (FrstDay 1 dia) · mentoria individual: não divulgado"
+    positioning: >-
+      Ex-atleta olímpico, podcaster TOP1 negócios Spotify. Persona de alta
+      performance pessoal aplicada a negócios. Linguagem motivacional.
+    differentials:
+      - "Marca pessoal muito forte (audiência multi-milhões)"
+      - "Credibilidade de atleta de elite aplicada a negócios"
+    weaknesses:
+      - "Modelo de imersão pontual — sem acompanhamento contínuo e profundo"
+      - "Não trabalha reprogramação de identidade — foca em performance/técnica"
+      - "Sem garantia de resultado"
+    source: "https://frstday.com.br/"
+    confidence: "ALTA"
+
+  - name: "Sales Clube — Programa Elite"
+    offer: >-
+      Mentoria coletiva anual com 3 encontros presenciais e mentorias mensais.
+      Foco em vendas e escala de negócios.
+    price_range: "R$125.000/ano"
+    positioning: "Comunidade de empresários focados em vendas e escala."
+    differentials:
+      - "Foco específico em vendas (diferente de mentalidade)"
+      - "Comunidade de empresários como ativo"
+    weaknesses:
+      - "Coletivo — sem profundidade individual"
+      - "Foco unidimensional (vendas) — não trabalha identidade ou liderança sistêmica"
+    source: "https://investnews.com.br/negocios/mentoria-com-empresarios-famosos-custa-ate-r-250-mil-e-tem-processo-seletivo/"
+    confidence: "MEDIA"
+
+  - name: "Erick Loureiro — Reprogramação de Mentalidade"
+    offer: >-
+      Treinamentos e programas presenciais de reprogramação de mentalidade.
+      Mais de 48.000 empresários, líderes e atletas impactados em 15 anos.
+    price_range: "[SEM_FONTE]"
+    positioning: >-
+      Um dos maiores nomes em reprogramação de mentalidade e excelência
+      pessoal/profissional no Brasil. Abordagem comportamental e de crenças.
+    differentials:
+      - "15 anos de mercado, volume expressivo"
+      - "Posicionamento próximo ao de Lauriane (mentalidade/crenças)"
+    weaknesses:
+      - "Modelo de treinamento/palestra (massa) — não individual profundo"
+      - "Sem método próprio documentado e exclusivo"
+      - "Sem garantia de resultado"
+    source: "[SEM_FONTE]"
+    confidence: "MEDIA"
+
+  - name: "EAG — Empresa Autogerenciável"
+    offer: >-
+      Treinamentos e conteúdo focados em como o empresário sai do operacional
+      e constrói uma empresa que funciona sem ele.
+    price_range: "[SEM_FONTE]"
+    positioning: >-
+      Solução direta para empresários presos no operacional que querem
+      delegar e escalar. Linguagem muito alinhada com a dor central.
+    differentials:
+      - "Posicionamento cirúrgico: 'empresa sem o dono'"
+      - "Comunidade ativa e conteúdo abundante"
+    weaknesses:
+      - "Foco em sistemas/processos — não trabalha a causa-raiz (identidade/mentalidade)"
+      - "Abordagem técnica, não transformacional"
+    source: "https://eag.com.br/"
+    confidence: "MEDIA"
+
+  - name: "Michael Arruda — OMNI Brasil"
+    instagram: "@michaelarruda"
+    offer: >-
+      Desenvolvimento pessoal via hipnoterapia. Livro best-seller 'Desbloqueie
+      o Poder da Sua Mente', treinamento online 'Segredos da Mente Imbatível',
+      desafio online 21 dias, formação profissional de hipnoterapeuta OMNI,
+      palestras corporativas ao vivo com demonstrações de hipnose.
+    price_range: "[SEM_FONTE] — preços não publicados no site"
+    positioning: >-
+      Maior referência em hipnoterapia no Brasil. Presidente da OMNI Brasil
+      (escola de hipnoterapia presente em 26 países). Usa hipnose como
+      ferramenta de desbloqueio de crenças limitantes e programação mental.
+      Audiência ampla — não restrita a empresários.
+    differentials:
+      - "Maior nome em hipnoterapia no Brasil (OMNI = credencial mundial)"
+      - "Best-seller com mais de 11 milhões de cópias vendidas"
+      - "Demonstrações ao vivo de hipnose — impacto imediato e memorável"
+      - "Forte presença digital e audiência consolidada"
+    weaknesses:
+      - "Público amplo (não especializado em empresários/líderes)"
+      - "Ferramenta clínica (hipnose) — não é método de gestão/liderança"
+      - "Não trabalha resultado de negócio diretamente — foco em desbloqueio emocional"
+      - "Sem oferta de mentoria individual profunda para empresários identificada"
+      - "Sem garantia de resultado empresarial"
+    overlap_with_lauriane: >-
+      Superficial: ambos trabalham 'reprogramação mental'. Na prática são
+      completamente diferentes — hipnoterapia clínica vs Método GMS (transformação
+      de identidade orientada a resultado empresarial). Clientes podem confundir
+      os dois posicionamentos — Lauriane deve deixar claro que o Método GMS
+      não é hipnoterapia, é um método estruturado de transformação de identidade
+      com foco em resultado de negócio mensurável.
+    sources:
+      - "https://michaelarruda.com.br/"
+      - "https://polopalestrantes.com.br/palestrantes/michael-arruda"
+      - "https://omnihypnosis.com.br/formacao-omni/michael-arruda-hipnoterapia/"
+    confidence: "MEDIA"
+    note: >-
+      Instagram @michaelarruda não acessível diretamente por ferramenta.
+      Dados coletados via site oficial e páginas indexadas. Atualizar
+      com observação manual do perfil para capturar posicionamento atual.
+
+  - name: "Nicho: Hipnoterapia + Mentoria Empresarial (mercado emergente)"
+    offer: >-
+      Hipnoterapeutas posicionados especificamente para empresários, atletas
+      e executivos. Sessões individuais de hipnose focadas em performance,
+      desbloqueio de crenças e resultado profissional.
+    price_range: "Potencial de R$60k–130k/mês bruto por consultório (referência de franquia)"
+    positioning: >-
+      Nicho emergente no Brasil — hipnoterapia saindo do clínico/saúde mental
+      e entrando no espaço de performance empresarial e liderança.
+    differentials:
+      - "Técnica com base neurocientífica crescendo em credibilidade"
+      - "Acessível como serviço avulso (por sessão) — baixa barreira de entrada"
+    weaknesses:
+      - "Ainda associado à clínica (ansiedade, fobias) — não ao resultado de negócio"
+      - "Sem método documentado de transformação de liderança/gestão"
+      - "Sem garantia de resultado empresarial"
+    overlap_with_lauriane: >-
+      Baixo. Lauriane não usa hipnoterapia. O risco é de confusão de categoria
+      na cabeça do cliente — 'reprogramação mental' pode soar parecido com
+      hipnose. Oportunidade: diferenciar claramente o Método GMS como
+      transformação de identidade orientada a resultado, não técnica clínica.
+    source: "https://mapadasfranquias.com.br/noticia/hipnoterapia-e-nova-opcao-para-empresarios-que-querem-investir-no-franchising/"
+    confidence: "MEDIA"
+
+price_landscape:
+  range_observed: "R$2.000 – R$250.000/ano"
+  tiers:
+    - tier: "Digital / Posicionamento"
+      range: "R$2.000 – R$5.000"
+      profile: "Mentorias digitais, individuais curtos, posicionamento em redes"
+    - tier: "Mid-range individual"
+      range: "R$15.000 – R$30.000"
+      profile: "Mentorias individuais focadas (vendas, gestão, liderança)"
+    - tier: "High ticket"
+      range: "R$44.000 – R$125.000/ano"
+      profile: "Programas estruturados, acesso a mentores nacionais, coletivos premium"
+    - tier: "Ultra-premium"
+      range: "R$200.000 – R$250.000/ano"
+      profile: "FirstClass e similares, processo seletivo, empresários R$4M+"
+  lauriane_position: >-
+    R$44.000 com garantia de resultado ou dinheiro de volta. Posicionada no início
+    do tier high ticket individual — com diferencial único de garantia (nenhum
+    concorrente identificado oferece garantia nessa faixa individual).
+  notes: >-
+    Mentorias com implementação prática exigidas acima de R$20k. Abaixo de R$20k,
+    expectativa de orientação/direção. Acima de R$100k, modelo coletivo/clube dominante.
+  sources:
+    - "https://hsmmanagement.com.br/quanto-vale-uma-mentoria/"
+    - "https://investnews.com.br/negocios/mentoria-com-empresarios-famosos-custa-ate-r-250-mil-e-tem-processo-seletivo/"
+    - "https://gabrielgadelha.com.br/o-guia-definitivo-da-mentoria-high-ticket/"
+
+voice_of_customer:
+  signals:
+    - quote: "Virei um empresidiário — preso no operacional, refém da própria criação"
+      type: "pain"
+      source_type: "web"
+      source: "https://exame.com/negocios/cinco-licoes-de-joel-jota-para-quem-empreende-e-virou-refem-do-proprio-negocio/"
+      note: "A palavra 'empresidiário' está no manifesto da Lauriane — VALIDADA pelo mercado"
+
+    - quote: "Vende, atende, entrega, faz o marketing e ainda cuida da operação — tudo sozinho"
+      type: "pain"
+      source_type: "web"
+      source: "https://exame.com/negocios/cinco-licoes-de-joel-jota-para-quem-empreende-e-virou-refem-do-proprio-negocio/"
+
+    - quote: "Não consigo delegar — se eu fizer, sei que vai sair certo. Se delegar, vai errar"
+      type: "pain"
+      source_type: "web"
+      source: "https://neotriad.com/blog/gestao-de-equipes-por-que-delegar-e-tao-dificil/"
+
+    - quote: "38% dos gestores admitem ter dificuldade em delegar, mesmo sabendo que prejudica o crescimento"
+      type: "pain"
+      source_type: "web"
+      source: "https://eag.com.br/blog/lideranca/delegar-tarefas-controle-empresa/"
+      note: "Dado Harvard Business Review — prova social de que a dor é universal"
+
+    - quote: "A empresa cresceu mas eu não — virei o maior obstáculo do meu negócio"
+      type: "pain"
+      source_type: "web"
+      source: "https://exame.com/negocios/cinco-licoes-de-joel-jota-para-quem-empreende-e-virou-refem-do-proprio-negocio/"
+
+    - quote: "Promessa de resultado não cumprida e falta de suporte — paguei e fui abandonado"
+      type: "objection"
+      source_type: "review"
+      source: "https://www.reclameaqui.com.br/nogueira-digital/mentoria-nogueira-digital-promessa-de-resultados-nao-cumprida-e-falta-de-s_RY_nSIp-uu21aHK2/"
+
+    - quote: "Mentoria enganosa com promessa de resultado falso e foco em tirar dinheiro dos clientes"
+      type: "objection"
+      source_type: "review"
+      source: "https://www.reclameaqui.com.br/carolina-sanchez-tecnologia-e-vendas/mentoria-enganosa-com-promessa-de-resultado-falso-e-foco-em-tirar-dinheiro-dos-clientes_E5yb0lw0QYgtOn-N/"
+
+    - quote: "Quero parar de trabalhar 12h/dia. Quero uma empresa que funcione sem minha presença constante"
+      type: "desire"
+      source_type: "web"
+      source: "https://contabilizedigital.com.br/delegacao-de-tarefas-empresario-crescimento/"
+
+    - quote: "Quem investe em mentoria high ticket não compra o tempo do mentor — compra a certeza de um futuro acelerado"
+      type: "desire"
+      source_type: "web"
+      source: "https://gabrielgadelha.com.br/o-guia-definitivo-da-mentoria-high-ticket/"
+
+    - quote: "Escalado requer transição de operador para gestor — e isso exige aceitar verdades difíceis sobre si mesmo"
+      type: "desire"
+      source_type: "web"
+      source: "https://exame.com/negocios/cinco-licoes-de-joel-jota-para-quem-empreende-e-virou-refem-do-proprio-negocio/"
+
+  pains_in_real_words:
+    - "Preso no operacional — a empresa não anda sem mim"
+    - "Equipe que precisa ser acompanhada o tempo todo"
+    - "Não consigo delegar sem perder a qualidade"
+    - "Trabalhando muito mas crescendo pouco"
+    - "O negócio cresceu, mas eu não me desenvolvi como líder"
+    - "Mercado cheio de promessas — já fui enganado antes"
+
+  desires_in_real_words:
+    - "Quero uma empresa que funcione sem minha presença constante"
+    - "Quero crescimento sem trabalhar mais horas"
+    - "Quero uma equipe que eu confie sem precisar microgerenciar"
+    - "Quero resultado real, não só conhecimento"
+    - "Quero liberdade — de tempo, financeira e emocional"
+    - "Quero alguém que me diga a verdade, não o que eu quero ouvir"
+
+common_objections:
+  - "Caro demais — não sei se vai valer"
+  - "Já tentei mentoria antes e não funcionou / fui enganado"
+  - "Ainda vou pensar (objeção #1 no high ticket)"
+  - "Não tenho tempo pra mais um compromisso"
+  - "Como sei que funciona para o MEU negócio especificamente?"
+  - "Não preciso de mais conhecimento — preciso de tempo pra aplicar"
+
+positioning_gaps:
+  - opportunity: >-
+      Garantia de resultado ou dinheiro de volta no alto ticket individual
+    rationale: >-
+      Nenhum concorrente identificado oferece garantia real na faixa de
+      R$40k-125k individual. FirstClass (R$250k) não oferece. G4, Joel Jota,
+      EAG — nenhum. A garantia de R$44k da Lauriane é diferenciação de CATEGORIA:
+      elimina a objeção 'já fui enganado antes' e sinaliza confiança absoluta.
+    source: "https://investnews.com.br/negocios/mentoria-com-empresarios-famosos-custa-ate-r-250-mil-e-tem-processo-seletivo/"
+
+  - opportunity: >-
+      Trabalho profundo de identidade e reprogramação como causa-raiz (não técnica)
+    rationale: >-
+      EAG foca em sistemas/processos. G4 e FirstClass focam em estratégia de
+      negócio e gestão. Joel Jota foca em alta performance técnica. NENHUM
+      posicionado como 'mudança de identidade que gera a mudança de resultado'.
+      A tese de Lauriane ('a mente que te trouxe até aqui não é a que vai te
+      levar ao próximo nível') não tem concorrente direto nítido no mercado.
+    source: "[SEM_FONTE] — inferência por análise comparativa de posicionamentos"
+
+  - opportunity: >-
+      Ultra-premium individual com presença física no Sul do Brasil
+    rationale: >-
+      Todos os grandes players (FirstClass, G4, Joel Jota) são São Paulo-centricos.
+      O mercado do Sul do Brasil (RS, SC, PR) tem empresários sólidos, mas poucos
+      mentores ultra-premium com presença física local e disponibilidade de
+      entrega presencial + online. Lauriane entrega presencial E online.
+    source: "[SEM_FONTE] — inferência geográfica"
+
+  - opportunity: >-
+      Método autoral documentado vs. frameworks genéricos ou personalidade do mentor
+    rationale: >-
+      A maioria dos concorrentes vende o MENTOR (Flávio Augusto, Joel Jota).
+      O método GMS é autoral, exclusivo e escalável como IP — não depende só
+      da persona. Isso sustenta expansão futura (in company, treinamento, etc.)
+      sem diluir o posicionamento.
+    source: "[SEM_FONTE] — análise de posicionamento comparativo"
+
+synthesis: >-
+  O mercado de mentoria empresarial de alto ticket no Brasil cresce, mas é
+  dominado por modelos coletivos ou SP-centricos. Há uma brecha real para
+  um produto individual ultra-premium que: (1) trabalhe identidade/mentalidade
+  como causa-raiz — não só técnicas de gestão; (2) ofereça garantia de resultado
+  (ninguém faz isso); (3) tenha método autoral documentado (escalável além da
+  persona); e (4) opere com presença física no Sul do Brasil. Lauriane já
+  ocupa essa posição — o R$44k com garantia é a prova mais tangível disso.
+  O mercado cansou de promessa vazia (Reclame Aqui valida isso) — e a garantia
+  é a resposta direta a essa objeção.
