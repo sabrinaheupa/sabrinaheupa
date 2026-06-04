@@ -167,6 +167,10 @@
   .fones-hint{font-size:11.5px;color:var(--cream-muted);margin:8px 0 0;line-height:1.5;
     padding:8px 12px;background:rgba(221,215,202,.07);border-radius:7px;border:1px solid var(--line)}
 
+  /* Intake */
+  .intake-field{margin-bottom:14px}
+  .intake-label{font-size:11.5px;color:var(--cream);opacity:.75;margin-bottom:6px;line-height:1.4}
+
   /* Hawkins */
   #hawkinsBox{display:none}
   #hawkinsBox.show{display:block}
@@ -337,10 +341,46 @@
     <div class="field" id="clienteBox">
       <label>Personalização do cliente <span style="opacity:.5;font-size:9px;letter-spacing:.1em">(OPCIONAL)</span></label>
       <input id="nomeCliente" type="text" placeholder="Nome do cliente (ex.: Maria Silva)" style="margin-bottom:10px" />
-      <textarea id="doresCliente" id="doresCliente" style="min-height:80px;display:none"
-        placeholder="Dores e contexto específico do cliente&#10;ex.: ansiedade antes de apresentações, medo de julgamento, sensação de não merecer sucesso, bloqueio criativo há 3 meses"></textarea>
-      <p class="roteiro-hint" id="doresHint" style="display:none">A IA vai personalizar o roteiro com base nessas informações — quanto mais específico, mais preciso o tratamento.</p>
+      <!-- Formulário de intake (tratamento) -->
+      <div id="intakeForm" style="display:none">
+        <p class="roteiro-hint" style="display:block;margin-bottom:12px">Preencha com as respostas do cliente — a IA usa cada campo para personalizar o tratamento clínico.</p>
+        <div class="intake-field">
+          <div class="intake-label">O que está vivendo/sentindo hoje?</div>
+          <textarea id="intakeSituacao" placeholder="ex.: Sinto ansiedade constante antes de apresentações, tenho insônia, sinto que não mereço o sucesso que tenho..." style="min-height:64px"></textarea>
+        </div>
+        <div class="intake-field">
+          <div class="intake-label">Qual é o maior medo ou bloqueio?</div>
+          <textarea id="intakeMedo" placeholder="ex.: Medo de ser julgado e rejeitado, medo de errar na frente de outros, sensação de ser uma fraude..." style="min-height:64px"></textarea>
+        </div>
+        <div class="intake-field">
+          <div class="intake-label">Como isso afeta sua vida?</div>
+          <textarea id="intakeImpacto" placeholder="ex.: Evito oportunidades de crescimento, fico travado na hora H, isso está afetando meus resultados e meu casamento..." style="min-height:64px"></textarea>
+        </div>
+        <div class="intake-field">
+          <div class="intake-label">O que quer sentir, ter ou ser diferente?</div>
+          <textarea id="intakeDesejo" placeholder="ex.: Quero me sentir confiante, tomar decisões sem medo, apresentar com presença e autoridade..." style="min-height:64px"></textarea>
+        </div>
+        <div class="intake-field">
+          <div class="intake-label">Como seria sua vida com esse padrão resolvido?</div>
+          <textarea id="intakeResultado" placeholder="ex.: Assumiria cargos de liderança, fecharia negócios maiores, teria paz interior, me relacionaria melhor..." style="min-height:64px"></textarea>
+        </div>
+        <div class="intake-field">
+          <div class="intake-label">Observações adicionais <span style="opacity:.5;font-size:9px">(opcional)</span></div>
+          <textarea id="intakeObs" placeholder="Qualquer contexto adicional relevante para o tratamento..." style="min-height:48px"></textarea>
+        </div>
+      </div>
+      <p class="roteiro-hint" id="doresHint" style="display:none"></p>
       <p class="roteiro-hint" id="nomeHint" style="display:none">Escreva <b>[NOME]</b> no roteiro onde quiser que o nome apareça — ele será substituído automaticamente.</p>
+    </div>
+
+    <!-- Tom de voz (apenas no modo Roteiro Próprio) -->
+    <div class="field" id="tomRoteiroBox" style="display:none">
+      <label>Tom de voz do roteiro</label>
+      <div class="chips" id="tomChips">
+        <div class="chip" data-t="hipnose"><b>Hipnótico</b><small>calmo, profundo</small></div>
+        <div class="chip active" data-t="normal"><b>Natural</b><small>voz neutra, clara</small></div>
+        <div class="chip" data-t="motivacional"><b>Motivacional</b><small>energético</small></div>
+      </div>
     </div>
 
     <!-- Escala Hawkins (apenas no modo Tratamento) -->
@@ -571,17 +611,25 @@
   buildHawkinsList("hawkinsAlvoList",  (id) => { hawkinsAlvo  = id; atualizarArco(); });
 
   // ── Personalização do cliente ─────────────────────────────────────────────
+  // ── Tom do roteiro próprio ────────────────────────────────────────────────
+  let tomRoteiro = "normal";
+  document.getElementById("tomChips").addEventListener("click", e => {
+    const el = e.target.closest(".chip"); if(!el) return;
+    [...document.getElementById("tomChips").children].forEach(c => c.classList.remove("active"));
+    el.classList.add("active"); tomRoteiro = el.dataset.t;
+  });
+
   function atualizarClienteUI(m) {
-    const doresEl   = document.getElementById("doresCliente");
-    const doresHint = document.getElementById("doresHint");
+    const intakeEl  = document.getElementById("intakeForm");
     const nomeHint  = document.getElementById("nomeHint");
     const hawkinsEl = document.getElementById("hawkinsBox");
+    const tomBox    = document.getElementById("tomRoteiroBox");
     const isTratamento = m === "tratamento";
     const isProprio    = m === "proprio";
 
-    doresEl.style.display    = isTratamento ? "" : "none";
-    doresHint.style.display  = isTratamento ? "" : "none";
+    intakeEl.style.display   = isTratamento ? "" : "none";
     nomeHint.style.display   = isProprio    ? "" : "none";
+    tomBox.style.display     = isProprio    ? "" : "none";
     hawkinsEl.classList.toggle("show", isTratamento);
 
     document.getElementById("nomeCliente").placeholder = isTratamento
@@ -636,9 +684,19 @@
 
     let id;
     try {
-      const nomeCliente  = document.getElementById("nomeCliente").value.trim();
-      const doresCliente = document.getElementById("doresCliente").value.trim();
-      const body = { tema, duracao, voz, modo, roteiroCustom: roteiroProprio, fundo, binaural, volumeFundo, nomeCliente, doresCliente, hawkinsAtual, hawkinsAlvo };
+      const nomeCliente = document.getElementById("nomeCliente").value.trim();
+      const body = {
+        tema, duracao, voz, modo, roteiroCustom: roteiroProprio,
+        fundo, binaural, volumeFundo,
+        nomeCliente, hawkinsAtual, hawkinsAlvo, tomRoteiro,
+        // Intake estruturado (tratamento)
+        intakeSituacao: (document.getElementById("intakeSituacao")||{}).value?.trim() || "",
+        intakeMedo:     (document.getElementById("intakeMedo")||{}).value?.trim()     || "",
+        intakeImpacto:  (document.getElementById("intakeImpacto")||{}).value?.trim()  || "",
+        intakeDesejo:   (document.getElementById("intakeDesejo")||{}).value?.trim()   || "",
+        intakeResultado:(document.getElementById("intakeResultado")||{}).value?.trim()|| "",
+        intakeObs:      (document.getElementById("intakeObs")||{}).value?.trim()      || "",
+      };
       const r = await fetch("api/generate", {
         method:"POST", headers:{"Content-Type":"application/json"},
         body: JSON.stringify(body)

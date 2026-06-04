@@ -290,19 +290,19 @@ async function gerarMiolo(tema, duracao, modo, nomeCliente = "", doresCliente = 
  * @param {string} [roteiroCustom] — texto livre quando modo="proprio"
  * @returns {Promise<Array<{tom,texto,fixed}>>}
  */
-async function gerarRoteiro(tema, duracao, modo = "motivacional", roteiroCustom = "", nomeCliente = "", doresCliente = "", hawkinsAtual = "", hawkinsAlvo = "") {
+async function gerarRoteiro(tema, duracao, modo = "motivacional", roteiroCustom = "", nomeCliente = "", doresCliente = "", hawkinsAtual = "", hawkinsAlvo = "", tomRoteiro = "normal") {
   const fixo = (b) => ({ ...b, fixed: true });
   const dyn  = (s) => ({ ...s, fixed: false });
 
   if (modo === "proprio") {
     if (!roteiroCustom || !roteiroCustom.trim()) throw new Error("Roteiro próprio vazio.");
-    // Substitui placeholder [NOME] pelo nome real do cliente, se informado
     const texto = nomeCliente
       ? roteiroCustom.trim().replace(/\[NOME\]/gi, nomeCliente)
       : roteiroCustom.trim();
+    const tomValido = ["hipnose", "normal", "motivacional"].includes(tomRoteiro) ? tomRoteiro : "normal";
     return [
       fixo(INTRO),
-      dyn({ tom: "normal", texto }),
+      dyn({ tom: tomValido, texto }),
       fixo(EMERSAO),
     ];
   }

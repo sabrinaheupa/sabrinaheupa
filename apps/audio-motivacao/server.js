@@ -50,7 +50,7 @@ function publicJob(job) {
 async function processar(job) {
   try {
     job.status = "roteiro"; saveJob(job);
-    const segments = await gerarRoteiro(job.tema, job.duracao, job.modo, job.roteiroCustom, job.nomeCliente, job.doresCliente, job.hawkinsAtual, job.hawkinsAlvo);
+    const segments = await gerarRoteiro(job.tema, job.duracao, job.modo, job.roteiroCustom, job.nomeCliente, job.doresCliente, job.hawkinsAtual, job.hawkinsAlvo, job.tomRoteiro);
 
     const roteiroTxt = segments.map((s) => s.texto).join("\n\n");
     fs.writeFileSync(path.join(JOBS_DIR, `${job.id}.txt`), roteiroTxt);
@@ -73,8 +73,33 @@ async function processar(job) {
   }
 }
 
+// Compila intake estruturado OU texto livre em uma string para o LLM
+function compilarDores(textoLivre, intake = {}) {
+  const campos = [
+    ["Situação atual", intake.intakeSituacao],
+    ["Maior medo/bloqueio", intake.intakeMedo],
+    ["Impacto na vida", intake.intakeImpacto],
+    ["Desejo de mudança", intake.intakeDesejo],
+    ["Resultado ideal", intake.intakeResultado],
+    ["Observações adicionais", intake.intakeObs],
+  ].filter(([, v]) => typeof v === "string" && v.trim());
+
+  if (campos.length > 0) {
+    return campos.map(([k, v]) => `${k}: ${v.trim()}`).join("\n").slice(0, 3000);
+  }
+  return typeof textoLivre === "string" ? textoLivre.trim().slice(0, 2000) : "";
+}
+
 app.post("/api/generate", (req, res) => {
-  const { tema, duracao, voz, modo, roteiroCustom, fundo, binaural, volumeFundo, nomeCliente, doresCliente, hawkinsAtual, hawkinsAlvo } = req.body || {};
+  const {
+    tema, duracao, voz, modo, roteiroCustom,
+    fundo, binaural, volumeFundo,
+    nomeCliente, doresCliente,
+    hawkinsAtual, hawkinsAlvo,
+    tomRoteiro,
+    // Campos do formulário de intake estruturado
+    intakeSituacao, intakeMedo, intakeImpacto, intakeDesejo, intakeResultado, intakeObs,
+  } = req.body || {};
 
   const modoValido = ["motivacional", "tratamento", "proprio"].includes(modo) ? modo : "motivacional";
   const hAtualValido = HAWKINS_MAP[hawkinsAtual] ? hawkinsAtual : "";
@@ -116,10 +141,11 @@ app.post("/api/generate", (req, res) => {
     fundo: ["silencio","natureza","relaxante","binaural"].includes(fundo) ? fundo : (temHawkinsCompleto ? "binaural" : "silencio"),
     binaural: ["delta","theta","alpha"].includes(binaural) ? binaural : (binauralAutoHawkins || "theta"),
     volumeFundo: ["suave","medio","intenso"].includes(volumeFundo) ? volumeFundo : "medio",
-    nomeCliente:  typeof nomeCliente  === "string" ? nomeCliente.trim().slice(0, 80)   : "",
-    doresCliente: typeof doresCliente === "string" ? doresCliente.trim().slice(0, 2000) : "",
+    nomeCliente:  typeof nomeCliente === "string" ? nomeCliente.trim().slice(0, 80) : "",
+    doresCliente: compilarDores(doresCliente, { intakeSituacao, intakeMedo, intakeImpacto, intakeDesejo, intakeResultado, intakeObs }),
     hawkinsAtual: hAtualValido,
     hawkinsAlvo:  hAlvoValido,
+    tomRoteiro:   ["hipnose","normal","motivacional"].includes(tomRoteiro) ? tomRoteiro : "normal",
     status: "fila",
     progresso: null,
     erro: null,
