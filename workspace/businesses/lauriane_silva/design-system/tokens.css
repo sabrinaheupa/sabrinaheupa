@@ -1,17 +1,18 @@
 /* ============================================================
    Dra. Lauriane Silva — Design Tokens
    Gerado por onboard-aliado. Arquétipo: Mago + Governante.
-   Paleta: Red Wine + Champagne. Tipografia: Cormorant + Inter.
+   Paleta: Red Jam + Red Wine + Cream. Tipografia: Cormorant + Inter.
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap');
 
 :root {
   /* ── Cores ── */
-  --color-primary:     #5C1A27;   /* Red Wine — cor principal */
-  --color-accent:      #C8BFA8;   /* Champagne — acento premium */
+  --color-red-jam:     #3F1817;   /* Red Jam — tom mais escuro, fundos profundos */
+  --color-primary:     #562120;   /* Red Wine — cor principal */
+  --color-accent:      #DDD7CA;   /* Cream — acento premium */
   --color-background:  #FAFAF8;   /* Off-White quente — fundo principal */
-  --color-surface:     #F2EDE4;   /* Cream — cards e superfícies */
+  --color-surface:     #F2EDE4;   /* Cream Suave — cards e superfícies */
   --color-text:        #1A1818;   /* Quase-preto quente — texto principal */
   --color-text-muted:  #857D75;   /* Cinza quente — texto secundário */
   --color-line:        #E8E2D9;   /* Borda sutil */

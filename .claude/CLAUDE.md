@@ -205,6 +205,39 @@ aiox graph --stats                       # Entity stats e cache metrics
 - Validate user responses
 - Provide helpful defaults
 
+## Arquitetura Frontend — Regras Inegociáveis
+
+### Princípio: Frontend captura intenções, backend controla tudo
+
+O frontend **NUNCA** controla lógica de negócio, autenticação, autorização ou fluxo de dados. Ele apenas:
+1. **Captura intenções** do usuário (cliques, formulários, inputs)
+2. **Envia** essas intenções ao backend via API
+3. **Reage** ao resultado que o backend retorna (sucesso, erro, dados)
+
+### NUNCA faça no frontend:
+- Lógica de autenticação ou validação de acesso
+- Chamadas diretas a serviços externos (OpenAI, Stripe, banco de dados, etc.)
+- Decisões de negócio ("se o usuário pode ver X")
+- Processamento de dados sensíveis
+
+### JAMAIS coloque no frontend:
+- Chaves de API (`OPENAI_API_KEY`, `STRIPE_SECRET_KEY`, etc.)
+- Senhas, tokens de serviço ou secrets de qualquer natureza
+- Credenciais de banco de dados
+- Qualquer variável de ambiente sensível — mesmo prefixada com `NEXT_PUBLIC_` ou `VITE_`
+
+> **Regra de ouro:** Se vazar para o browser, vaza para o mundo. Chaves ficam exclusivamente no backend/servidor.
+
+### Padrão correto:
+```
+Usuário clica → Frontend envia intent ao backend → Backend valida, processa e responde → Frontend exibe resultado
+```
+
+### Padrão proibido:
+```
+Frontend chama API externa diretamente com chave hardcoded ou exposta ← BLOQUEADO
+```
+
 ## Best Practices
 
 ### When implementing features:
@@ -370,6 +403,8 @@ Este repositório tem o contexto do negócio **Dra. Lauriane Silva** salvo em
    - `workspace/businesses/lauriane_silva/products/` — ofertas e produtos
    - `workspace/businesses/lauriane_silva/market/research.yaml` — concorrentes, preços, voz do cliente
    - `workspace/businesses/lauriane_silva/design-system/` — cores, tipografia, identidade visual
+     > **Cores exatas da marca (HEX):** Red Jam `#3F1817` · Red Wine `#562120` · Cream `#DDD7CA`
+     > Fontes: **Cormorant Garamond** (display/títulos) + **Inter** (corpo/UI)
 2. **NUNCA pergunte ao usuário** algo que já esteja nesses arquivos. Use o que está salvo.
 3. Se um campo estiver como `FILL_LATER`, aí sim pergunte — e **salve a resposta** no
    arquivo correspondente, para não perguntar de novo no futuro.

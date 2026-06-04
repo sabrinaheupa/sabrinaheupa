@@ -35,13 +35,17 @@ brand_architecture:
       Silva — pode aparecer "GMS por Dra. Lauriane Silva".
 
 color_tokens:
+  red_jam:
+    value: "#3F1817"
+    name: "Red Jam"
+    role: "Tom mais escuro — fundos profundos, headers, dark mode premium"
   primary:
-    value: "#5C1A27"
+    value: "#562120"
     name: "Red Wine"
     role: "Cor principal — fundos premium, textos de destaque, CTAs"
   accent:
-    value: "#C8BFA8"
-    name: "Champagne"
+    value: "#DDD7CA"
+    name: "Cream"
     role: "Acento — destaques, selos, elementos de prestígio"
   background:
     value: "#FAFAF8"
@@ -49,7 +53,7 @@ color_tokens:
     role: "Fundo primário — temperatura quente, nunca branco puro"
   surface:
     value: "#F2EDE4"
-    name: "Cream"
+    name: "Cream Suave"
     role: "Cards, seções alternadas, superfícies suaves"
   text:
     value: "#1A1818"

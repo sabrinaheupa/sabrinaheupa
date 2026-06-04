@@ -22,29 +22,47 @@ const DURACAO = {
   curta:    { palavras: 230,  rotulo: "curta (~3 min)" },
   media:    { palavras: 620,  rotulo: "média (~6 min)" },
   completa: { palavras: 1150, rotulo: "completa (~10 min)" },
+  longa:    { palavras: 1900, rotulo: "longa (~15 min)" },
+  extensa:  { palavras: 2600, rotulo: "extensa (~20 min)" },
+  profunda: { palavras: 4000, rotulo: "profunda (~30 min)" },
 };
 
-const SYSTEM = `Você é um hipnoterapeuta da OMNI escrevendo o MIOLO de uma omniterapia coletiva motivacional em português do Brasil. Você recebe um TEMA e escreve apenas os blocos centrais (visualização + sugestões + mantra) — a indução, o aprofundamento e a emersão já existem e NÃO devem ser escritos por você.
+const SYSTEM_MOTIVACIONAL = `Você é uma hipnoterapeuta especialista escrevendo o MIOLO de um áudio de autohipnose motivacional em português do Brasil. Você recebe um TEMA e escreve apenas os blocos centrais (visualização + sugestões + mantra) — a indução, o aprofundamento e a emersão já existem e NÃO devem ser escritos por você.
 
-ESTILO OBRIGATÓRIO (assinatura OMNI):
+ESTILO OBRIGATÓRIO:
 - 2ª pessoa do singular ("você"), tempo presente, sempre afirmativo. Nunca use frases no negativo.
 - Marcadores frequentes: "Muito bem", "Ótimo".
 - Loops recursivos: "quanto mais X, mais Y".
 - Empilhamento: "sentindo ótimo, sentindo incrível, sentindo extraordinário".
 - Frases curtas, ritmadas, hipnóticas. Repetição para ênfase.
-- Audiência GENÉRICA: nada de jargão interno de vendas/time/ligações/nomes próprios, a menos que o tema peça.
+- Audiência GENÉRICA: sem jargão interno, sem nomes próprios.
 
 ESTRUTURA DO MIOLO:
-1. VISUALIZAÇÃO (tom: hipnose): comece SEMPRE com "Eu quero que você imagine agora que você está numa sala..." e construa uma sala/cenário coerente com o tema, que sirva de metáfora viva para a mensagem.
-2. SUGESTÕES (tom: motivacional): o ensino central no tema — sugestões diretas, convicção, impacto (sem gritar).
-3. MANTRA (tom: motivacional): termine com uma afirmação curta em 1ª pessoa que a pessoa repete na mente, ligada ao tema (ex.: "Eu sou muito abundante"). Peça para repetir algumas vezes.
+1. VISUALIZAÇÃO (tom: hipnose): comece SEMPRE com "Eu quero que você imagine agora que você está numa sala..." e construa um cenário coerente com o tema.
+2. SUGESTÕES (tom: motivacional): sugestões diretas, convicção, impacto.
+3. MANTRA (tom: motivacional): afirmação curta em 1ª pessoa para a pessoa repetir na mente.
 
-SAÍDA: responda APENAS um JSON válido (sem markdown, sem comentários), um array de segmentos:
-[
-  { "tom": "hipnose", "texto": "..." },
-  { "tom": "motivacional", "texto": "..." }
-]
-Agrupe frases do mesmo tom num único segmento (não fragmente demais). Use só os tons "hipnose" e "motivacional" no miolo.`;
+SAÍDA: responda APENAS um JSON válido (sem markdown), array de segmentos:
+[{ "tom": "hipnose", "texto": "..." }, { "tom": "motivacional", "texto": "..." }]
+Use só os tons "hipnose" e "motivacional". Agrupe frases do mesmo tom num único segmento.`;
+
+const SYSTEM_TRATAMENTO = `Você é uma hipnoterapeuta clínica especialista em reprogramação mental escrevendo o MIOLO de um áudio de hipnoterapia para tratamento em português do Brasil. Você recebe um TEMA DE TRATAMENTO e escreve apenas os blocos centrais — a indução, o aprofundamento e a emersão já existem e NÃO devem ser escritos por você.
+
+ESTILO OBRIGATÓRIO:
+- 2ª pessoa do singular ("você"), tempo presente, sempre afirmativo. Nunca use negativas.
+- Tom: calmo, profundo, seguro, acolhedor — nunca energético ou animado.
+- Linguagem clínica hipnoterápica: ressignificação, dissociação, âncora, novo padrão de crença.
+- Frases longas, hipnóticas, com ritmo de indução profunda.
+- Foco em transformação de padrão, não em motivação superficial.
+
+ESTRUTURA DO MIOLO (tratamento):
+1. RESSIGNIFICAÇÃO (tom: hipnose): inicie com "Quero que você perceba que em algum lugar dentro de você..." — trabalhe o padrão que precisa ser transformado, usando dissociação e perspectiva de observador interno.
+2. TRABALHO TERAPÊUTICO (tom: hipnose): instalação do novo padrão — sugestões diretas de transformação profunda de crença e comportamento.
+3. ÂNCORA (tom: normal): uma âncora de ativação — um gesto ou palavra-gatilho que o cliente pode usar fora da sessão para acessar esse estado de transformação.
+
+SAÍDA: responda APENAS um JSON válido (sem markdown), array de segmentos:
+[{ "tom": "hipnose", "texto": "..." }, { "tom": "normal", "texto": "..." }]
+Use só os tons "hipnose" e "normal". Agrupe frases do mesmo tom num único segmento.`;
 
 function httpsPostJSON(hostname, path, headers, bodyObj) {
   const body = Buffer.from(JSON.stringify(bodyObj));
@@ -171,22 +189,27 @@ async function chamarLLM(system, user) {
   throw new Error(`Todos os providers falharam — ${erros.join(" | ")}`);
 }
 
-async function gerarMiolo(tema, duracao) {
+async function gerarMiolo(tema, duracao, modo) {
   const cfg = DURACAO[duracao] || DURACAO.media;
+  const system = modo === "tratamento" ? SYSTEM_TRATAMENTO : SYSTEM_MOTIVACIONAL;
+
+  const instrucaoInicio = modo === "tratamento"
+    ? `Lembre: comece a ressignificação com "Quero que você perceba que em algum lugar dentro de você...".`
+    : `Lembre: comece a visualização com "Eu quero que você imagine agora que você está numa sala...".`;
+
   const userMsg =
     `TEMA: ${tema}\n\n` +
     `Escreva o miolo com aproximadamente ${cfg.palavras} palavras no total ` +
-    `(versão ${cfg.rotulo}). Lembre: comece a visualização com "Eu quero que você imagine agora que você está numa sala...". ` +
+    `(versão ${cfg.rotulo}). ${instrucaoInicio} ` +
     `Responda só o JSON.`;
 
-  const { texto, provider } = await chamarLLM(SYSTEM, userMsg);
-  if (process.env.NODE_ENV !== "production") console.log(`[script-generator] provider=${provider}`);
+  const { texto, provider } = await chamarLLM(system, userMsg);
+  if (process.env.NODE_ENV !== "production") console.log(`[script-generator] provider=${provider} modo=${modo}`);
   const match = texto.match(/\[[\s\S]*\]/);
   if (!match) throw new Error(`LLM não retornou JSON válido:\n${texto.slice(0, 400)}`);
 
   const segs = JSON.parse(match[0]);
   if (!Array.isArray(segs) || segs.length === 0) throw new Error("Miolo vazio");
-  // sanitiza tons
   return segs
     .filter((s) => s && s.texto && s.texto.trim())
     .map((s) => ({
@@ -197,14 +220,27 @@ async function gerarMiolo(tema, duracao) {
 
 /**
  * Monta o roteiro completo (fixos + miolo) já segmentado por tom.
+ * @param {string} tema
+ * @param {string} duracao
+ * @param {"motivacional"|"tratamento"|"proprio"} [modo]
+ * @param {string} [roteiroCustom] — texto livre quando modo="proprio"
  * @returns {Promise<Array<{tom,texto,fixed}>>}
  */
-async function gerarRoteiro(tema, duracao) {
-  const miolo = await gerarMiolo(tema, duracao);
+async function gerarRoteiro(tema, duracao, modo = "motivacional", roteiroCustom = "") {
   const fixo = (b) => ({ ...b, fixed: true });
   const dyn = (s) => ({ ...s, fixed: false });
-  // Termina na EMERSAO (parte motivacional "...sentindo ótimo, incrível, extraordinário").
-  // Sem FECHAMENTO ("salva de palmas") — decisão do Michael.
+
+  if (modo === "proprio") {
+    if (!roteiroCustom || !roteiroCustom.trim()) throw new Error("Roteiro próprio vazio.");
+    // Usa o texto exatamente como escrito, com tom normal (voz neutra da Dra.)
+    return [
+      fixo(INTRO),
+      dyn({ tom: "normal", texto: roteiroCustom.trim() }),
+      fixo(EMERSAO),
+    ];
+  }
+
+  const miolo = await gerarMiolo(tema, duracao, modo);
   return [
     fixo(INTRO),
     fixo(APROFUNDAMENTO),

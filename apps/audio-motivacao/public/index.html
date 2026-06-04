@@ -3,270 +3,450 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gerador de áudios de Omniterapia · OMNI Brasil</title>
+<title>Gerador de Áudios · Dra. Lauriane Silva</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --black:#050505; --dark:#0D0D0D; --panel:#141312; --line:#2a2620;
-    --gold:#C8A84B; --gold-light:#E8C86A; --gold-deep:#9A7A2E;
-    --cream:#F5F0E8; --muted:#8a8475;
+  :root {
+    --red-jam:    #3F1817;
+    --red-wine:   #562120;
+    --red-mid:    #6B2E2C;
+    --cream:      #DDD7CA;
+    --cream-soft: #F2EDE4;
+    --cream-muted:#9E998F;
+    --off-white:  #FAFAF8;
+    --text:       #1A1818;
+    --line:       rgba(221,215,202,.18);
+    --line-strong:rgba(221,215,202,.32);
   }
-  *{box-sizing:border-box}
-  body{margin:0;background:radial-gradient(1200px 700px at 50% -10%, #1a1710 0%, var(--black) 60%);
-    color:var(--cream);font-family:Inter,system-ui,sans-serif;min-height:100vh;
-    display:flex;align-items:center;justify-content:center;padding:28px}
-  .card{width:100%;max-width:560px;background:linear-gradient(180deg,var(--panel),#0e0d0c);
-    border:1px solid var(--line);border-radius:18px;padding:34px 32px;
-    box-shadow:0 30px 80px rgba(0,0,0,.6)}
-  .kicker{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.32em;
-    text-transform:uppercase;color:var(--gold);margin:0 0 6px}
-  h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:34px;line-height:1.1;margin:0 0 6px}
-  .sub{color:var(--muted);font-size:14px;margin:0 0 26px;line-height:1.5}
-  label{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;
-    text-transform:uppercase;color:var(--muted);margin:0 0 8px}
-  textarea,input{width:100%;background:#0a0908;border:1px solid var(--line);border-radius:11px;
-    color:var(--cream);font-family:Inter,sans-serif;font-size:15px;padding:13px 14px;resize:vertical}
-  textarea:focus,input:focus{outline:none;border-color:var(--gold-deep)}
-  textarea{min-height:84px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background: radial-gradient(ellipse 900px 600px at 50% -5%, #5C2422 0%, var(--red-jam) 55%, #200D0D 100%);
+    min-height:100vh;color:var(--cream);
+    font-family:'Inter',system-ui,sans-serif;
+    display:flex;align-items:center;justify-content:center;padding:28px 16px;
+  }
+  .card{
+    width:100%;max-width:580px;
+    background:linear-gradient(180deg,rgba(86,33,32,.55) 0%,rgba(63,24,23,.7) 100%);
+    border:1px solid var(--line-strong);border-radius:16px;padding:36px 32px;
+    backdrop-filter:blur(12px);
+    box-shadow:0 40px 100px rgba(0,0,0,.55),inset 0 1px 0 rgba(221,215,202,.1);
+  }
+
+  /* Logo */
+  .brand{margin:0 0 28px;display:flex;align-items:center}
+  .brand img{height:38px;width:auto;display:block;opacity:.92}
+
+  /* Divider */
+  .divider{height:1px;background:var(--line);margin:24px 0}
+
+  /* Tipografia */
+  h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:26px;
+    line-height:1.15;letter-spacing:-.01em;color:var(--cream);margin:0 0 6px}
+  .sub{color:var(--cream-muted);font-size:13.5px;line-height:1.55;margin:0 0 24px}
+
+  /* Labels */
+  label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--cream-muted);margin:0 0 9px}
+
+  /* Inputs */
+  textarea,input[type=text],input[type=password]{
+    width:100%;background:rgba(63,24,23,.6);
+    border:1px solid var(--line-strong);border-radius:9px;
+    color:var(--cream);font-family:'Inter',sans-serif;font-size:14.5px;
+    padding:12px 14px;resize:vertical;line-height:1.5;
+    transition:border-color .18s;
+  }
+  textarea:focus,input[type=text]:focus,input[type=password]:focus{
+    outline:none;border-color:rgba(221,215,202,.55);
+  }
+  textarea{min-height:88px}
   .field{margin-bottom:20px}
-  .durs{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-  .dur{cursor:pointer;border:1px solid var(--line);border-radius:11px;padding:12px 8px;text-align:center;
-    background:#0a0908;transition:.15s}
-  .dur small{display:block;color:var(--muted);font-size:11px;margin-top:3px;font-family:'IBM Plex Mono',monospace}
-  .dur.active{border-color:var(--gold);background:rgba(200,168,75,.08)}
-  .dur b{font-size:14px;font-weight:600}
-  button.go{width:100%;margin-top:26px;border:none;border-radius:12px;cursor:pointer;
-    padding:15px;font-weight:600;font-size:15px;color:#1a1407;
-    background:linear-gradient(135deg,#9A7A2E,#C8A84B 45%,#E8C86A 60%,#C8A84B);
-    letter-spacing:.02em}
-  button.go:disabled{opacity:.5;cursor:not-allowed}
-  .row2{display:grid;grid-template-columns:1fr 130px;gap:12px}
-  .status{margin-top:24px;display:none}
+
+  /* Selector chips (modo, duração, voz) */
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    cursor:pointer;border:1px solid var(--line-strong);border-radius:8px;
+    padding:10px 16px;text-align:center;background:rgba(63,24,23,.5);
+    transition:.15s;flex:1;min-width:90px;
+  }
+  .chip b{display:block;font-size:13.5px;font-weight:500;color:var(--cream)}
+  .chip small{display:block;color:var(--cream-muted);font-size:11px;margin-top:2px}
+  .chip.active{
+    border-color:var(--cream);
+    background:rgba(221,215,202,.12);
+  }
+  .chip.active b{color:var(--off-white)}
+
+  /* Botão principal */
+  button.go{
+    width:100%;margin-top:24px;border:none;border-radius:10px;cursor:pointer;
+    padding:15px;font-weight:600;font-size:15px;
+    color:var(--off-white);letter-spacing:.02em;
+    background:linear-gradient(135deg, var(--red-wine), #7A3230 50%, var(--red-wine));
+    border:1px solid rgba(221,215,202,.25);
+    transition:opacity .18s, transform .15s;
+  }
+  button.go:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}
+  button.go:disabled{opacity:.45;cursor:not-allowed}
+
+  /* Status / progresso */
+  .status{margin-top:22px;display:none}
   .status.show{display:block}
-  .bar{height:7px;background:#0a0908;border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-top:10px}
-  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-deep),var(--gold-light));
-    transition:width .4s}
-  .stext{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.04em}
-  audio{width:100%;margin-top:16px}
-  .links{margin-top:12px;font-size:13px}
-  .links a{color:var(--gold-light);text-decoration:none;margin-right:16px}
-  .err{color:#e0826a;font-size:13px;margin-top:12px;font-family:'IBM Plex Mono',monospace}
-  .foot{text-align:center;color:#4f4a40;font-size:11px;margin-top:22px;font-family:'IBM Plex Mono',monospace;letter-spacing:.1em}
-  .brand{display:flex;align-items:center;gap:11px;margin:0 0 16px}
-  .brand svg{height:22px;width:auto;display:block}
-  .brand span{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.34em;
-    text-transform:uppercase;color:var(--gold);font-weight:500}
+  .stext{font-size:12.5px;color:var(--cream-muted);letter-spacing:.04em;margin-bottom:8px}
+  .bar{height:5px;background:rgba(63,24,23,.8);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red-wine),var(--cream));transition:width .4s}
+  audio{width:100%;margin-top:16px;border-radius:8px}
+  .links{margin-top:10px;font-size:13px;display:flex;gap:16px}
+  .links a{color:var(--cream);text-decoration:none;opacity:.85}
+  .links a:hover{opacity:1}
+  .err{color:#e8907a;font-size:12.5px;margin-top:10px}
+
   /* Onboarding */
-  .checklist{list-style:none;padding:0;margin:0 0 22px}
-  .checklist li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
-    font-size:14px;color:var(--cream)}
+  .checklist{list-style:none;margin:0 0 20px}
+  .checklist li{display:flex;align-items:flex-start;gap:10px;padding:9px 0;
+    border-bottom:1px solid var(--line);font-size:13.5px;color:var(--cream)}
   .checklist li:last-child{border-bottom:none}
-  .checklist .ic{flex:0 0 18px;font-size:15px;line-height:1.4}
+  .checklist .ic{flex:0 0 16px;font-size:14px;line-height:1.5}
   .checklist .ok .ic{color:#7bbf6a}
   .checklist .no .ic{color:#e0826a}
-  .checklist small{display:block;color:var(--muted);font-size:12px;margin-top:2px;line-height:1.45}
-  .hint{font-size:12px;color:var(--muted);margin:-4px 0 14px;line-height:1.5}
-  .hint a{color:var(--gold-light);text-decoration:none}
-  /* Tutorial de chave (passo a passo pra leigos) */
-  .tut{margin:8px 0 6px;padding:12px 14px;background:#0c0b0a;border:1px solid var(--line);border-radius:10px}
-  .tut .tit{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:0 0 7px}
+  .checklist small{display:block;color:var(--cream-muted);font-size:11.5px;margin-top:2px;line-height:1.45}
+
+  .hint{font-size:12px;color:var(--cream-muted);margin:-2px 0 14px;line-height:1.55}
+  .hint a{color:var(--cream);text-decoration:underline}
+
+  .tut{margin:8px 0 6px;padding:12px 14px;background:rgba(63,24,23,.6);
+    border:1px solid var(--line);border-radius:9px}
+  .tut .tit{font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--cream);opacity:.7;margin:0 0 7px}
   .tut ol{margin:0;padding-left:18px}
-  .tut li{font-size:12.5px;color:var(--cream);opacity:.9;line-height:1.65;margin-bottom:2px}
-  .tut a{color:var(--gold-light);text-decoration:underline}
-  .tut .aviso{margin:8px 0 0;font-size:11.5px;color:var(--muted)}
+  .tut li{font-size:12px;color:var(--cream);opacity:.85;line-height:1.65;margin-bottom:2px}
+  .tut a{color:var(--cream)}
+  .tut .aviso{margin:8px 0 0;font-size:11px;color:var(--cream-muted)}
+
   input.bad{border-color:#e0826a}
-  .field-ok{font-size:11.5px;color:#7bbf6a;margin:6px 0 0;font-family:'IBM Plex Mono',monospace}
-  .adv-toggle{background:none;border:none;color:var(--gold-light);font-family:'IBM Plex Mono',monospace;
-    font-size:12px;letter-spacing:.06em;cursor:pointer;padding:6px 0;margin-bottom:4px}
+  .field-ok{font-size:11px;color:#7bbf6a;margin:5px 0 0}
+  .adv-toggle{background:none;border:none;color:var(--cream);opacity:.6;
+    font-family:'Inter',sans-serif;font-size:12px;letter-spacing:.06em;cursor:pointer;padding:6px 0;margin-bottom:4px}
   .adv{display:none}
   .adv.show{display:block}
-  .okmsg{color:#7bbf6a;font-size:13px;margin-top:12px;font-family:'IBM Plex Mono',monospace}
+  .okmsg{color:#7bbf6a;font-size:12.5px;margin-top:10px}
+
   /* Gravação de voz */
-  .vblock{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;background:#0a0908}
-  .vblock.done{border-color:var(--gold-deep);background:rgba(200,168,75,.06)}
+  .vblock{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:10px;
+    background:rgba(63,24,23,.4)}
+  .vblock.done{border-color:rgba(221,215,202,.4);background:rgba(221,215,202,.07)}
   .vhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .vhead b{font-size:14px}
-  .vstate{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--muted)}
+  .vhead b{font-size:13.5px;color:var(--cream)}
+  .vstate{font-size:11px;letter-spacing:.06em;color:var(--cream-muted)}
   .vstate.ok{color:#7bbf6a}
   .vstate.rec{color:#e0826a}
-  .vtext{font-size:13px;color:var(--cream);opacity:.85;line-height:1.5;margin:0 0 12px;font-style:italic}
+  .vtext{font-size:12.5px;color:var(--cream);opacity:.8;line-height:1.55;margin:0 0 11px;font-style:italic}
   .vctrls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .vbtn{border:1px solid var(--line);background:#141312;color:var(--cream);border-radius:9px;
-    padding:9px 14px;font-size:13px;font-family:Inter,sans-serif;cursor:pointer;transition:.15s}
-  .vbtn:hover{border-color:var(--gold-deep)}
+  .vbtn{border:1px solid var(--line-strong);background:rgba(63,24,23,.7);color:var(--cream);
+    border-radius:8px;padding:8px 14px;font-size:12.5px;font-family:'Inter',sans-serif;cursor:pointer;transition:.15s}
+  .vbtn:hover{border-color:rgba(221,215,202,.5)}
   .vbtn.rec{border-color:#e0826a;color:#e8a48f}
-  .vupload{border:1px solid var(--line);background:#141312;color:var(--muted);border-radius:9px;
-    padding:9px 14px;font-size:13px;cursor:pointer}
-  .vupload:hover{border-color:var(--gold-deep);color:var(--cream)}
+  .vupload{border:1px solid var(--line-strong);background:rgba(63,24,23,.7);color:var(--cream-muted);
+    border-radius:8px;padding:8px 14px;font-size:12.5px;cursor:pointer;transition:.15s}
+  .vupload:hover{border-color:rgba(221,215,202,.5);color:var(--cream)}
   .vprev{width:100%;margin-top:10px}
-  #vBlocks + .err{margin-top:4px}
+
+  /* Roteiro próprio */
+  #roteiroBox{display:none}
+  #roteiroBox.show{display:block}
+  .roteiro-hint{font-size:12px;color:var(--cream-muted);margin:-4px 0 14px;line-height:1.55}
+
+  /* Footer */
+  .foot{text-align:center;color:rgba(221,215,202,.3);font-size:10.5px;
+    margin-top:22px;letter-spacing:.14em;text-transform:uppercase}
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="brand">
-      <svg viewBox="0 0 566.93 226.77" xmlns="http://www.w3.org/2000/svg" aria-label="OMNI Brasil">
-        <path fill="#C8A84B" d="M184.56,137.47l-.62,1.62c-2.61,6.53-5.49,12.52-8.53,18.08,6.74,12.99,16.6,21.73,37.08,21.63,18.33-.11,31.3-19.22,41.3-41.33h-69.22ZM295.54,137.47c-3.22,6.97-6.56,13.61-10.08,19.81,6.67,12.93,14.81,21.8,35.27,21.41,18.37-.36,31.84-19.29,42.27-41.22h-67.45ZM200.59,97.79l-.14.36c-4,10.8-8.1,21.38-12.48,31.47h69.22c4.51-10.97,8.42-22.17,11.95-31.82h-68.56ZM311.65,97.79l-.15.36c-3.97,10.76-8.09,21.38-12.48,31.47h67.58c4.76-10.95,8.85-22.16,12.49-31.82h-67.44ZM203.72,89.93h68.42l.87-2.25c4.11-10.22,8.71-19.14,13.83-26.93-8.4-8.31-21.65-10.3-31.94-10.61-1.78-.06-3.69-.14-5.74-.14-12.63,0-29.93,3.42-45.45,39.93M314.78,89.93h67.33l.87-2.25c4.23-10.5,9.02-19.68,14.27-27.61-8.44-7.75-21.26-9.65-31.26-9.93-1.8-.06-3.72-.14-5.74-.14-12.66,0-29.96,3.42-45.48,39.93M353.01,23.7c20.21.61,36.22,8.42,48.16,23.53.98,1.27,1.91,2.56,2.78,3.89,15.75-18.93,35.48-28.12,59.07-27.41,20.17.61,36.21,8.42,48.12,23.53,11.88,15.09,17.5,34.65,16.8,58.68-.35,11.49-3.03,42.45-24.91,69.03l-.06-.06c-3.79,5.95-10.82,10.01-18.96,10.01-12.17,0-22-8.91-22-19.9,0-6.8,3.78-12.78,9.5-16.38l.1-.07.12-.08c33.17-16.82,42.21-35.86,42.64-45.31,1.83-38.12-20.41-52.49-38.42-53.01-12.71-.39-33.17-2.63-51.2,39.79h22.9v7.86h-26.02l-.14.36c-3.97,10.76-8.08,21.38-12.46,31.47h38.62v7.86h-42.13c-16.71,36.26-37.33,64.08-67.33,65.6-21.26,1.07-42.68-17.69-55.12-33.19-1.15-1.4-1.91-2.96-2.48-4.58-13.96,21.83-30.7,36.67-52.41,37.77-21.26,1.07-42.67-17.69-55.13-33.19-1.13-1.41-1.89-3-2.46-4.63-16.79,25.97-39.1,38.63-66.66,37.83-20.17-.59-36.24-8.44-48.15-23.54-11.89-15.12-17.5-34.67-16.8-58.68.35-11.49,3.04-42.46,24.9-69.03l.06.06c3.8-5.95,10.84-10,18.98-10,12.14,0,22,8.92,22,19.9,0,6.8-3.76,12.77-9.5,16.35l-.1.1-.12.08c-30.08,20.5-41.66,35.23-43.29,44.52-5.66,32.07,21.09,53.26,39.07,53.8,9.4.28,23.03,1.58,36.78-14.9,4.3-6.87,8.7-15.27,12.95-24.26h-18.99v-7.86h22.65c1.62-3.64,3.24-7.29,4.8-10.9,2.72-7.15,5.53-14.15,8.45-20.93h-35.9v-7.86h39.33l.9-2.25c17.54-43.68,44.36-65.05,80-63.98,20.18.61,36.24,8.42,48.15,23.53,1.18,1.49,2.25,3.03,3.32,4.58,15.81-19.4,35.74-28.82,59.6-28.1"/>
-      </svg>
-      <span>OMNI Brasil</span>
-    </div>
-    <h1>Gerador de áudios de Omniterapia</h1>
-    <p class="sub">Escreva um tema. A IA cria o roteiro e gera o áudio com a voz escolhida.</p>
+<div class="card">
 
-    <!-- Onboarding (1ª vez / falta alguma coisa) -->
-    <div id="setup" hidden>
-      <p class="sub" style="margin-bottom:18px">Antes de começar, vamos configurar o necessário. É rápido e só na primeira vez.</p>
-
-      <ul class="checklist" id="checklist"></ul>
-
-      <!-- Passo 1: chaves -->
-      <div id="setupKeys">
-        <div class="field">
-          <label for="kMistral">Chave da Mistral (a voz) · obrigatória</label>
-          <input id="kMistral" type="password" placeholder="cole aqui a chave da Mistral" autocomplete="off" />
-          <div class="tut">
-            <p class="tit">Como pegar a chave da Mistral</p>
-            <ol>
-              <li>Abra <a href="https://console.mistral.ai/api-keys" target="_blank" rel="noopener">console.mistral.ai/api-keys</a></li>
-              <li>Faça login (ou crie uma conta grátis com seu e-mail)</li>
-              <li>Clique no botão <b>"Create new key"</b></li>
-              <li>Copie a chave inteira e cole aqui em cima</li>
-            </ol>
-            <p class="aviso">Cole a chave completa, sem espaços antes ou depois.</p>
-          </div>
-          <p class="field-ok" id="okMistral" hidden>✓ chave validada</p>
-        </div>
-
-        <div class="field">
-          <label for="kGoogle">Chave do Google AI Studio (o roteiro) · obrigatória</label>
-          <input id="kGoogle" type="password" placeholder="cole aqui a chave do Google (Gemini)" autocomplete="off" />
-          <div class="tut">
-            <p class="tit">Como pegar a chave do Google (é grátis)</p>
-            <ol>
-              <li>Abra <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></li>
-              <li>Entre com a sua conta Google (Gmail)</li>
-              <li>Clique em <b>"Create API key"</b> / <b>"Criar chave de API"</b></li>
-              <li>Se pedir, escolha criar um projeto novo e confirme</li>
-              <li>Copie a chave inteira e cole aqui em cima</li>
-            </ol>
-            <p class="aviso">Cole a chave completa, sem espaços. Ela começa com <b>AIza…</b></p>
-          </div>
-          <p class="field-ok" id="okGoogle" hidden>✓ chave validada</p>
-        </div>
-
-        <button type="button" class="adv-toggle" id="advToggle">▸ Uso outro provedor de roteiro (avançado)</button>
-        <div class="adv" id="adv">
-          <div class="field">
-            <label for="kOpenRouter">OpenRouter (opcional)</label>
-            <input id="kOpenRouter" type="password" placeholder="chave do OpenRouter" autocomplete="off" />
-          </div>
-          <div class="field">
-            <label for="kAnthropic">Anthropic (opcional)</label>
-            <input id="kAnthropic" type="password" placeholder="chave da Anthropic" autocomplete="off" />
-          </div>
-        </div>
-
-        <button class="go" id="salvarSetup">Salvar e continuar</button>
-        <div class="err" id="setupErr"></div>
-        <div class="okmsg" id="setupOk" hidden></div>
-      </div>
-
-      <!-- Passo 2: voz do usuário -->
-      <div id="setupVoice" hidden>
-        <div class="field">
-          <label for="vNome">Seu nome (vira o rótulo da sua voz)</label>
-          <input id="vNome" type="text" placeholder="ex.: João Silva" autocomplete="name" />
-        </div>
-        <p class="hint">Grave os três trechos abaixo com a sua voz — um por tom. Eles servem de referência pra IA gerar os áudios com a sua voz. Fale num lugar silencioso. Também dá pra subir um áudio pronto (uns 20–30s).</p>
-        <div id="vBlocks"></div>
-        <div class="err" id="voiceErr"></div>
-        <div class="okmsg" id="voiceOk" hidden></div>
-      </div>
-    </div>
-
-    <!-- Gerador (liberado após o onboarding) -->
-    <div id="app" hidden>
-      <div class="field">
-        <label for="tema">Tema do áudio</label>
-        <textarea id="tema" placeholder="ex.: confiança e foco para começar a semana; gratidão e abundância; coragem para agir"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Voz</label>
-        <div class="durs" id="vozes"><!-- preenchido via /api/voices --></div>
-      </div>
-
-      <div class="field">
-        <label>Duração</label>
-        <div class="durs" id="durs">
-          <div class="dur" data-d="curta"><b>Curta</b><small>~3 min</small></div>
-          <div class="dur active" data-d="media"><b>Média</b><small>~6 min</small></div>
-          <div class="dur" data-d="completa"><b>Completa</b><small>~10 min</small></div>
-        </div>
-      </div>
-
-      <button class="go" id="go">Gerar áudio</button>
-
-      <div class="status" id="status">
-        <div class="stext" id="stext">Iniciando…</div>
-        <div class="bar"><i id="barfill"></i></div>
-        <div id="result"></div>
-        <div class="err" id="err"></div>
-      </div>
-    </div>
-
-    <div class="foot">OMNI BRASIL · TRANSFORMAÇÃO QUE SE PROVA</div>
+  <div class="brand">
+    <img src="logo.png" alt="Dra. Lauriane Silva" />
   </div>
 
+  <!-- Onboarding -->
+  <div id="setup" hidden>
+    <h2>Configuração inicial</h2>
+    <p class="sub">É rápido e só na primeira vez. Vamos preparar tudo para gerar seus áudios.</p>
+
+    <ul class="checklist" id="checklist"></ul>
+
+    <!-- Passo 1: chaves -->
+    <div id="setupKeys">
+      <div class="field">
+        <label for="kMistral">Chave da Mistral (síntese de voz) · obrigatória</label>
+        <input id="kMistral" type="password" placeholder="cole aqui a chave da Mistral" autocomplete="off" />
+        <div class="tut">
+          <p class="tit">Como obter a chave da Mistral</p>
+          <ol>
+            <li>Acesse <a href="https://console.mistral.ai/api-keys" target="_blank" rel="noopener">console.mistral.ai/api-keys</a></li>
+            <li>Faça login (ou crie uma conta gratuita)</li>
+            <li>Clique em <b>"Create new key"</b></li>
+            <li>Copie a chave completa e cole aqui</li>
+          </ol>
+          <p class="aviso">Cole a chave completa, sem espaços.</p>
+        </div>
+        <p class="field-ok" id="okMistral" hidden>✓ chave validada</p>
+      </div>
+
+      <div class="field">
+        <label for="kGoogle">Chave do Google AI Studio (roteiro via IA) · obrigatória</label>
+        <input id="kGoogle" type="password" placeholder="cole aqui a chave do Google (Gemini)" autocomplete="off" />
+        <div class="tut">
+          <p class="tit">Como obter a chave do Google (gratuita)</p>
+          <ol>
+            <li>Acesse <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></li>
+            <li>Entre com sua conta Google</li>
+            <li>Clique em <b>"Create API key"</b></li>
+            <li>Copie a chave completa e cole aqui</li>
+          </ol>
+          <p class="aviso">A chave começa com <b>AIza…</b></p>
+        </div>
+        <p class="field-ok" id="okGoogle" hidden>✓ chave validada</p>
+      </div>
+
+      <button type="button" class="adv-toggle" id="advToggle">▸ Usar outro provedor de roteiro (avançado)</button>
+      <div class="adv" id="adv">
+        <div class="field">
+          <label for="kOpenRouter">OpenRouter (opcional)</label>
+          <input id="kOpenRouter" type="password" placeholder="chave do OpenRouter" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="kAnthropic">Anthropic (opcional)</label>
+          <input id="kAnthropic" type="password" placeholder="chave da Anthropic" autocomplete="off" />
+        </div>
+      </div>
+
+      <button class="go" id="salvarSetup">Salvar e continuar</button>
+      <div class="err" id="setupErr"></div>
+      <div class="okmsg" id="setupOk" hidden></div>
+    </div>
+
+    <!-- Passo 2: voz -->
+    <div id="setupVoice" hidden>
+      <div class="field">
+        <label for="vNome">Seu nome (identificador da sua voz)</label>
+        <input id="vNome" type="text" placeholder="ex.: Dra. Lauriane Silva" autocomplete="name" />
+      </div>
+      <p class="hint">Grave os três trechos abaixo com a sua voz — um por tom. Fale num ambiente silencioso. Você também pode subir áudios prontos (20–30 segundos cada).</p>
+      <div id="vBlocks"></div>
+      <div class="err" id="voiceErr"></div>
+      <div class="okmsg" id="voiceOk" hidden></div>
+    </div>
+  </div>
+
+  <!-- Gerador -->
+  <div id="app" hidden>
+    <h2>Gerador de Áudios</h2>
+    <p class="sub">Selecione o tipo, escreva o tema ou roteiro, e gere com sua voz.</p>
+
+    <!-- Tipo de áudio -->
+    <div class="field">
+      <label>Tipo de áudio</label>
+      <div class="chips" id="modos">
+        <div class="chip active" data-m="motivacional">
+          <b>Motivacional</b>
+          <small>Autohipnose · foco e intenção</small>
+        </div>
+        <div class="chip" data-m="tratamento">
+          <b>Tratamento</b>
+          <small>Hipnose clínica terapêutica</small>
+        </div>
+        <div class="chip" data-m="proprio">
+          <b>Roteiro Próprio</b>
+          <small>Você escreve, eu sintetizo</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tema (IA gera o roteiro) -->
+    <div class="field" id="temaBox">
+      <label for="tema">Tema do áudio</label>
+      <textarea id="tema" placeholder="ex.: confiança e foco para começar a semana; ansiedade e medo de julgamento; crenças de merecimento"></textarea>
+    </div>
+
+    <!-- Roteiro próprio -->
+    <div id="roteiroBox">
+      <div class="field">
+        <label for="roteiroProprio">Seu roteiro</label>
+        <textarea id="roteiroProprio" style="min-height:180px" placeholder="Escreva aqui o texto completo do seu roteiro. A IA não será usada — apenas sua voz sintetiza o que você escreveu."></textarea>
+      </div>
+      <p class="roteiro-hint">A indução e a emersão padrão serão adicionadas automaticamente antes e depois do seu texto.</p>
+    </div>
+
+    <!-- Voz -->
+    <div class="field">
+      <label>Voz</label>
+      <div class="chips" id="vozes"></div>
+    </div>
+
+    <!-- Duração -->
+    <div class="field">
+      <label>Duração</label>
+      <div class="chips" id="durs">
+        <div class="chip" data-d="curta"><b>Curta</b><small>~3 min</small></div>
+        <div class="chip active" data-d="media"><b>Média</b><small>~6 min</small></div>
+        <div class="chip" data-d="completa"><b>Completa</b><small>~10 min</small></div>
+        <div class="chip" data-d="longa"><b>Longa</b><small>~15 min</small></div>
+        <div class="chip" data-d="extensa"><b>Extensa</b><small>~20 min</small></div>
+        <div class="chip" data-d="profunda"><b>Profunda</b><small>~30 min</small></div>
+      </div>
+    </div>
+
+    <button class="go" id="go">Gerar áudio</button>
+
+    <div class="status" id="status">
+      <div class="stext" id="stext">Iniciando…</div>
+      <div class="bar"><i id="barfill"></i></div>
+      <div id="result"></div>
+      <div class="err" id="err"></div>
+    </div>
+  </div>
+
+  <div class="foot">Dra. Lauriane Silva · Reprogramação Mental</div>
+</div>
+
 <script>
+  // ── Modo ──────────────────────────────────────────────────────────────────
+  let modo = "motivacional";
+  const modosBox = document.getElementById("modos");
+  const temaBox  = document.getElementById("temaBox");
+  const roteiroBox = document.getElementById("roteiroBox");
+
+  modosBox.addEventListener("click", e => {
+    const el = e.target.closest(".chip"); if(!el) return;
+    [...modosBox.children].forEach(c => c.classList.remove("active"));
+    el.classList.add("active");
+    modo = el.dataset.m;
+    if(modo === "proprio"){
+      temaBox.style.display = "none";
+      roteiroBox.classList.add("show");
+    } else {
+      temaBox.style.display = "";
+      roteiroBox.classList.remove("show");
+      // Atualiza placeholder do tema conforme o modo
+      document.getElementById("tema").placeholder = modo === "tratamento"
+        ? "ex.: ansiedade e medo de julgamento; dor crônica e tensão; crenças limitantes de auto-sabotagem"
+        : "ex.: confiança e foco para começar a semana; gratidão e abundância; coragem para agir";
+    }
+  });
+
+  // ── Duração ───────────────────────────────────────────────────────────────
   let duracao = "media";
-  const durs = document.getElementById("durs");
-  durs.addEventListener("click", e => {
-    const el = e.target.closest(".dur"); if(!el) return;
-    [...durs.children].forEach(c => c.classList.remove("active"));
+  const dursBox = document.getElementById("durs");
+  dursBox.addEventListener("click", e => {
+    const el = e.target.closest(".chip"); if(!el) return;
+    [...dursBox.children].forEach(c => c.classList.remove("active"));
     el.classList.add("active"); duracao = el.dataset.d;
   });
 
-  // Seletor de voz — carregado dinamicamente
+  // ── Voz ───────────────────────────────────────────────────────────────────
   let voz = null;
   const vozesBox = document.getElementById("vozes");
   vozesBox.addEventListener("click", e => {
-    const el = e.target.closest(".dur"); if(!el) return;
+    const el = e.target.closest(".chip"); if(!el) return;
     [...vozesBox.children].forEach(c => c.classList.remove("active"));
     el.classList.add("active"); voz = el.dataset.v;
   });
   fetch("api/voices").then(r => r.json()).then(d => {
-    const vs = (d.vozes || []);
+    const vs = d.vozes || [];
     vozesBox.innerHTML = vs.map((v,i) =>
-      `<div class="dur${i===0?" active":""}" data-v="${v.id}"><b>${v.rotulo}</b></div>`).join("");
+      `<div class="chip${i===0?" active":""}" data-v="${v.id}"><b>${v.rotulo}</b></div>`).join("");
     if(vs[0]) voz = vs[0].id;
-  }).catch(()=>{ vozesBox.innerHTML = '<div class="dur active" data-v="rafa"><b>Rafa</b></div>'; voz="rafa"; });
+  }).catch(() => {
+    vozesBox.innerHTML = '<div class="chip active" data-v="lauriane"><b>Lauriane</b></div>';
+    voz = "lauriane";
+  });
 
-  const go = document.getElementById("go");
+  // ── Gerador ───────────────────────────────────────────────────────────────
+  const go       = document.getElementById("go");
   const statusBox = document.getElementById("status");
-  const stext = document.getElementById("stext");
-  const barfill = document.getElementById("barfill");
-  const result = document.getElementById("result");
-  const errEl = document.getElementById("err");
+  const stext    = document.getElementById("stext");
+  const barfill  = document.getElementById("barfill");
+  const result   = document.getElementById("result");
+  const errEl    = document.getElementById("err");
 
   const LABELS = {
-    fila: "Na fila…",
-    roteiro: "Escrevendo o roteiro…",
-    sintetizando: "Gerando o áudio com a voz escolhida…",
+    fila:        "Na fila…",
+    roteiro:     "Escrevendo o roteiro…",
+    sintetizando:"Sintetizando o áudio com sua voz…",
   };
 
-  // ===== Acesso direto ao gerador (sem senha) =====
-  const appBox = document.getElementById("app");
-  const setupBox = document.getElementById("setup");
-  function liberar(){ setupBox.hidden = true; appBox.hidden = false; document.getElementById("tema").focus(); }
+  go.addEventListener("click", async () => {
+    const tema = document.getElementById("tema").value.trim();
+    const roteiroProprio = document.getElementById("roteiroProprio").value.trim();
+    errEl.textContent = ""; result.innerHTML = "";
 
-  // ===== Onboarding: checa o ambiente antes de liberar o gerador =====
-  const setupKeys = document.getElementById("setupKeys");
+    if(modo === "proprio" && !roteiroProprio){
+      errEl.textContent = "Escreva o roteiro no campo de texto.";
+      statusBox.classList.add("show"); return;
+    }
+    if(modo !== "proprio" && !tema){
+      errEl.textContent = "Escreva o tema do áudio.";
+      statusBox.classList.add("show"); return;
+    }
+
+    go.disabled = true; statusBox.classList.add("show");
+    stext.textContent = "Iniciando…"; barfill.style.width = "4%";
+
+    let id;
+    try {
+      const body = { tema, duracao, voz, modo, roteiroCustom: roteiroProprio };
+      const r = await fetch("api/generate", {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(body)
+      });
+      const j = await r.json();
+      if(!r.ok) throw new Error(j.erro || "Falha ao iniciar.");
+      id = j.id;
+    } catch(e){ errEl.textContent = e.message; go.disabled = false; return; }
+
+    const poll = setInterval(async () => {
+      try {
+        const r = await fetch("api/job/" + id);
+        const j = await r.json();
+        if(j.status === "pronto"){
+          clearInterval(poll);
+          barfill.style.width = "100%";
+          stext.textContent = "Pronto.";
+          result.innerHTML =
+            '<audio controls src="'+j.audioUrl+'"></audio>' +
+            '<div class="links"><a href="'+j.audioUrl+'" download>⬇ Baixar áudio</a>' +
+            '<a href="'+j.roteiroUrl+'" target="_blank">📄 Ver roteiro</a></div>';
+          go.disabled = false; return;
+        }
+        if(j.status === "erro"){
+          clearInterval(poll);
+          errEl.textContent = "Erro: " + (j.erro || "desconhecido");
+          stext.textContent = "Falhou."; go.disabled = false; return;
+        }
+        let pct = 8;
+        if(j.status === "sintetizando" && j.progresso && j.progresso.total){
+          pct = 30 + Math.round(65 * j.progresso.i / j.progresso.total);
+          stext.textContent = LABELS.sintetizando + " (" + j.progresso.i + "/" + j.progresso.total + " trechos)";
+        } else {
+          if(j.status === "roteiro") pct = 18;
+          stext.textContent = LABELS[j.status] || j.status;
+        }
+        barfill.style.width = pct + "%";
+      } catch(e){}
+    }, 1500);
+  });
+
+  // ── Onboarding ────────────────────────────────────────────────────────────
+  const appBox   = document.getElementById("app");
+  const setupBox = document.getElementById("setup");
+  const setupKeys  = document.getElementById("setupKeys");
   const setupVoice = document.getElementById("setupVoice");
 
-  function mostrarLogin(){ liberar(); }
+  function liberar(){ setupBox.hidden = true; appBox.hidden = false; }
 
   function linha(ok, titulo, sub){
     return `<li class="${ok?'ok':'no'}"><span class="ic">${ok?'✓':'✕'}</span>`
@@ -281,27 +461,23 @@
       : st.roteiro.cli ? "Claude CLI" : "";
     let html =
       linha(true, "Node.js " + (st.node || ""), null) +
-      linha(st.ffmpeg, "ffmpeg (montagem do áudio)", st.ffmpeg ? null : "Não encontrado. Rode /audio-motivacao de novo (ou o instalador).") +
-      linha(st.mistral, "Chave da Mistral (voz)", st.mistral ? null : "Falta colar abaixo.") +
+      linha(st.ffmpeg, "ffmpeg (montagem do áudio)", st.ffmpeg ? null : "Não encontrado. Rode o instalador.") +
+      linha(st.mistral, "Chave da Mistral (síntese de voz)", st.mistral ? null : "Cole a chave abaixo.") +
       linha(st.roteiro.ok, "Chave de roteiro (IA)", st.roteiro.ok ? rotRoteiro : "Falta uma: Google, OpenRouter ou Anthropic.");
     if(st.voice && st.voice.required){
       const g = st.voice.gravados.length, tot = st.voice.tons.length;
-      html += linha(st.voice.ok, "Sua voz (" + g + "/" + tot + " tons)", st.voice.ok ? null : "Grave os trechos no passo de voz.");
+      html += linha(st.voice.ok, "Sua voz (" + g + "/" + tot + " tons)", st.voice.ok ? null : "Grave os trechos abaixo.");
     }
     cl.innerHTML = html;
   }
 
-  // Decide qual passo exibir conforme o que falta.
   function mostrarPasso(st){
-    if(st.ready){ mostrarLogin(); return; }
+    if(st.ready){ liberar(); return; }
     setupBox.hidden = false;
-    setupKeys.hidden = true;
-    setupVoice.hidden = true;
+    setupKeys.hidden = true; setupVoice.hidden = true;
     renderChecklist(st);
-    const chavesFaltam = !st.mistral || !st.roteiro.ok;
-    if(chavesFaltam){ setupKeys.hidden = false; return; }
+    if(!st.mistral || !st.roteiro.ok){ setupKeys.hidden = false; return; }
     if(st.voice && st.voice.required && !st.voice.ok){ setupVoice.hidden = false; renderVoice(st.voice); return; }
-    // só falta ffmpeg (não dá pra resolver pela web) — mostra o checklist com o aviso
   }
 
   async function checarSetup(){
@@ -309,89 +485,72 @@
       const r = await fetch("api/setup/status");
       const st = await r.json();
       mostrarPasso(st);
-    } catch(e){
-      setupBox.hidden = false; setupKeys.hidden = false;
-    }
+    } catch(e){ setupBox.hidden = false; setupKeys.hidden = false; }
   }
 
   document.getElementById("advToggle").addEventListener("click", () => {
     document.getElementById("adv").classList.toggle("show");
   });
 
-  // ── Passo 1: salvar chaves (com validação real) ──
+  // Salvar chaves
   const CHAVE_CAMPO = {
-    MISTRAL_API_KEY: { input: "kMistral", nome: "Mistral" },
-    GOOGLE_AI_STUDIO_API_KEY: { input: "kGoogle", nome: "Google" },
-    OPENROUTER_API_KEY: { input: "kOpenRouter", nome: "OpenRouter" },
-    ANTHROPIC_API_KEY: { input: "kAnthropic", nome: "Anthropic" },
+    MISTRAL_API_KEY:           { input:"kMistral",   nome:"Mistral" },
+    GOOGLE_AI_STUDIO_API_KEY:  { input:"kGoogle",    nome:"Google" },
+    OPENROUTER_API_KEY:        { input:"kOpenRouter", nome:"OpenRouter" },
+    ANTHROPIC_API_KEY:         { input:"kAnthropic", nome:"Anthropic" },
   };
-  function limparMarcas(){
-    Object.values(CHAVE_CAMPO).forEach(c => document.getElementById(c.input).classList.remove("bad"));
-  }
-  function nomes(lista){ return (lista || []).map(k => (CHAVE_CAMPO[k] || {}).nome || k).join(", "); }
-  function marcarBad(lista){ (lista || []).forEach(k => { const c = CHAVE_CAMPO[k]; if(c) document.getElementById(c.input).classList.add("bad"); }); }
+  function limparMarcas(){ Object.values(CHAVE_CAMPO).forEach(c => document.getElementById(c.input).classList.remove("bad")); }
+  function nomes(lista){ return (lista||[]).map(k => (CHAVE_CAMPO[k]||{}).nome||k).join(", "); }
+  function marcarBad(lista){ (lista||[]).forEach(k => { const c=CHAVE_CAMPO[k]; if(c) document.getElementById(c.input).classList.add("bad"); }); }
 
   document.getElementById("salvarSetup").addEventListener("click", async () => {
     const setupErr = document.getElementById("setupErr");
-    const setupOk = document.getElementById("setupOk");
+    const setupOk  = document.getElementById("setupOk");
     const btn = document.getElementById("salvarSetup");
     setupErr.textContent = ""; setupOk.hidden = true; limparMarcas();
 
     const payload = {
-      MISTRAL_API_KEY: document.getElementById("kMistral").value.trim(),
+      MISTRAL_API_KEY:          document.getElementById("kMistral").value.trim(),
       GOOGLE_AI_STUDIO_API_KEY: document.getElementById("kGoogle").value.trim(),
-      OPENROUTER_API_KEY: document.getElementById("kOpenRouter").value.trim(),
-      ANTHROPIC_API_KEY: document.getElementById("kAnthropic").value.trim(),
+      OPENROUTER_API_KEY:       document.getElementById("kOpenRouter").value.trim(),
+      ANTHROPIC_API_KEY:        document.getElementById("kAnthropic").value.trim(),
     };
     if(!Object.values(payload).some(v => v)){
-      setupErr.textContent = "Cole a chave da Mistral e a do Google."; return;
+      setupErr.textContent = "Cole a chave da Mistral e a do Google para continuar."; return;
     }
-
-    btn.disabled = true; btn.textContent = "Testando as chaves…";
+    btn.disabled = true; btn.textContent = "Validando as chaves…";
     try {
-      const r = await fetch("api/setup/save", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify(payload)
-      });
+      const r = await fetch("api/setup/save",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
       const j = await r.json();
-
       if(r.status === 422){
-        // alguma chave não passou no teste
-        marcarBad([...(j.invalidas||[]), ...(j.semRede||[])]);
+        marcarBad([...(j.invalidas||[]),...(j.semRede||[])]);
         const partes = [];
-        if(j.invalidas && j.invalidas.length)
-          partes.push("Não funcionou: " + nomes(j.invalidas) + ". Confira se copiou a chave inteira (sem espaços) e gere uma nova se precisar.");
-        if(j.semRede && j.semRede.length)
-          partes.push("Não consegui testar: " + nomes(j.semRede) + " (parece sem internet). Tente de novo.");
-        setupErr.innerHTML = partes.join("<br>");
-        return;
+        if(j.invalidas && j.invalidas.length) partes.push("Não funcionou: " + nomes(j.invalidas) + ". Verifique se a chave está completa.");
+        if(j.semRede && j.semRede.length) partes.push("Sem conexão para testar: " + nomes(j.semRede) + ". Tente de novo.");
+        setupErr.innerHTML = partes.join("<br>"); return;
       }
-      if(!r.ok){ throw new Error(j.erro || "Falha ao salvar."); }
-
+      if(!r.ok) throw new Error(j.erro || "Falha ao salvar.");
       const st = j.status;
       if(!st.mistral || !st.roteiro.ok){
         renderChecklist(st);
         const faltas = [];
-        if(!st.mistral) faltas.push("a chave da Mistral");
-        if(!st.roteiro.ok) faltas.push("a chave do Google");
+        if(!st.mistral) faltas.push("chave da Mistral");
+        if(!st.roteiro.ok) faltas.push("chave do Google");
         setupErr.textContent = "Falta " + faltas.join(" e ") + ".";
       } else {
-        setupOk.textContent = "Chaves validadas! ✓"; setupOk.hidden = false;
+        setupOk.textContent = "Chaves validadas com sucesso ✓"; setupOk.hidden = false;
         setTimeout(() => mostrarPasso(st), 800);
       }
-    } catch(e){
-      setupErr.textContent = e.message;
-    } finally {
-      btn.disabled = false; btn.textContent = "Salvar e continuar";
-    }
+    } catch(e){ setupErr.textContent = e.message; }
+    finally { btn.disabled = false; btn.textContent = "Salvar e continuar"; }
   });
 
-  // ── Passo 2: gravação de voz ──
+  // Gravação de voz
   const VOZ_TONS = [
     { tom:"hipnose", rotulo:"1. Tom calmo (indução)",
       texto:"Respira fundo, devagar... e vai soltando o ar, desacelerando o corpo e a mente. A cada respiração você se sente mais tranquilo, mais leve, mais presente." },
-    { tom:"normal", rotulo:"2. Tom normal (fala neutra)",
-      texto:"Oi! Esse é um teste da minha voz para o gerador de áudios. Estou lendo este texto no meu ritmo natural, do jeito que eu falo no dia a dia, com calma e clareza." },
+    { tom:"normal", rotulo:"2. Tom natural (fala neutra)",
+      texto:"Olá. Esse é um teste da minha voz para o gerador de áudios. Estou lendo este texto no meu ritmo natural, do jeito que eu falo com calma e clareza." },
     { tom:"motivacional", rotulo:"3. Tom motivacional (energia)",
       texto:"Hoje é o seu dia! Você acordou com força, com energia e com vontade de vencer. Respira fundo, levanta a cabeça e vai com tudo, porque você é capaz!" },
   ];
@@ -412,9 +571,9 @@
       box.dataset.rendered = "1";
       VOZ_TONS.forEach(t => wireVoiceBlock(box.querySelector('.vblock[data-tom="'+t.tom+'"]'), t.tom));
     }
-    (voiceSt.gravados || []).forEach(tom => {
+    (voiceSt.gravados||[]).forEach(tom => {
       const bl = document.querySelector('.vblock[data-tom="'+tom+'"]');
-      if(bl){ bl.classList.add("done"); const s = bl.querySelector(".vstate"); s.textContent = "gravado ✓"; s.className = "vstate ok"; }
+      if(bl){ bl.classList.add("done"); const s = bl.querySelector(".vstate"); s.textContent="gravado ✓"; s.className="vstate ok"; }
     });
   }
 
@@ -423,36 +582,36 @@
     const fileInput = bl.querySelector('input[type=file]');
     const prev = bl.querySelector(".vprev");
     const state = bl.querySelector(".vstate");
-    let mediaRec = null, chunks = [], gravando = false, stream = null;
+    let mediaRec=null, chunks=[], gravando=false, stream=null;
 
     recBtn.addEventListener("click", async () => {
       const voiceErr = document.getElementById("voiceErr");
       if(!gravando){
-        try { stream = await navigator.mediaDevices.getUserMedia({ audio:true }); }
-        catch(e){ voiceErr.textContent = "Não consegui acessar o microfone. Use 'Subir arquivo' ou libere o microfone no navegador."; return; }
+        try { stream = await navigator.mediaDevices.getUserMedia({audio:true}); }
+        catch(e){ voiceErr.textContent="Microfone não acessível. Use 'Subir arquivo' ou libere o microfone no navegador."; return; }
         voiceErr.textContent = "";
-        chunks = []; mediaRec = new MediaRecorder(stream);
+        chunks=[]; mediaRec=new MediaRecorder(stream);
         mediaRec.ondataavailable = e => { if(e.data && e.data.size) chunks.push(e.data); };
         mediaRec.onstop = async () => {
           stream.getTracks().forEach(t => t.stop());
-          const blob = new Blob(chunks, { type: (mediaRec && mediaRec.mimeType) || "audio/webm" });
-          prev.src = URL.createObjectURL(blob); prev.hidden = false;
+          const blob = new Blob(chunks,{type:(mediaRec&&mediaRec.mimeType)||"audio/webm"});
+          prev.src=URL.createObjectURL(blob); prev.hidden=false;
           await enviarVoz(blob, tom, bl);
         };
-        mediaRec.start(); gravando = true;
-        recBtn.textContent = "■ Parar"; recBtn.classList.add("rec");
-        state.textContent = "gravando…"; state.className = "vstate rec";
+        mediaRec.start(); gravando=true;
+        recBtn.textContent="■ Parar"; recBtn.classList.add("rec");
+        state.textContent="gravando…"; state.className="vstate rec";
       } else {
-        mediaRec.stop(); gravando = false;
-        recBtn.textContent = "● Gravar"; recBtn.classList.remove("rec");
-        state.textContent = "processando…"; state.className = "vstate";
+        mediaRec.stop(); gravando=false;
+        recBtn.textContent="● Gravar"; recBtn.classList.remove("rec");
+        state.textContent="processando…"; state.className="vstate";
       }
     });
 
     fileInput.addEventListener("change", async () => {
       const f = fileInput.files[0]; if(!f) return;
-      prev.src = URL.createObjectURL(f); prev.hidden = false;
-      state.textContent = "processando…"; state.className = "vstate";
+      prev.src=URL.createObjectURL(f); prev.hidden=false;
+      state.textContent="processando…"; state.className="vstate";
       await enviarVoz(f, tom, bl);
     });
   }
@@ -460,82 +619,24 @@
   async function enviarVoz(blobOrFile, tom, bl){
     const state = bl.querySelector(".vstate");
     const voiceErr = document.getElementById("voiceErr");
-    const voiceOk = document.getElementById("voiceOk");
+    const voiceOk  = document.getElementById("voiceOk");
     voiceErr.textContent = "";
     const nome = encodeURIComponent(document.getElementById("vNome").value.trim());
     try {
-      const r = await fetch("api/setup/voice?tom=" + tom + "&nome=" + nome, {
-        method:"POST", headers:{ "Content-Type":"application/octet-stream" }, body: blobOrFile
+      const r = await fetch("api/setup/voice?tom="+tom+"&nome="+nome,{
+        method:"POST",headers:{"Content-Type":"application/octet-stream"},body:blobOrFile
       });
       const j = await r.json();
-      if(!r.ok) throw new Error(j.erro || "Falha ao salvar a voz.");
-      bl.classList.add("done"); state.textContent = "gravado ✓"; state.className = "vstate ok";
-      const vs = j.voice;
-      if(vs && vs.ok){
-        voiceOk.textContent = "Voz completa! Abrindo o app…"; voiceOk.hidden = false;
-        setTimeout(() => { if(j.status) mostrarPasso(j.status); else mostrarLogin(); }, 900);
+      if(!r.ok) throw new Error(j.erro||"Falha ao salvar a voz.");
+      bl.classList.add("done"); state.textContent="gravado ✓"; state.className="vstate ok";
+      if(j.voice && j.voice.ok){
+        voiceOk.textContent="Voz registrada! Abrindo o gerador…"; voiceOk.hidden=false;
+        setTimeout(() => { if(j.status) mostrarPasso(j.status); else liberar(); }, 900);
       }
-    } catch(e){
-      state.textContent = "erro"; state.className = "vstate rec";
-      voiceErr.textContent = e.message;
-    }
+    } catch(e){ state.textContent="erro"; state.className="vstate rec"; voiceErr.textContent=e.message; }
   }
 
   checarSetup();
-
-  go.addEventListener("click", async () => {
-    const tema = document.getElementById("tema").value.trim();
-    errEl.textContent = ""; result.innerHTML = "";
-    if(!tema){ errEl.textContent = "Escreva um tema."; statusBox.classList.add("show"); return; }
-
-    go.disabled = true; statusBox.classList.add("show");
-    stext.textContent = "Iniciando…"; barfill.style.width = "4%";
-
-    let id;
-    try {
-      const r = await fetch("api/generate", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ tema, duracao, voz })
-      });
-      const j = await r.json();
-      if(!r.ok){ throw new Error(j.erro || "Falha ao iniciar."); }
-      id = j.id;
-    } catch(e){ errEl.textContent = e.message; go.disabled = false; return; }
-
-    const poll = setInterval(async () => {
-      try {
-        const r = await fetch("api/job/" + id);
-        const j = await r.json();
-        if(j.status === "pronto"){
-          clearInterval(poll);
-          barfill.style.width = "100%";
-          stext.textContent = "Pronto.";
-          result.innerHTML =
-            '<audio controls src="'+j.audioUrl+'"></audio>' +
-            '<div class="links"><a href="'+j.audioUrl+'" download>⬇ Baixar áudio</a>' +
-            '<a href="'+j.roteiroUrl+'" target="_blank">📄 Ver roteiro</a></div>';
-          go.disabled = false;
-          return;
-        }
-        if(j.status === "erro"){
-          clearInterval(poll);
-          errEl.textContent = "Erro: " + (j.erro || "desconhecido");
-          stext.textContent = "Falhou.";
-          go.disabled = false;
-          return;
-        }
-        let pct = 8;
-        if(j.status === "sintetizando" && j.progresso && j.progresso.total){
-          pct = 30 + Math.round(65 * j.progresso.i / j.progresso.total);
-          stext.textContent = LABELS.sintetizando + " (" + j.progresso.i + "/" + j.progresso.total + " trechos)";
-        } else {
-          if(j.status === "roteiro") pct = 18;
-          stext.textContent = LABELS[j.status] || j.status;
-        }
-        barfill.style.width = pct + "%";
-      } catch(e){ /* segue tentando */ }
-    }, 1500);
-  });
 </script>
 </body>
 </html>

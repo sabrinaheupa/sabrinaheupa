@@ -1,6 +1,17 @@
 {
   "_doc": "A voz do dono do app e gravada no onboarding (passo de voz). 'requireUserVoice' ativa esse passo na primeira vez.",
-  "default": null,
+  "default": "minha-voz",
   "requireUserVoice": true,
-  "vozes": {}
+  "vozes": {
+    "minha-voz": {
+      "rotulo": "Dra.Lauriane",
+      "perfis": {
+        "hipnose": "data/voices/minha-voz-hipnose.ogg",
+        "normal": "data/voices/minha-voz-normal.ogg",
+        "motivacional": "data/voices/minha-voz-motivacional.ogg"
+      },
+      "fallback": "data/voices/minha-voz-hipnose.ogg"
+    }
+  },
+  "userVoice": "minha-voz"
 }

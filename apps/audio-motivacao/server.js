@@ -50,7 +50,7 @@ function publicJob(job) {
 async function processar(job) {
   try {
     job.status = "roteiro"; saveJob(job);
-    const segments = await gerarRoteiro(job.tema, job.duracao);
+    const segments = await gerarRoteiro(job.tema, job.duracao, job.modo, job.roteiroCustom);
 
     const roteiroTxt = segments.map((s) => s.texto).join("\n\n");
     fs.writeFileSync(path.join(JOBS_DIR, `${job.id}.txt`), roteiroTxt);
@@ -74,26 +74,38 @@ async function processar(job) {
 }
 
 app.post("/api/generate", (req, res) => {
-  const { tema, duracao, voz } = req.body || {};
-  if (!tema || !tema.trim()) return res.status(400).json({ erro: "Informe um tema." });
+  const { tema, duracao, voz, modo, roteiroCustom } = req.body || {};
+
+  const modoValido = ["motivacional", "tratamento", "proprio"].includes(modo) ? modo : "motivacional";
+
+  if (modoValido === "proprio") {
+    if (!roteiroCustom || !roteiroCustom.trim())
+      return res.status(400).json({ erro: "No modo 'Roteiro Próprio', escreva o roteiro no campo de texto." });
+  } else {
+    if (!tema || !tema.trim()) return res.status(400).json({ erro: "Informe um tema." });
+  }
+
   const st = getStatus();
   if (!st.ready) {
     const faltam = [];
     if (!st.ffmpeg) faltam.push("ffmpeg (rode o instalador de novo)");
     if (!st.mistral) faltam.push("chave da Mistral");
-    if (!st.roteiro.ok) faltam.push("chave de roteiro (Google/OpenRouter/Anthropic)");
+    if (modoValido !== "proprio" && !st.roteiro.ok) faltam.push("chave de roteiro (Google/OpenRouter/Anthropic)");
     if (!st.voice.ok) faltam.push("gravar sua voz (" + st.voice.faltando.join(", ") + ")");
     return res.status(412).json({ erro: "Configuração incompleta: falta " + faltam.join(", ") + ".", setup: true });
   }
+
   const dur = DURACAO[duracao] ? duracao : "media";
   const vozIds = listVoices().map((v) => v.id);
   const vozId = vozIds.includes(voz) ? voz : vozIds[0];
 
   const job = {
     id: crypto.randomBytes(6).toString("hex"),
-    tema: tema.trim().slice(0, 300),
+    tema: (tema || "roteiro próprio").trim().slice(0, 300),
     duracao: dur,
     voz: vozId,
+    modo: modoValido,
+    roteiroCustom: modoValido === "proprio" ? roteiroCustom.trim().slice(0, 50000) : "",
     status: "fila",
     progresso: null,
     erro: null,
