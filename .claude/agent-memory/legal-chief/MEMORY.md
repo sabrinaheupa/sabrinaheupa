@@ -1,0 +1,1 @@
+- [Almacura — Regulatory Profile](project_almacura_regulatory.md) — fabricante BR de prata coloidal c/ registro ANVISA, reposicionando para oral care kids AgNP; contexto regulatório sensível RE 2.541/2024

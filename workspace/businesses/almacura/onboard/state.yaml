@@ -1,0 +1,24 @@
+slug: almacura
+business_name: "Almacura"
+founder_name: "Sabrina Heupa"
+business_type: "industria_ecommerce_produto_fisico"
+business_type_label: "Indústria + E-commerce de Produto Físico"
+secondary_type: "b2b_revendedores"
+secondary_type_label: "B2B — Revendedores / Distribuidores"
+business_type_notes: >-
+  Fábrica + e-commerce de produtos naturais com prata e ouro coloidal.
+  Único registro ANVISA no Brasil para prata coloidal. Fabricação própria
+  incluindo as máquinas de produção (talento do sócio). Vende DTC (direto
+  ao consumidor via site) e B2B (revendedores). Nicho: saúde natural /
+  bem-estar. +6.000 famílias atendidas. Ticket: R$49-R$199.
+has_design_starter: false
+current_phase: 2_paused_strategic_analysis
+phases_done:
+  - bootstrap
+  - detect
+completeness:
+  company_profile: 0
+  icp: 0
+  design_system: 0
+fill_later: []
+updated_at: "2026-06-11"
