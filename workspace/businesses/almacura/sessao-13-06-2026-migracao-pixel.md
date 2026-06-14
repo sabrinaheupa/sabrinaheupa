@@ -38,7 +38,7 @@
 
 ## Pendências — O que fazer ao retomar
 
-### 🔴 PRIORIDADE 1: Aniversário [SA] 15/06 — evento começa 15/06
+### ~~🔴 PRIORIDADE 1: Aniversário [SA] 15/06~~ — DESCARTADO (evento passou, não valeu a pena migrar)
 
 O rascunho **[SA] ANIVERSÁRIO DE ITAJAI - 15/06 — Cópia** foi criado no Gerenciador com pixel 2022 correto, mas falhou ao publicar por erro de localização deprecada (`location_types` removido pela Meta).
 
