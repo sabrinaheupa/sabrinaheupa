@@ -1,0 +1,13 @@
+# Workspace Configuration
+# Gerenciado pelo COO - Squad AIOX Workspace
+# Atualizado: 2026-06-13
+
+businesses:
+  - slug: almacura
+    name: "Almacura (→ RIZOMA)"
+    status: rebranding
+
+global_preferences:
+  language: "pt-BR"
+  date_format: "DD/MM/YYYY"
+  timezone: "America/Sao_Paulo"

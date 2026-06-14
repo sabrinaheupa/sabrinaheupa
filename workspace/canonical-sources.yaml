@@ -1,0 +1,21 @@
+# CANONICAL-SOURCES.YAML — AIOX Workspace Ontology Registry
+# Registro central de quem é DONO de cada tipo de dado no workspace.
+# Quando um dado aparece em mais de um lugar, este arquivo diz qual vence.
+#
+# REGRAS INVIOLÁVEIS:
+#   1. Todo dado tem UM dono. Sem exceções.
+#   2. Entidades nunca duplicam dados de outras entidades.
+#   3. Se um path muda, atualizar AQUI primeiro.
+
+schema_version: "0.1"
+last_updated: "2026-06-13"
+
+decisions: {}
+
+eliminated_files: []
+
+entities: {}
+# Será populado conforme businesses e produtos forem adicionados
+
+field_rules: {}
+# Será populado conforme conflitos de dados forem resolvidos

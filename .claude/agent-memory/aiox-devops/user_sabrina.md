@@ -5,7 +5,7 @@ metadata:
   type: user
 ---
 
-Sabrina is the owner of this environment, running the **Almacura** business (workspace at `workspace/businesses/almacura/`). She is also behind the Dra. Lauriane Silva work in this repo.
+Sabrina is the owner of this environment, running the **Almacura** business (workspace at `workspace/businesses/almacura/`).
 
 She is in **financial recovery** and actively wants to eliminate recurring tooling costs. When proposing infrastructure/tooling, prefer free/official options over paid SaaS, and call out cost explicitly.
 
